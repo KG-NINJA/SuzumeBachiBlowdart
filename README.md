@@ -1,4 +1,6 @@
-# NOROSHI Prediction System (#KGNINJA)
+# SuzumeBachiBlowdart  
+– Poison-Needle Market Predictor –
+ (#KGNINJA)
 
 ## NVIDIA 今日の予測
 - 日付: 2025-11-22
