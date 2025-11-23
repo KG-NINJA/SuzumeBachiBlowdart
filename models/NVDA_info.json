@@ -1,0 +1,14 @@
+{
+  "ticker": "NVDA",
+  "accuracy": 0.5,
+  "previous_accuracy": 0,
+  "accuracy_improvement": 0.5,
+  "train_samples": 61,
+  "test_samples": 16,
+  "total_train_samples": 61,
+  "features": 31,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/NVDA_model.json",
+  "scaler_path": "models/NVDA_scaler.pkl",
+  "timestamp": "2025-11-23T13:15:58.882177"
+}

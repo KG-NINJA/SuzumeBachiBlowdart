@@ -1,66 +1,96 @@
 {
-  "timestamp": "2025-11-23T12:59:13.934584",
+  "timestamp": "2025-11-23T13:15:59.532338",
   "run_date": "2025-11-23",
   "results": [
     {
       "ticker": "NVDA",
       "status": "OK",
       "accuracy": 0.5,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.5,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "AAPL",
       "status": "OK",
       "accuracy": 0.4375,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.4375,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "MSFT",
       "status": "OK",
       "accuracy": 0.5625,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.5625,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "GOOGL",
       "status": "OK",
       "accuracy": 0.75,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.75,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "AMZN",
       "status": "OK",
       "accuracy": 0.5625,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.5625,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "META",
       "status": "OK",
-      "accuracy": 0.625,
-      "train_samples": 61
+      "accuracy": 0.6875,
+      "previous_accuracy": 0,
+      "improvement": 0.6875,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "TSLA",
       "status": "OK",
       "accuracy": 0.625,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.625,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "AMD",
       "status": "OK",
-      "accuracy": 0.625,
-      "train_samples": 61
+      "accuracy": 0.5625,
+      "previous_accuracy": 0,
+      "improvement": 0.5625,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "NFLX",
       "status": "OK",
       "accuracy": 0.4375,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.4375,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "QQQ",
       "status": "OK",
       "accuracy": 0.5,
-      "train_samples": 61
+      "previous_accuracy": 0,
+      "improvement": 0.5,
+      "train_samples": 61,
+      "learning_type": "ONLINE_UPDATE"
     }
   ],
   "total_trained": 10,
