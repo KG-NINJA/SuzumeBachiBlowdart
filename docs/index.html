@@ -1,45 +1,175 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>NOROSHI Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<style>
-body { font-family: 'Segoe UI', sans-serif; margin: 24px; }
-section { margin-bottom: 32px; }
-.card { border: 1px solid #ccc; padding: 16px; border-radius: 8px; max-width: 720px; }
-img { max-width: 100%; height: auto; }
-</style>
+  <meta charset="UTF-8" />
+  <title>Blowdart ML Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 24px; background: #0c1116; color: #e8eef3; }
+    h1, h2, h3 { color: #8bd5ff; }
+    a { color: #7dd3fc; }
+    .card { background: #111821; border: 1px solid #1f2a36; border-radius: 12px; padding: 16px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #1f2a36; padding: 8px; text-align: left; }
+    th { color: #a0b8d0; }
+    .tag { padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+    .up { background: #14361f; color: #48ef8e; }
+    .down { background: #3a1418; color: #fb7185; }
+    .neutral { background: #1f2933; color: #cbd5e1; }
+    #charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; }
+  </style>
 </head>
 <body>
-<h1>📈 NOROSHI Prediction Dashboard</h1>
+  <h1>Blowdart Multi-Stock ML Dashboard</h1>
+  <p>Automatic XGBoost training and prediction for 10 tickers. Data refreshes daily via GitHub Actions.</p>
 
-<p>最終更新: Pending run (自動生成 #KGNINJA)</p>
-<section class="card">
-  <h2>NVDA 予測スナップショット</h2>
-  <ul>
-    <li>現在価格: -</li>
-    <li>予測価格: -</li>
-    <li>予測変動率: -%</li>
-    <li>トレンド: -</li>
+  <div class="card">
+    <h2>Latest Predictions</h2>
+    <table id="prediction-table">
+      <thead>
+        <tr><th>Ticker</th><th>Direction</th><th>Prob Up</th><th>Confidence</th><th>Signal Strength</th><th>Change %</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-  </ul>
-</section>
-<section>
-  <h2>チャート</h2>
-  <h3>NVDA 予測</h3>
-  <img src="assets/nvda_prediction.png" alt="NVDA Prediction" />
-  <h3>市場スナップショット (SPY / VIX)</h3>
-  <img src="assets/market_context.png" alt="Market Context" />
-</section>
-<section class="card">
-  <h2>市場コンテキスト</h2>
-  <ul>
+  <div id="charts">
+    <div class="card">
+      <h3>Confidence Trend (CV Runner + Model)</h3>
+      <div id="confidence-chart"></div>
+    </div>
+    <div class="card">
+      <h3>ML Accuracy Trend</h3>
+      <div id="accuracy-chart"></div>
+    </div>
+    <div class="card">
+      <h3>Feature Importance</h3>
+      <select id="importance-selector"></select>
+      <div id="importance-chart"></div>
+    </div>
+  </div>
 
-    <li>SPY 終値: -</li>
-    <li>VIX 終値: -</li>
+  <script>
+    const paths = {
+      latest: 'data/latest_predictions.json',
+      predictionHistory: 'data/prediction_history.json',
+      trainingMetrics: 'data/training_metrics.json',
+      featureImportance: 'data/feature_importance.json'
+    };
 
-  </ul>
-</section>
+    async function fetchJSON(path, fallback) {
+      try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error('request failed');
+        return await res.json();
+      } catch (err) {
+        console.warn(`Fallback for ${path}:`, err);
+        return fallback;
+      }
+    }
+
+    function formatDirection(dir) {
+      if (dir === 'UP') return `<span class="tag up">UP</span>`;
+      if (dir === 'DOWN') return `<span class="tag down">DOWN</span>`;
+      return `<span class="tag neutral">HOLD</span>`;
+    }
+
+    function renderPredictionTable(data) {
+      const tbody = document.querySelector('#prediction-table tbody');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.ticker}</td>
+          <td>${formatDirection(item.predicted_direction || 'HOLD')}</td>
+          <td>${(item.prob_up * 100).toFixed(1)}%</td>
+          <td>${(item.cv_confidence * 100).toFixed(1)}%</td>
+          <td>${(item.signal_strength * 100).toFixed(1)}%</td>
+          <td>${(item.predicted_change_pct || 0).toFixed(2)}%</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderConfidence(history) {
+      if (!history.length) return;
+      const grouped = {};
+      history.forEach(entry => {
+        const ts = entry.timestamp || 'unknown';
+        if (!grouped[ts]) grouped[ts] = [];
+        grouped[ts].push(entry);
+      });
+      const timestamps = Object.keys(grouped).sort();
+      const avgConfidence = timestamps.map(ts => grouped[ts].reduce((acc, e) => acc + (e.cv_confidence || 0.5), 0) / grouped[ts].length);
+      const avgSignal = timestamps.map(ts => grouped[ts].reduce((acc, e) => acc + (e.signal_strength || 0.5), 0) / grouped[ts].length);
+      const trace1 = { x: timestamps, y: avgConfidence.map(v => v * 100), mode: 'lines+markers', name: 'CV Confidence', line: {color: '#7dd3fc'} };
+      const trace2 = { x: timestamps, y: avgSignal.map(v => v * 100), mode: 'lines+markers', name: 'Signal Strength', line: {color: '#c084fc'} };
+      Plotly.newPlot('confidence-chart', [trace1, trace2], {paper_bgcolor: '#111821', plot_bgcolor: '#111821', font: {color: '#e8eef3'}, yaxis: {title: 'Percent'}, margin: {t: 24, r: 12, l: 40, b: 40}});
+    }
+
+    function renderAccuracy(metrics) {
+      if (!metrics.length) return;
+      const series = {};
+      metrics.forEach(m => {
+        const key = m.ticker;
+        if (!series[key]) series[key] = {x: [], y: []};
+        series[key].x.push(m.timestamp || m.trained_at);
+        series[key].y.push((m.accuracy || 0) * 100);
+      });
+      const traces = Object.entries(series).map(([ticker, values]) => ({
+        x: values.x,
+        y: values.y,
+        mode: 'lines+markers',
+        name: ticker
+      }));
+      Plotly.newPlot('accuracy-chart', traces, {paper_bgcolor: '#111821', plot_bgcolor: '#111821', font: {color: '#e8eef3'}, yaxis: {title: 'Accuracy (%)', range: [0, 100]}, margin: {t: 24, r: 12, l: 40, b: 60}});
+    }
+
+    function renderImportance(map) {
+      const selector = document.getElementById('importance-selector');
+      const tickers = Object.keys(map);
+      selector.innerHTML = '';
+      tickers.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t; selector.appendChild(opt);
+      });
+      selector.onchange = () => plot(selector.value);
+      const initial = tickers[0];
+      if (initial) {
+        selector.value = initial;
+        plot(initial);
+      }
+
+      function plot(ticker) {
+        const items = map[ticker] || [];
+        const names = items.map(i => i.feature).slice(0, 15);
+        const values = items.map(i => i.importance).slice(0, 15);
+        Plotly.newPlot('importance-chart', [{
+          type: 'bar',
+          x: values,
+          y: names,
+          orientation: 'h',
+          marker: {color: '#7dd3fc'}
+        }], {paper_bgcolor: '#111821', plot_bgcolor: '#111821', font: {color: '#e8eef3'}, margin: {l: 120}});
+      }
+    }
+
+    async function bootstrap() {
+      const latest = await fetchJSON(paths.latest, {tickers: []});
+      renderPredictionTable(latest.tickers || []);
+
+      const history = await fetchJSON(paths.predictionHistory, []);
+      renderConfidence(Array.isArray(history) ? history : []);
+
+      const metrics = await fetchJSON(paths.trainingMetrics, []);
+      renderAccuracy(Array.isArray(metrics) ? metrics : []);
+
+      const importance = await fetchJSON(paths.featureImportance, {});
+      renderImportance(importance && Object.keys(importance).length ? importance : {None: []});
+    }
+
+    bootstrap();
+  </script>
 </body>
 </html>
