@@ -1,243 +1,313 @@
 """
-Robust, rate-limit-aware price downloader supporting Polygon.io, AlphaVantage, and Tiingo.
-Provides daily caching to minimize API calls and automatic provider fallback.
+utils_data_fetch.py - Unified robust data fetcher for SuzumeBachiBlowdart
+Supports: Polygon.io, AlphaVantage, Tiingo, yfinance (fallback)
 """
-from __future__ import annotations
 
-import json
 import os
-import time
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Callable, Dict, Iterable, Optional
-
-import pandas as pd
 import requests
+import pandas as pd
+import yfinance as yf
+from datetime import datetime, timedelta
+import time
+import json
+from pathlib import Path
 
-REQUEST_UA = os.getenv("REQUEST_UA", "Mozilla/5.0 (Codex GitHub Runner)")
-DATA_CACHE_DIR = Path("data/cache")
-DATA_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+# ===== Configuration =====
+CACHE_DIR = "data/cache"
+LOGS_DIR = "logs"
+FETCH_TIMEOUT = 30
 
-REQUIRED_COLUMNS = ["DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME"]
+# API Keys from GitHub Secrets (environment variables)
+POLYGON_API_KEY = os.environ.get('POLYGON_API_KEY', '').strip()
+ALPHA_VANTAGE_KEY = os.environ.get('ALPHA_VANTAGE_KEY', '').strip()
+TIINGO_API_KEY = os.environ.get('TIINGO_API_KEY', '').strip()
+
+# Ensure directories exist
+Path(CACHE_DIR).mkdir(parents=True, exist_ok=True)
+Path(LOGS_DIR).mkdir(parents=True, exist_ok=True)
+
+# ===== Logging =====
+def log_fetch_event(ticker, source, status, message=""):
+    """Log fetch attempts for debugging"""
+    log_file = f"{LOGS_DIR}/fetch_log_{datetime.now().strftime('%Y%m%d')}.txt"
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log_entry = f"[{timestamp}] {ticker:6s} | {source:15s} | {status:8s} | {message}\n"
+    
+    try:
+        with open(log_file, 'a') as f:
+            f.write(log_entry)
+        print(log_entry.strip())
+    except Exception as e:
+        print(f"Log write failed: {e}")
 
 
-def _headers() -> Dict[str, str]:
-    return {"User-Agent": REQUEST_UA, "Accept": "application/json"}
+def get_cached_data(ticker):
+    """Load data from local cache"""
+    cache_file = f"{CACHE_DIR}/{ticker}.csv"
+    
+    if not os.path.exists(cache_file):
+        return None
+    
+    try:
+        df = pd.read_csv(cache_file, parse_dates=['Date'])
+        log_fetch_event(ticker, "LOCAL_CACHE", "SUCCESS", f"{len(df)} rows")
+        return df
+    except Exception as e:
+        log_fetch_event(ticker, "LOCAL_CACHE", "FAIL", str(e)[:50])
+        return None
 
 
-def _range_to_start_date(range_value: str = "2y") -> datetime:
-    range_value = range_value.lower().strip()
-    if range_value.endswith("y"):
-        try:
-            years = int(range_value[:-1])
-        except ValueError:
-            years = 2
-        return datetime.utcnow() - timedelta(days=365 * years)
-    if range_value.endswith("d"):
-        try:
-            days = int(range_value[:-1])
-        except ValueError:
-            days = 365 * 2
-        return datetime.utcnow() - timedelta(days=days)
-    return datetime.utcnow() - timedelta(days=365 * 2)
-
-
-def _validate_df(df: pd.DataFrame) -> pd.DataFrame:
+def save_to_cache(ticker, df):
+    """Save fetched data to local cache"""
     if df is None or df.empty:
-        raise ValueError("Price dataframe is empty after download")
-    missing = [col for col in REQUIRED_COLUMNS if col not in df.columns]
-    if missing:
-        raise ValueError(f"Price dataframe missing required columns: {missing}")
-    df = df.copy()
-    df["DATE"] = pd.to_datetime(df["DATE"])
-    df.sort_values("DATE", inplace=True)
-    df.reset_index(drop=True, inplace=True)
-    return df
-
-
-def _cache_path(ticker: str) -> Path:
-    today = datetime.utcnow().strftime("%Y-%m-%d")
-    return DATA_CACHE_DIR / f"{ticker.upper()}_{today}.json"
-
-
-def _load_cache(ticker: str) -> Optional[pd.DataFrame]:
-    path = _cache_path(ticker)
-    if not path.exists():
-        return None
+        return False
+    
     try:
-        with path.open("r", encoding="utf-8") as handle:
-            payload = json.load(handle)
-        df = pd.DataFrame(payload)
-        if "DATE" in df.columns:
-            df["DATE"] = pd.to_datetime(df["DATE"])
-        return _validate_df(df)
-    except Exception as exc:  # pragma: no cover - cache failures fallback to fetch
-        print(f"[cache] Failed to load cache for {ticker}: {exc}")
+        cache_file = f"{CACHE_DIR}/{ticker}.csv"
+        df.to_csv(cache_file, index=False)
+        return True
+    except Exception as e:
+        log_fetch_event(ticker, "CACHE_WRITE", "FAIL", str(e)[:50])
+        return False
+
+
+def fetch_polygon_io(ticker, days=180):
+    """Fetch from Polygon.io API"""
+    if not POLYGON_API_KEY or len(POLYGON_API_KEY) < 10:
+        log_fetch_event(ticker, "POLYGON", "SKIP", "No API key")
         return None
-
-
-def _save_cache(ticker: str, df: pd.DataFrame) -> None:
+    
     try:
-        path = _cache_path(ticker)
-        payload = df.copy()
-        payload["DATE"] = payload["DATE"].dt.strftime("%Y-%m-%d")
-        path.write_text(payload.to_json(orient="records", force_ascii=False, indent=2), encoding="utf-8")
-    except Exception as exc:  # pragma: no cover - caching should not break pipeline
-        print(f"[cache] Failed to save cache for {ticker}: {exc}")
-
-
-def polygon_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
-    api_key = os.getenv("POLYGON_API_KEY")
-    if not api_key:
-        raise ValueError("POLYGON_API_KEY is not set")
-    start_date = _range_to_start_date(range).strftime("%Y-%m-%d")
-    end_date = datetime.utcnow().strftime("%Y-%m-%d")
-    url = f"https://api.polygon.io/v2/aggs/ticker/{ticker.upper()}/range/1/day/{start_date}/{end_date}"
-    params = {"adjusted": "true", "limit": 50000, "sort": "asc", "apiKey": api_key}
-    resp = requests.get(url, headers=_headers(), params=params, timeout=30)
-    if resp.status_code == 429:
-        raise RuntimeError("Polygon rate limit reached (429)")
-    resp.raise_for_status()
-    data = resp.json()
-    results = data.get("results", []) if isinstance(data, dict) else []
-    if not results:
-        raise ValueError("Polygon returned no data")
-    records = []
-    for row in results:
-        records.append(
-            {
-                "DATE": datetime.utcfromtimestamp(row.get("t", 0) / 1000.0),
-                "OPEN": row.get("o"),
-                "HIGH": row.get("h"),
-                "LOW": row.get("l"),
-                "CLOSE": row.get("c"),
-                "VOLUME": row.get("v"),
-            }
-        )
-    df = pd.DataFrame(records)
-    return _validate_df(df)
-
-
-def alpha_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
-    api_key = os.getenv("ALPHAVANTAGE_API_KEY")
-    if not api_key:
-        raise ValueError("ALPHAVANTAGE_API_KEY is not set")
-    url = "https://www.alphavantage.co/query"
-    params = {
-        "function": "TIME_SERIES_DAILY_ADJUSTED",
-        "symbol": ticker,
-        "apikey": api_key,
-        "outputsize": "full",
-    }
-    resp = requests.get(url, headers=_headers(), params=params, timeout=30)
-    if resp.status_code == 429:
-        raise RuntimeError("AlphaVantage rate limit reached (429)")
-    resp.raise_for_status()
-    payload = resp.json()
-    if "Error Message" in payload:
-        raise ValueError(payload.get("Error Message"))
-    time_series = payload.get("Time Series (Daily)", {})
-    if not time_series:
-        raise ValueError("AlphaVantage returned no data")
-    df = pd.DataFrame.from_dict(time_series, orient="index")
-    df.reset_index(inplace=True)
-    df.rename(
-        columns={
-            "index": "DATE",
-            "1. open": "OPEN",
-            "2. high": "HIGH",
-            "3. low": "LOW",
-            "4. close": "CLOSE",
-            "6. volume": "VOLUME",
-        },
-        inplace=True,
-    )
-    df = df[REQUIRED_COLUMNS]
-    df["OPEN"] = pd.to_numeric(df["OPEN"], errors="coerce")
-    df["HIGH"] = pd.to_numeric(df["HIGH"], errors="coerce")
-    df["LOW"] = pd.to_numeric(df["LOW"], errors="coerce")
-    df["CLOSE"] = pd.to_numeric(df["CLOSE"], errors="coerce")
-    df["VOLUME"] = pd.to_numeric(df["VOLUME"], errors="coerce")
-    start_cutoff = _range_to_start_date(range)
-    df = df[df["DATE"] >= start_cutoff.strftime("%Y-%m-%d")]
-    return _validate_df(df)
-
-
-def tiingo_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
-    api_key = os.getenv("TIINGO_API_KEY")
-    if not api_key:
-        raise ValueError("TIINGO_API_KEY is not set")
-    start_date = _range_to_start_date(range).strftime("%Y-%m-%d")
-    end_date = datetime.utcnow().strftime("%Y-%m-%d")
-    url = f"https://api.tiingo.com/tiingo/daily/{ticker.lower()}/prices"
-    params = {
-        "startDate": start_date,
-        "endDate": end_date,
-        "resampleFreq": "daily",
-        "format": "json",
-        "token": api_key,
-    }
-    resp = requests.get(url, headers=_headers(), params=params, timeout=30)
-    if resp.status_code == 429:
-        raise RuntimeError("Tiingo rate limit reached (429)")
-    resp.raise_for_status()
-    data = resp.json()
-    if not isinstance(data, list) or not data:
-        raise ValueError("Tiingo returned no data")
-    records = []
-    for row in data:
-        records.append(
-            {
-                "DATE": row.get("date"),
-                "OPEN": row.get("open"),
-                "HIGH": row.get("high"),
-                "LOW": row.get("low"),
-                "CLOSE": row.get("close"),
-                "VOLUME": row.get("volume"),
-            }
-        )
-    df = pd.DataFrame(records)
-    return _validate_df(df)
-
-
-def _attempt_fetchers(
-    fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range: str
-) -> Optional[pd.DataFrame]:
-    for fetcher in fetchers:
-        try:
-            print(f"[fetch] Attempting {fetcher.__name__} for {ticker}")
-            df = fetcher(ticker, range)
-            return df
-        except Exception as exc:
-            print(f"[fetch:{fetcher.__name__}] {ticker} failed: {exc}")
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=days)
+        
+        url = f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/day/{start_date}/{end_date}"
+        params = {"apikey": POLYGON_API_KEY, "limit": 50000, "sort": "asc"}
+        
+        print(f"  [POLYGON] Fetching {ticker}...")
+        response = requests.get(url, params=params, timeout=FETCH_TIMEOUT)
+        response.raise_for_status()
+        data = response.json()
+        
+        if data.get('status') != 'OK' or 'results' not in data:
+            log_fetch_event(ticker, "POLYGON", "FAIL", f"Status: {data.get('status')}")
+            return None
+        
+        results = data['results']
+        if not results:
+            log_fetch_event(ticker, "POLYGON", "EMPTY", "No data")
+            return None
+        
+        records = []
+        for bar in results:
+            try:
+                records.append({
+                    'Date': pd.to_datetime(bar['t'], unit='ms'),
+                    'Open': float(bar.get('o', 0)),
+                    'High': float(bar.get('h', 0)),
+                    'Low': float(bar.get('l', 0)),
+                    'Close': float(bar.get('c', 0)),
+                    'Volume': float(bar.get('v', 0))
+                })
+            except:
+                continue
+        
+        if not records:
+            log_fetch_event(ticker, "POLYGON", "PARSE_FAIL", "No valid records")
+            return None
+        
+        df = pd.DataFrame(records).sort_values('Date').reset_index(drop=True)
+        log_fetch_event(ticker, "POLYGON", "SUCCESS", f"{len(df)} rows")
+        return df
+    
+    except requests.exceptions.Timeout:
+        log_fetch_event(ticker, "POLYGON", "TIMEOUT", f"{FETCH_TIMEOUT}s")
+    except requests.exceptions.RequestException as e:
+        log_fetch_event(ticker, "POLYGON", "NETWORK", str(e)[:40])
+    except Exception as e:
+        log_fetch_event(ticker, "POLYGON", "ERROR", str(e)[:40])
+    
     return None
 
 
-def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -> pd.DataFrame:
-    ticker = ticker.upper()
-    cached = _load_cache(ticker)
-    if cached is not None:
-        print(f"[cache] Using cached prices for {ticker}")
-        return cached
+def fetch_alpha_vantage(ticker, days=180):
+    """Fetch from Alpha Vantage API"""
+    if not ALPHA_VANTAGE_KEY or len(ALPHA_VANTAGE_KEY) < 10:
+        log_fetch_event(ticker, "ALPHA_VANTAGE", "SKIP", "No API key")
+        return None
+    
+    try:
+        url = "https://www.alphavantage.co/query"
+        params = {
+            "function": "TIME_SERIES_DAILY",
+            "symbol": ticker,
+            "apikey": ALPHA_VANTAGE_KEY,
+            "outputsize": "full"
+        }
+        
+        print(f"  [ALPHA_VANTAGE] Fetching {ticker}...")
+        response = requests.get(url, params=params, timeout=FETCH_TIMEOUT)
+        response.raise_for_status()
+        data = response.json()
+        
+        if "Note" in data or "Error Message" in data:
+            log_fetch_event(ticker, "ALPHA_VANTAGE", "API_ERR", data.get("Note", data.get("Error Message"))[:40])
+            return None
+        
+        if "Time Series (Daily)" not in data:
+            log_fetch_event(ticker, "ALPHA_VANTAGE", "FAIL", "No Time Series")
+            return None
+        
+        time_series = data["Time Series (Daily)"]
+        records = []
+        
+        for date_str, values in time_series.items():
+            try:
+                records.append({
+                    'Date': pd.to_datetime(date_str),
+                    'Open': float(values.get('1. open', 0)),
+                    'High': float(values.get('2. high', 0)),
+                    'Low': float(values.get('3. low', 0)),
+                    'Close': float(values.get('4. close', 0)),
+                    'Volume': float(values.get('5. volume', 0))
+                })
+            except:
+                continue
+        
+        if not records:
+            log_fetch_event(ticker, "ALPHA_VANTAGE", "PARSE_FAIL", "No valid records")
+            return None
+        
+        df = pd.DataFrame(records).sort_values('Date').tail(days).reset_index(drop=True)
+        log_fetch_event(ticker, "ALPHA_VANTAGE", "SUCCESS", f"{len(df)} rows")
+        return df
+    
+    except Exception as e:
+        log_fetch_event(ticker, "ALPHA_VANTAGE", "ERROR", str(e)[:40])
+    
+    return None
 
-    fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch]
-    for attempt in range(max_attempts):
-        print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker}")
-        df = _attempt_fetchers(fetchers, ticker, range)
-        if df is not None:
-            df = _validate_df(df)
-            _save_cache(ticker, df)
+
+def fetch_tiingo(ticker, days=180):
+    """Fetch from Tiingo API"""
+    if not TIINGO_API_KEY or len(TIINGO_API_KEY) < 10:
+        log_fetch_event(ticker, "TIINGO", "SKIP", "No API key")
+        return None
+    
+    try:
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=days)
+        
+        url = f"https://api.tiingo.com/tiingo/daily/{ticker}/prices"
+        params = {
+            "startDate": start_date.isoformat(),
+            "endDate": end_date.isoformat(),
+            "token": TIINGO_API_KEY
+        }
+        
+        print(f"  [TIINGO] Fetching {ticker}...")
+        response = requests.get(url, params=params, timeout=FETCH_TIMEOUT)
+        response.raise_for_status()
+        data = response.json()
+        
+        if not data:
+            log_fetch_event(ticker, "TIINGO", "EMPTY", "No data")
+            return None
+        
+        records = []
+        for item in data:
+            try:
+                records.append({
+                    'Date': pd.to_datetime(item['date']),
+                    'Open': float(item.get('open', 0)),
+                    'High': float(item.get('high', 0)),
+                    'Low': float(item.get('low', 0)),
+                    'Close': float(item.get('close', 0)),
+                    'Volume': float(item.get('volume', 0))
+                })
+            except:
+                continue
+        
+        if not records:
+            log_fetch_event(ticker, "TIINGO", "PARSE_FAIL", "No valid records")
+            return None
+        
+        df = pd.DataFrame(records).sort_values('Date').reset_index(drop=True)
+        log_fetch_event(ticker, "TIINGO", "SUCCESS", f"{len(df)} rows")
+        return df
+    
+    except Exception as e:
+        log_fetch_event(ticker, "TIINGO", "ERROR", str(e)[:40])
+    
+    return None
+
+
+def fetch_yfinance(ticker, days=180):
+    """Fetch from yfinance (free, no auth needed)"""
+    try:
+        print(f"  [YFINANCE] Fetching {ticker}...")
+        
+        df = yf.download(ticker, period=f"{days}d", progress=False, auto_adjust=False)
+        
+        if df is None or df.empty:
+            log_fetch_event(ticker, "YFINANCE", "EMPTY", "No data")
+            return None
+        
+        df = df.reset_index()
+        df.columns = [col.lower() for col in df.columns]
+        
+        # Standardize column names
+        if 'date' not in df.columns and 'datetime' in df.columns:
+            df.rename(columns={'datetime': 'date'}, inplace=True)
+        
+        required_cols = ['date', 'open', 'high', 'low', 'close', 'volume']
+        if not all(col in df.columns for col in required_cols):
+            log_fetch_event(ticker, "YFINANCE", "COLUMNS", f"Missing: {set(required_cols) - set(df.columns)}")
+            return None
+        
+        df = df[['date', 'open', 'high', 'low', 'close', 'volume']].copy()
+        df.columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+        df['Date'] = pd.to_datetime(df['Date'])
+        df = df.sort_values('Date').reset_index(drop=True)
+        
+        log_fetch_event(ticker, "YFINANCE", "SUCCESS", f"{len(df)} rows")
+        return df
+    
+    except Exception as e:
+        log_fetch_event(ticker, "YFINANCE", "ERROR", str(e)[:40])
+    
+    return None
+
+
+def safe_price_download(ticker, days=180):
+    """
+    Main fetcher: Try multiple sources with fallback
+    Priority: Cache > Polygon > AlphaVantage > Tiingo > yfinance
+    """
+    print(f"\n{'='*60}")
+    print(f"Fetching {ticker}...")
+    print(f"{'='*60}")
+    
+    # Step 1: Try cache first
+    cached_df = get_cached_data(ticker)
+    if cached_df is not None and not cached_df.empty and len(cached_df) >= 20:
+        return cached_df
+    
+    # Step 2: Try APIs in order
+    fetchers = [
+        ("Polygon.io", fetch_polygon_io),
+        ("Alpha Vantage", fetch_alpha_vantage),
+        ("Tiingo", fetch_tiingo),
+        ("yfinance", fetch_yfinance)
+    ]
+    
+    for name, fetcher in fetchers:
+        df = fetcher(ticker, days)
+        if df is not None and not df.empty and len(df) >= 20:
+            save_to_cache(ticker, df)
             return df
-        sleep_time = min(60, 2 ** attempt)
-        print(f"[download] Retry in {sleep_time}s for {ticker}")
-        time.sleep(sleep_time)
-
-    raise RuntimeError(f"Failed to download price data for {ticker} after {max_attempts} attempts")
-
-
-__all__ = [
-    "safe_price_download",
-    "polygon_fetch",
-    "alpha_fetch",
-    "tiingo_fetch",
-]
+        time.sleep(1)  # Rate limiting
+    
+    # Step 3: Return cache even if old (better than nothing)
+    log_fetch_event(ticker, "FALLBACK", "USING_CACHE", "All APIs failed")
+    return cached_df  # May be None
