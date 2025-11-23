@@ -6,6 +6,7 @@ Runs: Data fetch → Feature engineering → Model training → Prediction → O
 import os
 import sys
 import json
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 
@@ -36,7 +37,7 @@ def main():
     training_results = []
     
     # ===== Phase 1: Fetch & Train =====
-    print("\n[PHASE 1] Data Fetch & Model Training")
+    print("\n[PHASE 1] Data Fetch & Model Training (Online Learning)")
     print("-" * 70)
     
     for ticker in TICKERS:
@@ -87,7 +88,10 @@ def main():
                 "ticker": ticker,
                 "status": "OK",
                 "accuracy": model_info.get('accuracy'),
-                "train_samples": model_info.get('train_samples')
+                "previous_accuracy": model_info.get('previous_accuracy', 0),
+                "improvement": model_info.get('accuracy_improvement', 0),
+                "train_samples": model_info.get('train_samples'),
+                "learning_type": model_info.get('learning_type', 'UNKNOWN')
             })
         
         except Exception as e:
@@ -171,6 +175,13 @@ def main():
     print(f"Predictions generated: {len(all_predictions)}/{len(TICKERS)}")
     print(f"Models trained: {metrics['total_trained']}")
     print(f"Failed: {metrics['total_failed']}")
+    
+    # Calculate average improvement
+    improvements = [r.get('improvement', 0) for r in training_results if r.get('status') == 'OK']
+    if improvements:
+        avg_improvement = np.mean(improvements)
+        print(f"Average accuracy improvement: {avg_improvement:+.4f}")
+    
     print(f"Logs: {LOGS_DIR}/fetch_log_*.txt")
     print("="*70)
     print(f"End: {datetime.now().isoformat()}")
