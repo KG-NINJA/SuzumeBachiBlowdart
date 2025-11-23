@@ -1,17 +1,26 @@
 name: Daily Training & Prediction
 
 on:
+  # スケジュール実行（毎営業日）
   schedule:
-    - cron: '0 8 * * 1-5'  # 08:00 JST (weekdays)
-    - cron: '0 17 * * 1-5'  # 17:00 JST (weekdays)
+    - cron: '0 8 * * 1-5'   # 08:00 JST (UTC-9, so 23:00 UTC previous day)
+    - cron: '0 17 * * 1-5'  # 17:00 JST (UTC-9, so 08:00 UTC)
+  
+  # 手動実行用
   workflow_dispatch:
+  
+  # コミット時
+  push:
+    branches: [ main ]
 
 jobs:
   predict:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -30,35 +39,19 @@ jobs:
         ALPHA_VANTAGE_KEY: ${{ secrets.ALPHA_VANTAGE_KEY }}
         TIINGO_API_KEY: ${{ secrets.TIINGO_API_KEY }}
     
-    - name: Commit & push
+    - name: Commit & Push results
       run: |
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
+        git config --local user.email "actions@github.com"
+        git config --local user.name "github-actions[bot]"
         git add -A
-        git commit -m "Auto: predictions $(date)" || true
+        git commit -m "Auto: Daily predictions $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
         git push
-```
-
----
-
-## 成功確認チェックリスト
-
-✅ 実行後に以下が生成されるはず：
-```
-logs/fetch_log_20251123.txt
-  ✓ ティッカーごとの取得ログ
-
-data/cache/*.csv
-  ✓ キャッシュファイル
-
-models/*.json
-  ✓ 訓練済みモデル
-
-daily_predictions/latest_predictions.json
-  ✓ 予測結果
-
-analytics/training_metrics.json
-  ✓ 学習指標
-
-docs/data/latest_predictions.json
-  ✓ ダッシュボード用データ
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: execution-logs
+        path: logs/
