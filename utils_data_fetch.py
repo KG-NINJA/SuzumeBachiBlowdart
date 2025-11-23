@@ -15,8 +15,8 @@ import pandas as pd
 import requests
 
 REQUEST_UA = os.getenv("REQUEST_UA", "Mozilla/5.0 (Codex GitHub Runner)")
-DATA_CACHE_DIR = Path("data_cache")
-DATA_CACHE_DIR.mkdir(exist_ok=True)
+DATA_CACHE_DIR = Path("data/cache")
+DATA_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 REQUIRED_COLUMNS = ["DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME"]
 
@@ -205,6 +205,7 @@ def _attempt_fetchers(
 ) -> Optional[pd.DataFrame]:
     for fetcher in fetchers:
         try:
+            print(f"[fetch] Attempting {fetcher.__name__} for {ticker}")
             df = fetcher(ticker, range)
             return df
         except Exception as exc:
@@ -216,9 +217,10 @@ def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -
     ticker = ticker.upper()
     cached = _load_cache(ticker)
     if cached is not None:
+        print(f"[cache] Using cached prices for {ticker}")
         return cached
 
-    fetchers = [polygon_fetch, alpha_fetch, tiingo_fetch]
+    fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch]
     for attempt in range(max_attempts):
         print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker}")
         df = _attempt_fetchers(fetchers, ticker, range)

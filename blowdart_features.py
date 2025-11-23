@@ -20,7 +20,8 @@ LOG_DIR = Path("logs")
 def ensure_directories() -> None:
     """Create required data directories."""
     DATA_DIR.mkdir(exist_ok=True)
-    (DATA_DIR / "cache").mkdir(exist_ok=True)
+    (DATA_DIR / "cache").mkdir(parents=True, exist_ok=True)
+    LOG_DIR.mkdir(exist_ok=True)
 
 
 def _latest_file(pattern: str, directory: Path) -> Optional[Path]:
@@ -79,8 +80,8 @@ def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
 
 def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:
     for window in windows:
-        df[f"{column}_MA_{window}"] = df[column].rolling(window).mean()
-        df[f"{column}_STD_{window}"] = df[column].rolling(window).std()
+        df[f"{column}_MA_{window}"] = df[column].rolling(window, min_periods=1).mean()
+        df[f"{column}_STD_{window}"] = df[column].rolling(window, min_periods=1).std()
 
 
 def _momentum_features(df: pd.DataFrame) -> None:
@@ -145,7 +146,11 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
     df["PRICE_TO_MA20"] = df["CLOSE"] / df["CLOSE_MA_20"]
     df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
     df["TARGET"] = (df["CLOSE"].shift(-1) > df["CLOSE"]).astype(int)
-    df.dropna(inplace=True)
+
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df.fillna(method="bfill", inplace=True)
+    df.fillna(method="ffill", inplace=True)
+    df.fillna(0, inplace=True)
 
     return df
 
@@ -154,8 +159,15 @@ def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, Li
     """Download data, engineer features, and return dataframe with feature columns."""
     price_df = download_price_history(ticker, period=period)
     enriched = engineer_features(price_df)
+
     if enriched.empty:
-        return enriched, []
+        cv_features = load_cv_runner_features()
+        fallback = price_df.copy()
+        add_cv_runner_columns(fallback, cv_features)
+        fallback["RETURN_1D"] = fallback["CLOSE"].pct_change().fillna(0)
+        fallback["TARGET"] = (fallback["CLOSE"].shift(-1) > fallback["CLOSE"]).astype(int)
+        fallback.fillna(0, inplace=True)
+        enriched = fallback
 
     feature_cols = [
         col
@@ -170,6 +182,10 @@ def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, Li
             "LOW",
         }
     ]
+
+    for required in ["CV_CONFIDENCE", "CV_SIGNAL_STRENGTH"]:
+        if required not in feature_cols and required in enriched.columns:
+            feature_cols.append(required)
     return enriched, feature_cols
 
 
