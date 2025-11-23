@@ -1,198 +1,147 @@
 """
-Feature engineering utilities for the Blowdart ML engine.
-Relies on a resilient, API-based price fetcher and integrates CV runner signals.
+blowdart_features.py - Feature engineering for SuzumeBachiBlowdart
+Calculates: RSI, MACD, Bollinger Bands, Moving Averages, etc.
 """
-from __future__ import annotations
 
-import json
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-
-import numpy as np
 import pandas as pd
-
-from utils_data_fetch import safe_price_download
-
-DATA_DIR = Path("data")
-LOG_DIR = Path("logs")
+import numpy as np
 
 
-def ensure_directories() -> None:
-    """Create required data directories."""
-    DATA_DIR.mkdir(exist_ok=True)
-    (DATA_DIR / "cache").mkdir(parents=True, exist_ok=True)
-    LOG_DIR.mkdir(exist_ok=True)
+def calculate_rsi(prices, period=14):
+    """Calculate Relative Strength Index"""
+    delta = prices.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
 
 
-def _latest_file(pattern: str, directory: Path) -> Optional[Path]:
-    files = sorted(directory.glob(pattern), key=lambda p: p.stat().st_mtime, reverse=True)
-    return files[0] if files else None
-
-
-def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
-    """Load confidence and signal_strength from the latest CV runner output.
-
-    Returns defaults when files are unavailable to keep the pipeline robust.
-    """
-    defaults = {"cv_confidence": 0.5, "signal_strength": 0.5}
-    if not log_dir.exists():
-        return defaults
-
-    latest = _latest_file("cv_run_*.json", log_dir)
-    if not latest:
-        return defaults
-
-    try:
-        with latest.open("r", encoding="utf-8") as handle:
-            payload = json.load(handle)
-    except Exception:
-        return defaults
-
-    confidence = payload.get("cv_average") or payload.get("confidence")
-    signal_strength = payload.get("signal_strength") or payload.get("signal_strength_pct")
-
-    def _normalize(value: Optional[float]) -> float:
-        if value is None:
-            return 0.5
-        try:
-            val = float(value)
-        except Exception:
-            return 0.5
-        # most cv values are 0-100; scale to 0-1
-        return max(0.0, min(1.0, val / 100.0)) if val > 1 else max(0.0, min(1.0, val))
-
-    return {
-        "cv_confidence": _normalize(confidence),
-        "signal_strength": _normalize(signal_strength),
-    }
-
-
-def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
-    """Download price history and standardize columns."""
-    ensure_directories()
-    price_df = safe_price_download(ticker, range=period)
-    # ensure standard columns and ordering
-    price_df = price_df.reset_index(drop=True)
-    price_df.sort_values("DATE", inplace=True)
-    price_df.reset_index(drop=True, inplace=True)
-    return price_df
-
-
-def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:
-    for window in windows:
-        df[f"{column}_MA_{window}"] = df[column].rolling(window, min_periods=1).mean()
-        df[f"{column}_STD_{window}"] = df[column].rolling(window, min_periods=1).std()
-
-
-def _momentum_features(df: pd.DataFrame) -> None:
-    df["RETURN_1D"] = df["CLOSE"].pct_change()
-    df["RETURN_3D"] = df["CLOSE"].pct_change(3)
-    df["RETURN_7D"] = df["CLOSE"].pct_change(7)
-    df["LOG_RETURN"] = np.log(df["CLOSE"] / df["CLOSE"].shift(1))
-
-
-def _volatility_features(df: pd.DataFrame) -> None:
-    df["VOLATILITY_5"] = df["RETURN_1D"].rolling(5).std()
-    df["VOLATILITY_10"] = df["RETURN_1D"].rolling(10).std()
-    df["HIGH_LOW_SPREAD"] = (df["HIGH"] - df["LOW"]) / df["CLOSE"]
-    df["INTRADAY_RANGE"] = (df["CLOSE"] - df["OPEN"]) / df["OPEN"]
-
-
-def _momentum_indicators(df: pd.DataFrame) -> None:
-    delta = df["CLOSE"].diff()
-    up = delta.clip(lower=0)
-    down = -1 * delta.clip(upper=0)
-    roll_up = up.rolling(14).mean()
-    roll_down = down.rolling(14).mean()
-    rs = roll_up / roll_down
-    df["RSI14"] = 100.0 - (100.0 / (1.0 + rs))
-
-    ema_fast = df["CLOSE"].ewm(span=12, adjust=False).mean()
-    ema_slow = df["CLOSE"].ewm(span=26, adjust=False).mean()
+def calculate_macd(prices, fast=12, slow=26, signal=9):
+    """Calculate MACD"""
+    ema_fast = prices.ewm(span=fast).mean()
+    ema_slow = prices.ewm(span=slow).mean()
     macd = ema_fast - ema_slow
-    signal = macd.ewm(span=9, adjust=False).mean()
-    df["MACD"] = macd
-    df["MACD_SIGNAL"] = signal
-    df["MACD_HIST"] = macd - signal
-
-    rolling_mean = df["CLOSE"].rolling(window=20).mean()
-    rolling_std = df["CLOSE"].rolling(window=20).std()
-    df["BB_UPPER"] = rolling_mean + (rolling_std * 2)
-    df["BB_LOWER"] = rolling_mean - (rolling_std * 2)
-    df["BB_WIDTH"] = df["BB_UPPER"] - df["BB_LOWER"]
+    macd_signal = macd.ewm(span=signal).mean()
+    macd_hist = macd - macd_signal
+    return macd, macd_signal, macd_hist
 
 
-def add_cv_runner_columns(df: pd.DataFrame, cv_features: Dict[str, float]) -> None:
-    df["CV_CONFIDENCE"] = cv_features.get("cv_confidence", 0.5)
-    df["CV_SIGNAL_STRENGTH"] = cv_features.get("signal_strength", 0.5)
+def calculate_bollinger_bands(prices, period=20, num_std=2):
+    """Calculate Bollinger Bands"""
+    sma = prices.rolling(period).mean()
+    std = prices.rolling(period).std()
+    upper = sma + (std * num_std)
+    lower = sma - (std * num_std)
+    return upper, sma, lower
 
 
-def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] = None) -> pd.DataFrame:
-    """Compute a rich set of features plus the binary target."""
-    if df.empty:
+def build_feature_set(price_data, ticker):
+    """
+    Build comprehensive feature set from price data
+    
+    Args:
+        price_data: DataFrame with OHLCV data
+        ticker: Stock symbol (for logging)
+    
+    Returns:
+        DataFrame: Features ready for ML, or None if failed
+    """
+    try:
+        if price_data is None or price_data.empty:
+            return None
+        
+        df = price_data.copy()
+        
+        # Standardize column names
+        df.columns = [col.lower().strip() for col in df.columns]
+        
+        # Ensure required columns
+        required = ['date', 'open', 'high', 'low', 'close', 'volume']
+        if not all(col in df.columns for col in required):
+            print(f"  [FEATURES] Missing columns: {set(required) - set(df.columns)}")
+            return None
+        
+        # Convert to numeric
+        for col in ['open', 'high', 'low', 'close', 'volume']:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+        
+        df = df.dropna()
+        
+        if len(df) < 30:
+            print(f"  [FEATURES] Insufficient data: {len(df)} rows")
+            return None
+        
+        # Sort by date
+        df = df.sort_values('date').reset_index(drop=True)
+        
+        close = df['close']
+        high = df['high']
+        low = df['low']
+        volume = df['volume']
+        
+        # ===== Technical Indicators =====
+        
+        # Moving Averages
+        df['ma5'] = close.rolling(5).mean()
+        df['ma10'] = close.rolling(10).mean()
+        df['ma20'] = close.rolling(20).mean()
+        df['ma50'] = close.rolling(50).mean()
+        
+        # Exponential Moving Average
+        df['ema12'] = close.ewm(span=12).mean()
+        df['ema26'] = close.ewm(span=26).mean()
+        
+        # RSI
+        df['rsi14'] = calculate_rsi(close, 14)
+        df['rsi7'] = calculate_rsi(close, 7)
+        
+        # MACD
+        df['macd'], df['macd_signal'], df['macd_hist'] = calculate_macd(close)
+        
+        # Bollinger Bands
+        df['bb_upper'], df['bb_middle'], df['bb_lower'] = calculate_bollinger_bands(close, 20)
+        df['bb_width'] = df['bb_upper'] - df['bb_lower']
+        df['bb_position'] = (close - df['bb_lower']) / (df['bb_upper'] - df['bb_lower'])
+        
+        # Returns & Volatility
+        df['return_1d'] = close.pct_change()
+        df['return_5d'] = close.pct_change(5)
+        df['volatility_5d'] = df['return_1d'].rolling(5).std()
+        df['volatility_20d'] = df['return_1d'].rolling(20).std()
+        
+        # Volume indicators
+        df['volume_ma20'] = volume.rolling(20).mean()
+        df['volume_ratio'] = volume / df['volume_ma20']
+        
+        # Price range
+        df['high_low_range'] = (high - low) / close
+        df['open_close_range'] = (close - df['open']) / df['open']
+        
+        # Trend indicators
+        df['ma5_ma20_ratio'] = df['ma5'] / df['ma20']
+        df['close_to_ma20'] = close / df['ma20']
+        df['price_to_bb_upper'] = close / df['bb_upper']
+        
+        # Drop rows with NaN (indicators need warmup period)
+        df = df.dropna()
+        
+        if len(df) < 20:
+            print(f"  [FEATURES] Insufficient valid features: {len(df)} rows after NaN drop")
+            return None
+        
+        # Rename columns to be consistent with ML engine
+        df = df.rename(columns={
+            'date': 'Date',
+            'open': 'Open',
+            'high': 'High',
+            'low': 'Low',
+            'close': 'Close',
+            'volume': 'Volume'
+        })
+        
         return df
-
-    cv_features = cv_features or load_cv_runner_features()
-
-    df = df.copy()
-    _rolling_feature(df, "CLOSE", [5, 10, 20, 50])
-    _rolling_feature(df, "VOLUME", [5, 20])
-    _momentum_features(df)
-    _volatility_features(df)
-    _momentum_indicators(df)
-    add_cv_runner_columns(df, cv_features)
-
-    df["PRICE_TO_MA5"] = df["CLOSE"] / df["CLOSE_MA_5"]
-    df["PRICE_TO_MA20"] = df["CLOSE"] / df["CLOSE_MA_20"]
-    df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
-    df["TARGET"] = (df["CLOSE"].shift(-1) > df["CLOSE"]).astype(int)
-
-    df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    df.fillna(method="bfill", inplace=True)
-    df.fillna(method="ffill", inplace=True)
-    df.fillna(0, inplace=True)
-
-    return df
-
-
-def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, List[str]]:
-    """Download data, engineer features, and return dataframe with feature columns."""
-    price_df = download_price_history(ticker, period=period)
-    enriched = engineer_features(price_df)
-
-    if enriched.empty:
-        cv_features = load_cv_runner_features()
-        fallback = price_df.copy()
-        add_cv_runner_columns(fallback, cv_features)
-        fallback["RETURN_1D"] = fallback["CLOSE"].pct_change().fillna(0)
-        fallback["TARGET"] = (fallback["CLOSE"].shift(-1) > fallback["CLOSE"]).astype(int)
-        fallback.fillna(0, inplace=True)
-        enriched = fallback
-
-    feature_cols = [
-        col
-        for col in enriched.columns
-        if col
-        not in {
-            "DATE",
-            "TARGET",
-            "CLOSE",
-            "OPEN",
-            "HIGH",
-            "LOW",
-        }
-    ]
-
-    for required in ["CV_CONFIDENCE", "CV_SIGNAL_STRENGTH"]:
-        if required not in feature_cols and required in enriched.columns:
-            feature_cols.append(required)
-    return enriched, feature_cols
-
-
-__all__ = [
-    "build_feature_set",
-    "engineer_features",
-    "download_price_history",
-    "load_cv_runner_features",
-    "ensure_directories",
-]
+    
+    except Exception as e:
+        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:60]}")
+        return None
