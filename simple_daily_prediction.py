@@ -12,7 +12,7 @@ from pathlib import Path
 # Import custom modules
 from utils_data_fetch import safe_price_download, LOGS_DIR
 from blowdart_features import build_feature_set
-from blowdart_ml_engine import train_ticker, predict_ticker
+from blowdart_ml_engine import train_ticker, predict_ticker, get_training_history
 
 # ===== Configuration =====
 TICKERS = ["NVDA", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "NFLX", "QQQ"]
