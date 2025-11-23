@@ -55,48 +55,45 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const path = require('path');
             
             try {
               const analysisResults = JSON.parse(fs.readFileSync('accuracy_analysis/analysis_results.json', 'utf8'));
               
-              // Extract key findings
               const accuracies = analysisResults.accuracy_by_ticker.sort((a, b) => b.accuracy - a.accuracy);
-              const highestAccuracy = accuracies[0];
-              const lowestAccuracy = accuracies[accuracies.length - 1];
+              const highest = accuracies[0];
+              const lowest = accuracies[accuracies.length - 1];
               
-              const topThree = accuracies.slice(0, 3).map((a, i) => 
-                `${i + 1}. **${a.ticker}**: ${(a.accuracy * 100).toFixed(2)}%`
-              ).join('\n');
+              const topThreeList = accuracies.slice(0, 3)
+                .map((a, i) => i + 1 + '. **' + a.ticker + '**: ' + (a.accuracy * 100).toFixed(2) + '%')
+                .join('\n');
               
-              const body = `## 🎯 Weekly Accuracy Analysis Report
-
-### Top Performers
-${topThree}
-
-### Needs Improvement
-- **${lowestAccuracy.ticker}**: ${(lowestAccuracy.accuracy * 100).toFixed(2)}% accuracy
-
-### Key Insights
-- Average Accuracy: ${(analysisResults.accuracy_by_ticker.reduce((a, b) => a + b.accuracy, 0) / analysisResults.accuracy_by_ticker.length * 100).toFixed(2)}%
-- Check \`accuracy_analysis/analysis_results.json\` for full details
-- See \`accuracy_analysis/REPORT.md\` for detailed recommendations
-
-### Why is ${highestAccuracy.ticker} so accurate?
-${highestAccuracy.ticker} is outperforming with ${(highestAccuracy.accuracy * 100).toFixed(2)}% accuracy. Key factors to replicate on other tickers:
-- Analyze feature importance in GOOGL model
-- Check for unique characteristics in price patterns
-- Consider ticker-specific hyperparameter tuning
-
----
-Generated: ${new Date().toISOString()}
-              `;
+              const avgAcc = (analysisResults.accuracy_by_ticker.reduce((a, b) => a + b.accuracy, 0) / analysisResults.accuracy_by_ticker.length * 100).toFixed(2);
+              
+              const issueTitle = '📊 Accuracy Analysis - ' + new Date().toISOString().split('T')[0];
+              
+              const issueBody = '## 🎯 Weekly Accuracy Analysis Report\n\n' +
+                '### Top Performers\n' +
+                topThreeList + '\n\n' +
+                '### Needs Improvement\n' +
+                '- **' + lowest.ticker + '**: ' + (lowest.accuracy * 100).toFixed(2) + '% accuracy\n\n' +
+                '### Key Insights\n' +
+                '- Average Accuracy: ' + avgAcc + '%\n' +
+                '- Check `accuracy_analysis/analysis_results.json` for full details\n' +
+                '- See `accuracy_analysis/REPORT.md` for detailed recommendations\n\n' +
+                '### Why is ' + highest.ticker + ' so accurate?\n' +
+                highest.ticker + ' is outperforming with ' + (highest.accuracy * 100).toFixed(2) + '% accuracy.\n\n' +
+                '**Key factors to replicate on other tickers:**\n' +
+                '- Analyze feature importance in ' + highest.ticker + ' model\n' +
+                '- Check for unique characteristics in price patterns\n' +
+                '- Consider ticker-specific hyperparameter tuning\n\n' +
+                '---\n' +
+                'Generated: ' + new Date().toISOString();
               
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: \`📊 Accuracy Analysis - \${new Date().toISOString().split('T')[0]}\`,
-                body: body,
+                title: issueTitle,
+                body: issueBody,
                 labels: ['analytics', 'model-performance']
               });
               
