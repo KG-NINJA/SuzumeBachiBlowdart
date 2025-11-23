@@ -90,24 +90,36 @@ def generate_report():
     lowest = df_accuracy.iloc[-1]
     avg_acc = df_accuracy['accuracy'].mean()
     
+    # Convert DataFrame to dict with proper type conversion
+    accuracy_records = []
+    for _, row in df_accuracy.iterrows():
+        accuracy_records.append({
+            "ticker": str(row['ticker']),
+            "accuracy": float(row['accuracy']),
+            "previous_accuracy": float(row['previous_accuracy']),
+            "improvement": float(row['improvement']),
+            "samples": int(row['samples']),
+            "features": int(row['features'])
+        })
+    
     # Create analysis JSON
     analysis_results = {
         "timestamp": datetime.now().isoformat(),
-        "accuracy_by_ticker": df_accuracy.to_dict(orient='records'),
+        "accuracy_by_ticker": accuracy_records,
         "top_performer": {
-            "ticker": highest['ticker'],
+            "ticker": str(highest['ticker']),
             "accuracy": float(highest['accuracy']),
             "improvement": float(highest['improvement'])
         },
         "needs_work": {
-            "ticker": lowest['ticker'],
+            "ticker": str(lowest['ticker']),
             "accuracy": float(lowest['accuracy']),
             "improvement": float(lowest['improvement'])
         },
         "statistics": {
             "average_accuracy": float(avg_acc),
-            "total_models": len(df_accuracy),
-            "improvement_count": len(df_accuracy[df_accuracy['improvement'] > 0])
+            "total_models": int(len(df_accuracy)),
+            "improvement_count": int(len(df_accuracy[df_accuracy['improvement'] > 0]))
         },
         "predictions": pred_stats
     }
@@ -115,7 +127,7 @@ def generate_report():
     # Save JSON
     json_file = f"{ANALYSIS_DIR}/analysis_results.json"
     with open(json_file, 'w') as f:
-        json.dump(analysis_results, f, indent=2)
+        json.dump(analysis_results, f, indent=2, default=str)
     print(f"[✓] Saved: {json_file}")
     
     # Generate Markdown report
