@@ -43,9 +43,10 @@ class BlowdartMLEngine:
         self.analytics_dir = Path(analytics_dir)
         self.predictions_dir = Path(predictions_dir)
         self.docs_data_dir = Path("docs/data")
+        self.log_dir = Path("logs")
         self.tickers = tickers or TICKERS
 
-        for path in [self.data_dir, self.model_dir, self.analytics_dir, self.predictions_dir, self.docs_data_dir]:
+        for path in [self.data_dir, self.model_dir, self.analytics_dir, self.predictions_dir, self.docs_data_dir, self.log_dir]:
             path.mkdir(exist_ok=True)
 
         ensure_directories()
@@ -83,9 +84,35 @@ class BlowdartMLEngine:
         with self._model_meta_path(ticker).open("r", encoding="utf-8") as handle:
             return json.load(handle)
 
+    def _log_fetch_error(self, ticker: str, stage: str, error: str) -> None:
+        self.log_dir.mkdir(exist_ok=True)
+        date_str = datetime.utcnow().strftime("%Y-%m-%d")
+        target = self.log_dir / f"fetch_errors_{date_str}.json"
+        entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "ticker": ticker,
+            "stage": stage,
+            "error": error,
+        }
+
+        existing: List[Dict] = []
+        if target.exists():
+            try:
+                existing = json.loads(target.read_text(encoding="utf-8"))
+            except Exception:
+                existing = []
+        existing.append(entry)
+        target.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+
     def _train_single(self, ticker: str) -> Optional[Dict]:
-        dataset, feature_cols = build_feature_set(ticker)
+        try:
+            dataset, feature_cols = build_feature_set(ticker)
+        except Exception as exc:
+            self._log_fetch_error(ticker, "train", str(exc))
+            return None
+
         if dataset.empty or not feature_cols:
+            self._log_fetch_error(ticker, "train", "empty dataset or missing features")
             return None
 
         # chronological split: last 20% for validation
@@ -195,10 +222,16 @@ class BlowdartMLEngine:
     def _predict_single(self, ticker: str) -> Optional[Dict]:
         meta = self._load_meta(ticker)
         feature_cols = meta.get("features") or []
-        dataset, built_feature_cols = build_feature_set(ticker)
+        try:
+            dataset, built_feature_cols = build_feature_set(ticker)
+        except Exception as exc:
+            self._log_fetch_error(ticker, "predict", str(exc))
+            return None
+
         if not feature_cols:
             feature_cols = built_feature_cols
         if dataset.empty or not feature_cols:
+            self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
             return None
 
         model = self._load_model(ticker)

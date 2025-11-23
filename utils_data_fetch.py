@@ -200,7 +200,9 @@ def tiingo_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
     return _validate_df(df)
 
 
-def _attempt_fetchers(fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range: str) -> Optional[pd.DataFrame]:
+def _attempt_fetchers(
+    fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range: str
+) -> Optional[pd.DataFrame]:
     for fetcher in fetchers:
         try:
             df = fetcher(ticker, range)
@@ -224,7 +226,7 @@ def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -
             df = _validate_df(df)
             _save_cache(ticker, df)
             return df
-        sleep_time = attempt + 1
+        sleep_time = min(60, 2 ** attempt)
         print(f"[download] Retry in {sleep_time}s for {ticker}")
         time.sleep(sleep_time)
 

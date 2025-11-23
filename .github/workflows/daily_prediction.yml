@@ -15,7 +15,7 @@ jobs:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
       ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
       TIINGO_API_KEY: ${{ secrets.TIINGO_API_KEY }}
-      REQUEST_UA: "Mozilla/5.0 (Codex GitHub Runner)"
+      REQUEST_UA: "Mozilla/5.0 (Codex-GitHubRunner)"
 
     steps:
     - uses: actions/checkout@v3
