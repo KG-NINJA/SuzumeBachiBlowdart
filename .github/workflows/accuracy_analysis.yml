@@ -27,11 +27,8 @@ jobs:
       - name: Run daily prediction (generate models)
         run: python simple_daily_prediction.py
 
-      - name: Run accuracy analysis
-        run: python accuracy_analysis.py
-
       - name: Generate analysis report
-        run: python generate_analysis_report.py
+        run: python analyze_and_report.py
 
       - name: Upload analysis results
         uses: actions/upload-artifact@v4
