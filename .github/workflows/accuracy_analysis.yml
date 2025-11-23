@@ -1,41 +1,38 @@
-# .github/workflows/accuracy_analysis.yml
-# GitHub Actionsで精度分析を実行し、リポジトリに結果を保存
-
 name: Accuracy Analysis - GOOGL vs Others
 
 on:
   schedule:
     # 毎週日曜日の0時に実行（精度分析）
     - cron: '0 0 * * 0'
-  workflow_dispatch:  # 手動トリガー
+  workflow_dispatch:
 
 jobs:
   accuracy-analysis:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pandas numpy xgboost scikit-learn matplotlib seaborn scipy yfinance
-      
+
       - name: Run daily prediction (generate models)
         run: python simple_daily_prediction.py
-      
+
       - name: Run accuracy analysis
         run: python accuracy_analysis.py
-      
+
       - name: Generate analysis report
         run: python generate_analysis_report.py
-      
+
       - name: Upload analysis results
         uses: actions/upload-artifact@v3
         with:
@@ -43,7 +40,7 @@ jobs:
           path: |
             accuracy_analysis/
             analytics/
-      
+
       - name: Commit analysis results to repo
         run: |
           git config user.name "Blowdart Bot"
@@ -51,45 +48,59 @@ jobs:
           git add -A accuracy_analysis/ analytics/
           git commit -m "📊 Accuracy analysis - $(date +%Y-%m-%d)" || true
           git push
-      
+
       - name: Create GitHub Issue with findings
         if: always()
         uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
-            const analysisResults = JSON.parse(fs.readFileSync('accuracy_analysis/analysis_results.json', 'utf8'));
+            const path = require('path');
             
-            // Extract key findings
-            const accuracies = analysisResults.accuracy_by_ticker.sort((a, b) => b.accuracy - a.accuracy);
-            const highestAccuracy = accuracies[0];
-            const lowestAccuracy = accuracies[accuracies.length - 1];
-            
-            const body = `
-## 🎯 Weekly Accuracy Analysis Report
+            try {
+              const analysisResults = JSON.parse(fs.readFileSync('accuracy_analysis/analysis_results.json', 'utf8'));
+              
+              // Extract key findings
+              const accuracies = analysisResults.accuracy_by_ticker.sort((a, b) => b.accuracy - a.accuracy);
+              const highestAccuracy = accuracies[0];
+              const lowestAccuracy = accuracies[accuracies.length - 1];
+              
+              const topThree = accuracies.slice(0, 3).map((a, i) => 
+                `${i + 1}. **${a.ticker}**: ${(a.accuracy * 100).toFixed(2)}%`
+              ).join('\n');
+              
+              const body = `## 🎯 Weekly Accuracy Analysis Report
 
 ### Top Performers
-- **${highestAccuracy.ticker}**: ${(highestAccuracy.accuracy * 100).toFixed(2)}% accuracy
-- **${accuracies[1].ticker}**: ${(accuracies[1].accuracy * 100).toFixed(2)}% accuracy
-- **${accuracies[2].ticker}**: ${(accuracies[2].accuracy * 100).toFixed(2)}% accuracy
+${topThree}
 
 ### Needs Improvement
 - **${lowestAccuracy.ticker}**: ${(lowestAccuracy.accuracy * 100).toFixed(2)}% accuracy
 
 ### Key Insights
-Check \`accuracy_analysis/analysis_results.json\` for full details.
+- Average Accuracy: ${(analysisResults.accuracy_by_ticker.reduce((a, b) => a + b.accuracy, 0) / analysisResults.accuracy_by_ticker.length * 100).toFixed(2)}%
+- Check \`accuracy_analysis/analysis_results.json\` for full details
+- See \`accuracy_analysis/REPORT.md\` for detailed recommendations
 
-**Why is ${highestAccuracy.ticker} high accuracy?**
-See \`accuracy_analysis/accuracy_analysis.png\` for visualizations.
+### Why is ${highestAccuracy.ticker} so accurate?
+${highestAccuracy.ticker} is outperforming with ${(highestAccuracy.accuracy * 100).toFixed(2)}% accuracy. Key factors to replicate on other tickers:
+- Analyze feature importance in GOOGL model
+- Check for unique characteristics in price patterns
+- Consider ticker-specific hyperparameter tuning
 
 ---
 Generated: ${new Date().toISOString()}
-            `;
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `📊 Accuracy Analysis - ${new Date().toISOString().split('T')[0]}`,
-              body: body,
-              labels: ['analytics', 'model-performance']
-            });
+              `;
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: \`📊 Accuracy Analysis - \${new Date().toISOString().split('T')[0]}\`,
+                body: body,
+                labels: ['analytics', 'model-performance']
+              });
+              
+              console.log('✓ GitHub Issue created successfully');
+            } catch (error) {
+              console.log('⚠️ Could not create issue:', error.message);
+            }
