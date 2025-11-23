@@ -1,6 +1,6 @@
 """
 Feature engineering utilities for the Blowdart ML engine.
-Uses yfinance for data retrieval and integrates CV runner signals.
+Relies on a resilient, API-based price fetcher and integrates CV runner signals.
 """
 from __future__ import annotations
 
@@ -10,7 +10,8 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
+
+from utils_data_fetch import safe_price_download
 
 DATA_DIR = Path("data")
 LOG_DIR = Path("logs")
@@ -68,25 +69,12 @@ def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
 def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
     """Download price history and standardize columns."""
     ensure_directories()
-    data = yf.Ticker(ticker).history(period=period, interval="1d", auto_adjust=False)
-    if data.empty:
-        return data
-
-    data = data.reset_index()
-    data.rename(
-        columns={
-            "Date": "DATE",
-            "Open": "OPEN",
-            "High": "HIGH",
-            "Low": "LOW",
-            "Close": "CLOSE",
-            "Volume": "VOLUME",
-        },
-        inplace=True,
-    )
-    data.sort_values("DATE", inplace=True)
-    data.reset_index(drop=True, inplace=True)
-    return data
+    price_df = safe_price_download(ticker, range=period)
+    # ensure standard columns and ordering
+    price_df = price_df.reset_index(drop=True)
+    price_df.sort_values("DATE", inplace=True)
+    price_df.reset_index(drop=True, inplace=True)
+    return price_df
 
 
 def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:

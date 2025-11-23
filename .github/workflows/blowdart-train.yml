@@ -5,9 +5,17 @@ on:
     - cron: "0 23 * * *"  # 08:00 JST
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   train:
     runs-on: ubuntu-latest
+    env:
+      POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+      ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+      TIINGO_API_KEY: ${{ secrets.TIINGO_API_KEY }}
+      REQUEST_UA: "Mozilla/5.0 (Codex GitHub Runner)"
     steps:
       - uses: actions/checkout@v4
         with:
