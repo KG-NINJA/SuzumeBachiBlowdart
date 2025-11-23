@@ -1,1 +1,82 @@
-{"generated_at_utc": null, "tickers": []}
+[
+  {
+    "ticker": "NVDA",
+    "current_price": 178.88,
+    "predicted_price": 180.8453108189633,
+    "direction": "\u2191 Bullish",
+    "confidence": 0.5220807790756226,
+    "timestamp": "2025-11-23T12:59:13.710151"
+  },
+  {
+    "ticker": "AAPL",
+    "current_price": 271.49,
+    "predicted_price": 269.4836065020853,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.18795590102672577,
+    "timestamp": "2025-11-23T12:59:13.734705"
+  },
+  {
+    "ticker": "MSFT",
+    "current_price": 472.12,
+    "predicted_price": 469.5501128568462,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.16527606546878815,
+    "timestamp": "2025-11-23T12:59:13.758948"
+  },
+  {
+    "ticker": "GOOGL",
+    "current_price": 299.66,
+    "predicted_price": 296.81227333027516,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.14314593374729156,
+    "timestamp": "2025-11-23T12:59:13.783326"
+  },
+  {
+    "ticker": "AMZN",
+    "current_price": 220.69,
+    "predicted_price": 218.4087348309525,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.15605953335762024,
+    "timestamp": "2025-11-23T12:59:13.808907"
+  },
+  {
+    "ticker": "META",
+    "current_price": 594.25,
+    "predicted_price": 588.6813707535155,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.06336759030818939,
+    "timestamp": "2025-11-23T12:59:13.833526"
+  },
+  {
+    "ticker": "TSLA",
+    "current_price": 391.09,
+    "predicted_price": 385.2609403594497,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.279159277677536,
+    "timestamp": "2025-11-23T12:59:13.859307"
+  },
+  {
+    "ticker": "AMD",
+    "current_price": 203.78,
+    "predicted_price": 199.23483052130658,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.05363690108060837,
+    "timestamp": "2025-11-23T12:59:13.884533"
+  },
+  {
+    "ticker": "NFLX",
+    "current_price": 104.31,
+    "predicted_price": 98.83348451137603,
+    "direction": "\u2193 Bearish",
+    "confidence": 0.07566335797309875,
+    "timestamp": "2025-11-23T12:59:13.909487"
+  },
+  {
+    "ticker": "QQQ",
+    "current_price": 590.07,
+    "predicted_price": 592.9973160794665,
+    "direction": "\u2191 Bullish",
+    "confidence": 0.5760776996612549,
+    "timestamp": "2025-11-23T12:59:13.933809"
+  }
+]

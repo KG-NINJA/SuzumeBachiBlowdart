@@ -1,0 +1,45 @@
+[2025-11-23 12:58:49] NVDA   | LOCAL_CACHE     | FAIL     | Missing column provided to 'parse_dates': 'Date'
+[2025-11-23 12:58:50] NVDA   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:58:51] NVDA   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:58:52] NVDA   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:58:52] AAPL   | LOCAL_CACHE     | FAIL     | Missing column provided to 'parse_dates': 'Date'
+[2025-11-23 12:58:52] AAPL   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:58:53] AAPL   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:58:54] AAPL   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:58:54] MSFT   | LOCAL_CACHE     | FAIL     | Missing column provided to 'parse_dates': 'Date'
+[2025-11-23 12:58:54] MSFT   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:58:55] MSFT   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:58:57] MSFT   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:58:57] GOOGL  | LOCAL_CACHE     | FAIL     | Missing column provided to 'parse_dates': 'Date'
+[2025-11-23 12:58:57] GOOGL  | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:58:58] GOOGL  | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:58:59] GOOGL  | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:58:59] AMZN   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:00] AMZN   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:01] AMZN   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:01] META   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:02] META   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:04] META   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:04] TSLA   | LOCAL_CACHE     | FAIL     | Missing column provided to 'parse_dates': 'Date'
+[2025-11-23 12:59:04] TSLA   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:05] TSLA   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:06] TSLA   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:06] AMD    | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:07] AMD    | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:08] AMD    | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:09] NFLX   | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:10] NFLX   | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:11] NFLX   | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:11] QQQ    | POLYGON         | FAIL     | Status: DELAYED
+[2025-11-23 12:59:12] QQQ    | ALPHA_VANTAGE   | SKIP     | No API key
+[2025-11-23 12:59:13] QQQ    | TIINGO          | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-23 12:59:13] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
