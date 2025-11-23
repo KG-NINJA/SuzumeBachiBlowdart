@@ -1,0 +1,105 @@
+{
+  "date": "2025-11-22",
+  "timestamp": "2025-11-22 12:09:46",
+  "markets": {
+    "米国市場": [
+      {
+        "ticker": "AAPL",
+        "current_price": 271.489990234375,
+        "predicted_price": 271.9542637634277,
+        "predicted_change_pct": 0.17100944629741785,
+        "trend": "横ばい",
+        "ma20": 269.9424118041992,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "GOOGL",
+        "current_price": 299.6600036621094,
+        "predicted_price": 304.69625457763675,
+        "predicted_change_pct": 1.6806550270239438,
+        "trend": "強気",
+        "ma20": 282.87250061035155,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "MSFT",
+        "current_price": 472.1199951171875,
+        "predicted_price": 461.4734713745117,
+        "predicted_change_pct": -2.255046143519759,
+        "trend": "弱気",
+        "ma20": 507.60840759277346,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "NVDA",
+        "current_price": 178.8800048828125,
+        "predicted_price": 174.65915580749513,
+        "predicted_change_pct": -2.35959803225773,
+        "trend": "弱気",
+        "ma20": 192.94950180053712,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "TSLA",
+        "current_price": 391.0899963378906,
+        "predicted_price": 378.76389465332034,
+        "predicted_change_pct": -3.1517302411184374,
+        "trend": "弱気",
+        "ma20": 432.177001953125,
+        "prediction_method": "technical_analysis"
+      }
+    ],
+    "日本市場": [
+      {
+        "ticker": "7203.T",
+        "current_price": 3097.0,
+        "predicted_price": 3086.965,
+        "predicted_change_pct": -0.32402324830480644,
+        "trend": "横ばい",
+        "ma20": 3130.45,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "6758.T",
+        "current_price": 4507.0,
+        "predicted_price": 4534.6449999999995,
+        "predicted_change_pct": 0.6133791879298763,
+        "trend": "強気",
+        "ma20": 4414.85,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "9984.T",
+        "current_price": 17090.0,
+        "predicted_price": 15449.225,
+        "predicted_change_pct": -9.600789935634872,
+        "trend": "弱気",
+        "ma20": 22559.25,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "6861.T",
+        "current_price": 54400.0,
+        "predicted_price": 53708.2,
+        "predicted_change_pct": -1.2716911764705936,
+        "trend": "弱気",
+        "ma20": 56706.0,
+        "prediction_method": "technical_analysis"
+      },
+      {
+        "ticker": "8035.T",
+        "current_price": 30180.0,
+        "predicted_price": 29448.9,
+        "predicted_change_pct": -2.42246520874751,
+        "trend": "弱気",
+        "ma20": 32617.0,
+        "prediction_method": "technical_analysis"
+      }
+    ]
+  },
+  "market_context": {
+    "retrieved_at": "2025-11-22T12:09:46.711924",
+    "spy_close": 659.030029296875,
+    "vix_close": 23.43000030517578
+  }
+}
