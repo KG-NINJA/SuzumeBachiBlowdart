@@ -1,0 +1,64 @@
+name: Daily Training & Prediction
+
+on:
+  schedule:
+    - cron: '0 8 * * 1-5'  # 08:00 JST (weekdays)
+    - cron: '0 17 * * 1-5'  # 17:00 JST (weekdays)
+  workflow_dispatch:
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run predictions
+      run: python simple_daily_prediction.py
+      env:
+        POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        ALPHA_VANTAGE_KEY: ${{ secrets.ALPHA_VANTAGE_KEY }}
+        TIINGO_API_KEY: ${{ secrets.TIINGO_API_KEY }}
+    
+    - name: Commit & push
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add -A
+        git commit -m "Auto: predictions $(date)" || true
+        git push
+```
+
+---
+
+## 成功確認チェックリスト
+
+✅ 実行後に以下が生成されるはず：
+```
+logs/fetch_log_20251123.txt
+  ✓ ティッカーごとの取得ログ
+
+data/cache/*.csv
+  ✓ キャッシュファイル
+
+models/*.json
+  ✓ 訓練済みモデル
+
+daily_predictions/latest_predictions.json
+  ✓ 予測結果
+
+analytics/training_metrics.json
+  ✓ 学習指標
+
+docs/data/latest_predictions.json
+  ✓ ダッシュボード用データ
