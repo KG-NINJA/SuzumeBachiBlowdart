@@ -55,10 +55,8 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const path = require('path');
             
             try {
-              // Load analysis results
               const analysisFile = 'daily_predictions/confidence_report.json';
               if (!fs.existsSync(analysisFile)) {
                 console.log('No analysis file found');
@@ -66,13 +64,10 @@ jobs:
               }
               
               const report = JSON.parse(fs.readFileSync(analysisFile, 'utf8'));
-              
-              // Extract key data
               const total = report.total_predictions;
               const execute = report.actions.execute;
               const skip = report.actions.skip;
               
-              // Get top ticker
               let topTicker = '';
               let topAccuracy = 0;
               for (const [ticker, data] of Object.entries(report.by_ticker)) {
@@ -82,68 +77,33 @@ jobs:
                 }
               }
               
-              const body = `## 📊 Daily Prediction Report
-
-**Date:** ${new Date().toISOString().split('T')[0]}
-
-### Summary
-- **Total Predictions:** ${total}
-- **Execute (High Confidence):** ${execute} 🟢
-- **Skip (Low Confidence):** ${skip} 🔴
-- **Execute Ratio:** ${(execute/total*100).toFixed(1)}%
-
-### Top Recommended Trade
-${topTicker ? `**${topTicker}** - Accuracy: ${(topAccuracy*100).toFixed(2)}% | Confidence: ${(report.by_ticker[topTicker].confidence*100).toFixed(2)}%` : 'N/A'}
-
-### Confidence Distribution
-- **Strong:** ${report.confidence_distribution.strong}
-- **Medium:** ${report.confidence_distribution.medium}
-- **Weak:** ${report.confidence_distribution.weak}
-
-### Key Metrics
-- **Avg Confidence:** ${(report.statistics.avg_confidence*100).toFixed(2)}%
-- **Min Confidence:** ${(report.statistics.min_confidence*100).toFixed(2)}%
-- **Max Confidence:** ${(report.statistics.max_confidence*100).toFixed(2)}%
-
-### 🎯 Execution Trades
-${
-  Object.entries(report.by_ticker)
-    .filter(([_, data]) => data.action === 'EXECUTE')
-    .map(([ticker, data]) => {
-      const direction = data.direction.includes('Bearish') ? '📉' : '📈';
-      return `- **${ticker}** ${direction} | Conf: ${(data.confidence*100).toFixed(2)}% | Acc: ${(data.model_accuracy*100).toFixed(2)}%`;
-    })
-    .join('\n')
-}
-
-### ⏸️ Hold Trades
-${
-  Object.entries(report.by_ticker)
-    .filter(([_, data]) => data.action === 'SKIP')
-    .map(([ticker, data]) => {
-      return \`- **\${ticker}** | Reason: Low confidence\`;
-    })
-    .join('\n')
-}
-
----
-📁 **Files Generated:**
-- \`filtered_predictions.json\` - Execute-only list
-- \`confidence_report.json\` - Full analysis
-- \`confidence_report.md\` - Detailed report
-
-**Next Steps:** Phase 2 Market Environment Detection coming soon!
-              `;
+              const executeTrades = Object.entries(report.by_ticker)
+                .filter(([_, data]) => data.action === 'EXECUTE')
+                .map(([ticker, data]) => {
+                  const direction = data.direction.includes('Bearish') ? '📉' : '📈';
+                  return `- **${ticker}** ${direction} | Conf: ${(data.confidence*100).toFixed(2)}% | Acc: ${(data.model_accuracy*100).toFixed(2)}%`;
+                })
+                .join('\n');
+              
+              const skipTrades = Object.entries(report.by_ticker)
+                .filter(([_, data]) => data.action === 'SKIP')
+                .map(([ticker, _]) => `- **${ticker}** | Reason: Low confidence`)
+                .join('\n');
+              
+              const dateStr = new Date().toISOString().split('T')[0];
+              const topTradeStr = topTicker ? `**${topTicker}** - Accuracy: ${(topAccuracy*100).toFixed(2)}% | Confidence: ${(report.by_ticker[topTicker].confidence*100).toFixed(2)}%` : 'N/A';
+              
+              const body = `## 📊 Daily Prediction Report\n\n**Date:** ${dateStr}\n\n### Summary\n- **Total Predictions:** ${total}\n- **Execute (High Confidence):** ${execute} 🟢\n- **Skip (Low Confidence):** ${skip} 🔴\n- **Execute Ratio:** ${(execute/total*100).toFixed(1)}%\n\n### Top Recommended Trade\n${topTradeStr}\n\n### Confidence Distribution\n- **Strong:** ${report.confidence_distribution.strong}\n- **Medium:** ${report.confidence_distribution.medium}\n- **Weak:** ${report.confidence_distribution.weak}\n\n### Key Metrics\n- **Avg Confidence:** ${(report.statistics.avg_confidence*100).toFixed(2)}%\n- **Min Confidence:** ${(report.statistics.min_confidence*100).toFixed(2)}%\n- **Max Confidence:** ${(report.statistics.max_confidence*100).toFixed(2)}%\n\n### 🎯 Execution Trades\n${executeTrades}\n\n### ⏸️ Hold Trades\n${skipTrades}\n\n---\n📁 **Files Generated:**\n- filtered_predictions.json\n- confidence_report.json\n- confidence_report.md\n- phase2_analysis.json & md\n- backtest_report.json & md\n\n**All phases active: Phase 1 ✅ | Phase 2 ✅ | Phase 3 ✅**`;
               
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: \`📊 Daily Predictions - \${new Date().toISOString().split('T')[0]}\`,
+                title: `📊 Daily Predictions - ${dateStr}`,
                 body: body,
                 labels: ['predictions', 'automated']
               });
               
               console.log('✅ Issue created successfully');
             } catch (error) {
-              console.log('⚠️ Could not create issue:', error.message);
+              console.log('⚠️ Could not create issue: ' + error.message);
             }
