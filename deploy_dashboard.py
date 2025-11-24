@@ -60,7 +60,7 @@ def copy_prediction_data():
             except Exception as e:
                 print(f"⚠️  Error copying {filename}: {str(e)[:40]}")
     
-    print(f"\n✓ Total files copied: {files_covered}")
+    print(f"\n✓ Total files copied: {files_copied}")
     return files_copied > 0
 
 
