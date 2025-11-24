@@ -1,13 +1,13 @@
-name: Accuracy Analysis - GOOGL vs Others
+name: Daily Prediction with Confidence Filter
 
 on:
   schedule:
-    # 毎週日曜日の0時に実行（精度分析）
-    - cron: '0 0 * * 0'
+    # 毎日午前9時（JST = UTC 0時）に実行
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
-  accuracy-analysis:
+  daily-prediction:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,74 +27,123 @@ jobs:
       - name: Run daily prediction (generate models)
         run: python simple_daily_prediction.py
 
+      - name: Apply confidence filter
+        run: python confidence_filter.py
+
       - name: Generate analysis report
         run: python analyze_and_report.py
 
       - name: Upload analysis results
         uses: actions/upload-artifact@v4
         with:
-          name: accuracy-analysis-results
+          name: daily-predictions-${{ github.run_id }}
           path: |
-            accuracy_analysis/
+            daily_predictions/
             analytics/
 
-      - name: Commit analysis results to repo
+      - name: Commit results to repository
         run: |
-          git config user.name "Blowdart Bot"
+          git config user.name "SuzumeBachiBot"
           git config user.email "bot@blowdart.local"
-          git add -A accuracy_analysis/ analytics/
-          git commit -m "📊 Accuracy analysis - $(date +%Y-%m-%d)" || true
+          git add -A daily_predictions/ analytics/
+          git commit -m "🤖 Daily predictions & confidence analysis - $(date '+%Y-%m-%d %H:%M:%S UTC')" || true
           git push
 
-      - name: Create GitHub Issue with findings
+      - name: Create GitHub Issue with summary
         if: always()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
+            const path = require('path');
             
             try {
-              const analysisResults = JSON.parse(fs.readFileSync('accuracy_analysis/analysis_results.json', 'utf8'));
+              // Load analysis results
+              const analysisFile = 'daily_predictions/confidence_report.json';
+              if (!fs.existsSync(analysisFile)) {
+                console.log('No analysis file found');
+                return;
+              }
               
-              const accuracies = analysisResults.accuracy_by_ticker.sort((a, b) => b.accuracy - a.accuracy);
-              const highest = accuracies[0];
-              const lowest = accuracies[accuracies.length - 1];
+              const report = JSON.parse(fs.readFileSync(analysisFile, 'utf8'));
               
-              const topThreeList = accuracies.slice(0, 3)
-                .map((a, i) => i + 1 + '. **' + a.ticker + '**: ' + (a.accuracy * 100).toFixed(2) + '%')
-                .join('\n');
+              // Extract key data
+              const total = report.total_predictions;
+              const execute = report.actions.execute;
+              const skip = report.actions.skip;
               
-              const avgAcc = (analysisResults.accuracy_by_ticker.reduce((a, b) => a + b.accuracy, 0) / analysisResults.accuracy_by_ticker.length * 100).toFixed(2);
+              // Get top ticker
+              let topTicker = '';
+              let topAccuracy = 0;
+              for (const [ticker, data] of Object.entries(report.by_ticker)) {
+                if (data.model_accuracy > topAccuracy && data.action === 'EXECUTE') {
+                  topAccuracy = data.model_accuracy;
+                  topTicker = ticker;
+                }
+              }
               
-              const issueTitle = '📊 Accuracy Analysis - ' + new Date().toISOString().split('T')[0];
-              
-              const issueBody = '## 🎯 Weekly Accuracy Analysis Report\n\n' +
-                '### Top Performers\n' +
-                topThreeList + '\n\n' +
-                '### Needs Improvement\n' +
-                '- **' + lowest.ticker + '**: ' + (lowest.accuracy * 100).toFixed(2) + '% accuracy\n\n' +
-                '### Key Insights\n' +
-                '- Average Accuracy: ' + avgAcc + '%\n' +
-                '- Check `accuracy_analysis/analysis_results.json` for full details\n' +
-                '- See `accuracy_analysis/REPORT.md` for detailed recommendations\n\n' +
-                '### Why is ' + highest.ticker + ' so accurate?\n' +
-                highest.ticker + ' is outperforming with ' + (highest.accuracy * 100).toFixed(2) + '% accuracy.\n\n' +
-                '**Key factors to replicate on other tickers:**\n' +
-                '- Analyze feature importance in ' + highest.ticker + ' model\n' +
-                '- Check for unique characteristics in price patterns\n' +
-                '- Consider ticker-specific hyperparameter tuning\n\n' +
-                '---\n' +
-                'Generated: ' + new Date().toISOString();
+              const body = `## 📊 Daily Prediction Report
+
+**Date:** ${new Date().toISOString().split('T')[0]}
+
+### Summary
+- **Total Predictions:** ${total}
+- **Execute (High Confidence):** ${execute} 🟢
+- **Skip (Low Confidence):** ${skip} 🔴
+- **Execute Ratio:** ${(execute/total*100).toFixed(1)}%
+
+### Top Recommended Trade
+${topTicker ? `**${topTicker}** - Accuracy: ${(topAccuracy*100).toFixed(2)}% | Confidence: ${(report.by_ticker[topTicker].confidence*100).toFixed(2)}%` : 'N/A'}
+
+### Confidence Distribution
+- **Strong:** ${report.confidence_distribution.strong}
+- **Medium:** ${report.confidence_distribution.medium}
+- **Weak:** ${report.confidence_distribution.weak}
+
+### Key Metrics
+- **Avg Confidence:** ${(report.statistics.avg_confidence*100).toFixed(2)}%
+- **Min Confidence:** ${(report.statistics.min_confidence*100).toFixed(2)}%
+- **Max Confidence:** ${(report.statistics.max_confidence*100).toFixed(2)}%
+
+### 🎯 Execution Trades
+${
+  Object.entries(report.by_ticker)
+    .filter(([_, data]) => data.action === 'EXECUTE')
+    .map(([ticker, data]) => {
+      const direction = data.direction.includes('Bearish') ? '📉' : '📈';
+      return `- **${ticker}** ${direction} | Conf: ${(data.confidence*100).toFixed(2)}% | Acc: ${(data.model_accuracy*100).toFixed(2)}%`;
+    })
+    .join('\n')
+}
+
+### ⏸️ Hold Trades
+${
+  Object.entries(report.by_ticker)
+    .filter(([_, data]) => data.action === 'SKIP')
+    .map(([ticker, data]) => {
+      return \`- **\${ticker}** | Reason: Low confidence\`;
+    })
+    .join('\n')
+}
+
+---
+📁 **Files Generated:**
+- \`filtered_predictions.json\` - Execute-only list
+- \`confidence_report.json\` - Full analysis
+- \`confidence_report.md\` - Detailed report
+
+**Next Steps:** Phase 2 Market Environment Detection coming soon!
+              `;
               
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: issueTitle,
-                body: issueBody,
-                labels: ['analytics', 'model-performance']
+                title: \`📊 Daily Predictions - \${new Date().toISOString().split('T')[0]}\`,
+                body: body,
+                labels: ['predictions', 'automated']
               });
               
-              console.log('✓ GitHub Issue created successfully');
+              console.log('✅ Issue created successfully');
             } catch (error) {
               console.log('⚠️ Could not create issue:', error.message);
             }
