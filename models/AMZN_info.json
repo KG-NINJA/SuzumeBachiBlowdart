@@ -5,10 +5,10 @@
   "accuracy_improvement": 0.0,
   "train_samples": 61,
   "test_samples": 16,
-  "total_train_samples": 122,
+  "total_train_samples": 183,
   "features": 31,
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/AMZN_model.json",
   "scaler_path": "models/AMZN_scaler.pkl",
-  "timestamp": "2025-11-23T23:19:19.706786"
+  "timestamp": "2025-11-24T09:22:48.299528"
 }
