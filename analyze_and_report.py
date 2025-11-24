@@ -224,9 +224,12 @@ def generate_report():
     # Also save to docs
     docs_file = "docs/analysis_report.md"
     Path("docs").mkdir(exist_ok=True)
-    with open(docs_file, 'w') as f:
-        f.write(md_report)
-    print(f"[✓] Saved: {docs_file}")
+    try:
+        with open(docs_file, 'w') as f:
+            f.write(md_report)
+        print(f"[✓] Saved: {docs_file}")
+    except Exception as e:
+        print(f"[WARNING] Could not save to docs: {str(e)[:40]}")
     
     return True
 
