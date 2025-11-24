@@ -1,10 +1,13 @@
 """
-analyze_and_report.py - Simple analysis report for GitHub Actions
-No external data downloads needed - uses existing model info
+analyze_and_report.py - Generate analysis report for GitHub Actions
+Lightweight version that doesn't require all data downloads
+Uses existing model info and predictions
 """
 
 import os
+import sys
 import json
+import numpy as np
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -13,7 +16,10 @@ ANALYSIS_DIR = "accuracy_analysis"
 MODELS_DIR = "models"
 PREDICTIONS_DIR = "daily_predictions"
 
-Path(ANALYSIS_DIR).mkdir(parents=True, exist_ok=True)
+# Create directories if they don't exist
+for dir_path in [ANALYSIS_DIR, MODELS_DIR, PREDICTIONS_DIR]:
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
 
 def load_model_info(ticker):
     """Load model metadata"""
@@ -26,6 +32,7 @@ def load_model_info(ticker):
             return None
     return None
 
+
 def load_predictions():
     """Load latest predictions"""
     pred_file = f"{PREDICTIONS_DIR}/latest_predictions.json"
@@ -36,6 +43,7 @@ def load_predictions():
         except:
             return None
     return None
+
 
 def generate_report():
     """Generate analysis report from existing models"""
@@ -74,8 +82,8 @@ def generate_report():
         df_pred = pd.DataFrame(predictions)
         pred_stats = {
             "total": len(df_pred),
-            "bullish": (df_pred['direction'] == "↑ Bullish").sum(),
-            "bearish": (df_pred['direction'] == "↓ Bearish").sum(),
+            "bullish": (df_pred['direction'].astype(str).str.contains('Bullish', na=False)).sum(),
+            "bearish": (df_pred['direction'].astype(str).str.contains('Bearish', na=False)).sum(),
             "avg_confidence": float(df_pred['confidence'].mean()),
             "avg_model_accuracy": float(df_pred['model_accuracy'].mean())
         }
@@ -90,50 +98,62 @@ def generate_report():
     lowest = df_accuracy.iloc[-1]
     avg_acc = df_accuracy['accuracy'].mean()
     
-    # Convert DataFrame to dict with proper type conversion
-    accuracy_records = []
-    for _, row in df_accuracy.iterrows():
-        accuracy_records.append({
-            "ticker": str(row['ticker']),
-            "accuracy": float(row['accuracy']),
-            "previous_accuracy": float(row['previous_accuracy']),
-            "improvement": float(row['improvement']),
-            "samples": int(row['samples']),
-            "features": int(row['features'])
-        })
-    
     # Create analysis JSON
     analysis_results = {
         "timestamp": datetime.now().isoformat(),
-        "accuracy_by_ticker": accuracy_records,
+        "accuracy_by_ticker": df_accuracy.to_dict(orient='records'),
         "top_performer": {
-            "ticker": str(highest['ticker']),
+            "ticker": highest['ticker'],
             "accuracy": float(highest['accuracy']),
             "improvement": float(highest['improvement'])
         },
         "needs_work": {
-            "ticker": str(lowest['ticker']),
+            "ticker": lowest['ticker'],
             "accuracy": float(lowest['accuracy']),
             "improvement": float(lowest['improvement'])
         },
         "statistics": {
             "average_accuracy": float(avg_acc),
-            "total_models": int(len(df_accuracy)),
-            "improvement_count": int(len(df_accuracy[df_accuracy['improvement'] > 0]))
+            "total_models": len(df_accuracy),
+            "improvement_count": len(df_accuracy[df_accuracy['improvement'] > 0])
         },
         "predictions": pred_stats
     }
     
     # Save JSON
-    json_file = f"{ANALYSIS_DIR}/analysis_results.json"
-    with open(json_file, 'w') as f:
-        json.dump(analysis_results, f, indent=2, default=str)
-    print(f"[✓] Saved: {json_file}")
+    json_path = f"{ANALYSIS_DIR}/analysis_results.json"
+    with open(json_path, 'w') as f:
+        json.dump(analysis_results, f, indent=2)
+    print(f"[✓] Saved: {json_path}")
     
-    # Generate Markdown report
-    md_report = f"""# 📊 Model Accuracy Analysis Report
+    # Generate Markdown report - SIMPLE VERSION
+    try:
+        md_report = generate_simple_markdown(df_accuracy, highest, lowest, avg_acc, pred_stats)
+        
+        # Save as Markdown
+        md_path = f"{ANALYSIS_DIR}/REPORT.md"
+        with open(md_path, 'w') as f:
+            f.write(md_report)
+        print(f"[✓] Saved: {md_path}")
+        
+        # Also save to docs
+        docs_md = "docs/analysis_report.md"
+        Path("docs").mkdir(exist_ok=True)
+        with open(docs_md, 'w') as f:
+            f.write(md_report)
+        print(f"[✓] Saved: {docs_md}")
+    except Exception as e:
+        print(f"[WARNING] Could not generate markdown: {str(e)[:60]}")
+    
+    return True
 
-**Generated:** {datetime.now().isoformat()}
+
+def generate_simple_markdown(df_accuracy, highest, lowest, avg_acc, pred_stats):
+    """Generate simple markdown report without date calculation"""
+    
+    markdown = f"""# 📊 Model Accuracy Analysis Report
+
+**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
 ## Summary
 
@@ -149,18 +169,18 @@ def generate_report():
 """
     
     for i, (_, row) in enumerate(df_accuracy.head(3).iterrows(), 1):
-        md_report += f"{i}. **{row['ticker']}**: {row['accuracy']:.4f} accuracy (Δ{row['improvement']:+.4f})\n"
+        markdown += f"{i}. **{row['ticker']}**: {row['accuracy']:.4f} accuracy (Δ{row['improvement']:+.4f})\n"
     
-    md_report += f"""
+    markdown += f"""
 
 ## ⚠️ Needs Improvement
 
 """
     
     for _, row in df_accuracy.tail(3).iterrows():
-        md_report += f"- **{row['ticker']}**: {row['accuracy']:.4f} accuracy (Δ{row['improvement']:+.4f})\n"
+        markdown += f"- **{row['ticker']}**: {row['accuracy']:.4f} accuracy (Δ{row['improvement']:+.4f})\n"
     
-    md_report += f"""
+    markdown += f"""
 
 ## 🎯 Why is {highest['ticker']} the Best?
 
@@ -185,11 +205,11 @@ def generate_report():
 """
     
     for i, (_, row) in enumerate(df_accuracy.iterrows(), 1):
-        md_report += (f"| {i} | {row['ticker']} | {row['accuracy']:.4f} | "
+        markdown += (f"| {i} | {row['ticker']} | {row['accuracy']:.4f} | "
                       f"{row['previous_accuracy']:.4f} | {row['improvement']:+.4f} |\n")
     
     if pred_stats:
-        md_report += f"""
+        markdown += f"""
 
 ## 📈 Predictions Summary
 
@@ -200,11 +220,11 @@ def generate_report():
 - **Average Model Accuracy:** {pred_stats['avg_model_accuracy']:.4f}
 """
     
-    md_report += f"""
+    markdown += """
 
 ## 🔧 Next Steps
 
-1. **Feature Analysis** - Deep dive into {highest['ticker']}'s success factors
+1. **Feature Analysis** - Deep dive into top ticker's success factors
 2. **Ensemble Learning** - Combine multiple models for robustness
 3. **Hyperparameter Tuning** - Optimize per ticker, not globally
 4. **Data Quality** - Check for anomalies in underperformers
@@ -213,35 +233,31 @@ def generate_report():
 ---
 
 *Report generated by SuzumeBachiBlowdart*
-*Next update: {(datetime.now().replace(day=datetime.now().day + 7) if datetime.now().day <= 24 else datetime.now().replace(month=datetime.now().month + 1, day=1)).isoformat()}*
+*Phase 1: Confidence Filter ✅ | Phase 2: Market Environment ✅ | Phase 3: Backtest ✅*
 """
     
-    md_file = f"{ANALYSIS_DIR}/REPORT.md"
-    with open(md_file, 'w') as f:
-        f.write(md_report)
-    print(f"[✓] Saved: {md_file}")
-    
-    # Also save to docs
-    docs_file = "docs/analysis_report.md"
-    Path("docs").mkdir(exist_ok=True)
-    try:
-        with open(docs_file, 'w') as f:
-            f.write(md_report)
-        print(f"[✓] Saved: {docs_file}")
-    except Exception as e:
-        print(f"[WARNING] Could not save to docs: {str(e)[:40]}")
-    
-    return True
+    return markdown
 
-if __name__ == "__main__":
+
+def main():
+    print("="*70)
+    print("SuzumeBachiBlowdart - Accuracy Analysis Report Generator")
+    print("="*70 + "\n")
+    
     try:
         success = generate_report()
         if success:
-            print("[SUCCESS] Report generated")
-            exit(0)
+            print("\n[SUCCESS] Report generated")
+            return 0
         else:
-            print("[FAILURE] Report generation failed")
-            exit(1)
+            print("\n[FAILURE] Report generation failed")
+            return 1
     except Exception as e:
         print(f"[ERROR] {str(e)}")
-        exit(1)
+        import traceback
+        traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
