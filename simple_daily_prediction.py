@@ -1,380 +1,346 @@
+import os
+import sys
 import json
-import pandas as pd
-from pathlib import Path
+import numpy as np
 from datetime import datetime
+from pathlib import Path
+import subprocess
 
+# Import custom modules
+from utils_data_fetch import safe_price_download, LOGS_DIR
+from blowdart_features import build_feature_set
+from blowdart_ml_engine import train_ticker, predict_ticker, get_training_history
+from confidence_filter import apply_confidence_filter, generate_confidence_report
+
+# ===== Configuration =====
+TICKERS = ["NVDA", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "NFLX", "QQQ"]
 PREDICTIONS_DIR = "daily_predictions"
-Path(PREDICTIONS_DIR).mkdir(parents=True, exist_ok=True)
+ANALYTICS_DIR = "analytics"
+MODELS_DIR = "models"
+DOCS_DATA_DIR = "docs/data"
 
-# Configuration
-MIN_CONFIDENCE = 0.35  # Predictions between 0.35-0.65 are unreliable
-CONFIDENCE_THRESHOLDS = {
-    'strong': 0.65,      # |confidence - 0.5| > 0.15 → Strong signal
-    'medium': 0.55,      # |confidence - 0.5| > 0.05 → Medium signal
-    'weak': 0.50         # |confidence - 0.5| ≤ 0.05 → Weak signal (HOLD)
-}
+# Ensure all directories exist
+for dir_path in [PREDICTIONS_DIR, ANALYTICS_DIR, MODELS_DIR, LOGS_DIR, DOCS_DATA_DIR]:
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
 
 
-def calculate_confidence_score(pred_proba):
-    """
-    Calculate confidence score from prediction probability
+# ===== Main Execution =====
+def main():
+    print("="*70)
+    print(f"SuzumeBachiBlowdart - Daily Prediction Run (Complete Pipeline)")
+    print(f"Start: {datetime.now().isoformat()}")
+    print("="*70)
     
-    A prediction is confident if it's far from 0.5 (coin flip)
+    all_predictions = []
+    training_results = []
     
-    Args:
-        pred_proba: Probability from model (0-1)
+    # ===== Phase 0: Data Fetch & Model Training =====
+    print("\n[PHASE 0] Data Fetch & Model Training (Online Learning)")
+    print("-" * 70)
     
-    Returns:
-        confidence_score: Distance from 0.5 (0-0.5)
-        confidence_level: 'STRONG', 'MEDIUM', 'WEAK'
-    """
-    confidence_score = abs(pred_proba - 0.5)
-    
-    if confidence_score > 0.15:
-        confidence_level = 'STRONG'
-    elif confidence_score > 0.05:
-        confidence_level = 'MEDIUM'
-    else:
-        confidence_level = 'WEAK'
-    
-    return confidence_score, confidence_level
-
-
-def apply_confidence_filter(predictions, min_confidence=0.15):
-    """
-    Filter predictions based on confidence level
-    
-    Args:
-        predictions: List of prediction dicts
-        min_confidence: Minimum confidence score to act on prediction
-    
-    Returns:
-        List of filtered predictions with HOLD recommendations
-    """
-    
-    filtered_predictions = []
-    
-    for pred in predictions:
-        confidence = pred.get('confidence', 0.5)
+    for ticker in TICKERS:
+        try:
+            # Step 1: Fetch price data
+            print(f"\n>>> {ticker}")
+            price_data = safe_price_download(ticker, days=180)
+            
+            if price_data is None or price_data.empty:
+                print(f"  ✗ No data retrieved for {ticker}")
+                training_results.append({
+                    "ticker": ticker,
+                    "status": "FAIL",
+                    "reason": "No data"
+                })
+                continue
+            
+            print(f"  ✓ Data: {len(price_data)} rows")
+            
+            # Step 2: Build features
+            features_df = build_feature_set(price_data, ticker)
+            
+            if features_df is None or features_df.empty:
+                print(f"  ✗ Feature engineering failed")
+                training_results.append({
+                    "ticker": ticker,
+                    "status": "FAIL",
+                    "reason": "Feature engineering failed"
+                })
+                continue
+            
+            print(f"  ✓ Features: {len(features_df)} rows, {len(features_df.columns)} cols")
+            
+            # Step 3: Train model
+            model_info = train_ticker(ticker, features_df)
+            
+            if model_info is None:
+                print(f"  ✗ Model training failed")
+                training_results.append({
+                    "ticker": ticker,
+                    "status": "FAIL",
+                    "reason": "Training failed"
+                })
+                continue
+            
+            print(f"  ✓ Model trained: Accuracy={model_info.get('accuracy', 0):.4f}")
+            training_results.append({
+                "ticker": ticker,
+                "status": "OK",
+                "accuracy": model_info.get('accuracy'),
+                "previous_accuracy": model_info.get('previous_accuracy', 0),
+                "improvement": model_info.get('accuracy_improvement', 0),
+                "train_samples": model_info.get('train_samples'),
+                "learning_type": model_info.get('learning_type', 'UNKNOWN')
+            })
         
-        # Calculate confidence score
-        conf_score, conf_level = calculate_confidence_score(confidence)
+        except Exception as e:
+            print(f"  ✗ Exception: {str(e)[:60]}")
+            training_results.append({
+                "ticker": ticker,
+                "status": "ERROR",
+                "error": str(e)[:60]
+            })
+    
+    # ===== Phase 1: Generate Predictions =====
+    print("\n" + "="*70)
+    print("[PHASE 1] Generate Predictions")
+    print("-" * 70)
+    
+    for ticker in TICKERS:
+        try:
+            # Fetch latest data
+            price_data = safe_price_download(ticker, days=180)
+            
+            if price_data is None or price_data.empty:
+                print(f"{ticker}: No data for prediction")
+                continue
+            
+            # Build features
+            features_df = build_feature_set(price_data, ticker)
+            
+            if features_df is None or features_df.empty:
+                print(f"{ticker}: Feature engineering failed")
+                continue
+            
+            # Predict
+            prediction = predict_ticker(ticker, features_df)
+            
+            if prediction is not None:
+                all_predictions.append(prediction)
+                print(f"{ticker}: ✓ Prediction={prediction.get('predicted_price', 'N/A'):.2f}")
+            else:
+                print(f"{ticker}: ✗ Prediction failed")
         
-        # Add confidence analysis
-        pred['confidence_score'] = float(conf_score)
-        pred['confidence_level'] = conf_level
-        
-        # Apply filtering
-        if conf_score < min_confidence:
-            # Low confidence → HOLD
-            pred['direction'] = "⏸ HOLD"
-            pred['action'] = "SKIP"
-            pred['reason'] = f"Low confidence ({confidence:.2%}) - Market noise"
-            pred['recommendation'] = "Skip this trade - wait for clearer signal"
-        else:
-            # High confidence → BUY/SELL
-            pred['action'] = "EXECUTE"
-            pred['reason'] = f"High confidence ({confidence:.2%}) - {conf_level} signal"
-            pred['recommendation'] = f"Execute {pred['direction']} trade"
-        
-        filtered_predictions.append(pred)
+        except Exception as e:
+            print(f"{ticker}: Exception - {str(e)[:40]}")
     
-    return filtered_predictions
-
-
-def generate_confidence_report(predictions):
-    """
-    Generate analysis report of confidence distribution
+    # ===== Phase 2: Apply Confidence Filter =====
+    print("\n" + "="*70)
+    print("[PHASE 2] Apply Confidence Filter")
+    print("-" * 70)
     
-    Args:
-        predictions: List of filtered predictions
+    print("\n[2-1] Applying confidence-based filter...")
+    filtered_predictions = apply_confidence_filter(all_predictions, min_confidence=0.15)
     
-    Returns:
-        dict: Confidence analysis
-    """
+    execute_predictions = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
+    skip_predictions = [p for p in filtered_predictions if p.get('action') == 'SKIP']
     
-    df = pd.DataFrame(predictions)
+    print(f"  ✓ Execute (High Confidence): {len(execute_predictions)}")
+    print(f"  ✓ Skip (Low Confidence): {len(skip_predictions)}")
     
-    # Convert confidence to percentage
-    df['confidence_pct'] = df['confidence'] * 100
-    df['confidence_score'] = df['confidence_score'] * 100
+    # ===== Phase 3: Save Results =====
+    print("\n" + "="*70)
+    print("[PHASE 3] Save Results")
+    print("-" * 70)
     
-    # Statistics
-    strong_count = len(df[df['confidence_level'] == 'STRONG'])
-    medium_count = len(df[df['confidence_level'] == 'MEDIUM'])
-    weak_count = len(df[df['confidence_level'] == 'WEAK'])
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     
-    execute_count = len(df[df['action'] == 'EXECUTE'])
-    skip_count = len(df[df['action'] == 'SKIP'])
+    print("\n[3-1] Saving predictions...")
     
-    report = {
-        'timestamp': datetime.now().isoformat(),
-        'total_predictions': len(df),
-        'confidence_distribution': {
-            'strong': int(strong_count),
-            'medium': int(medium_count),
-            'weak': int(weak_count)
-        },
-        'actions': {
-            'execute': int(execute_count),
-            'skip': int(skip_count)
-        },
-        'statistics': {
-            'avg_confidence': float(df['confidence'].mean()),
-            'min_confidence': float(df['confidence'].min()),
-            'max_confidence': float(df['confidence'].max()),
-            'std_confidence': float(df['confidence'].std()),
-            'avg_confidence_score': float(df['confidence_score'].mean())
-        },
-        'by_ticker': {}
-    }
-    
-    # Breakdown by ticker
-    for ticker in df['ticker'].unique():
-        ticker_data = df[df['ticker'] == ticker].iloc[0]
-        report['by_ticker'][ticker] = {
-            'ticker': ticker,
-            'confidence': float(ticker_data['confidence']),
-            'confidence_level': ticker_data['confidence_level'],
-            'action': ticker_data['action'],
-            'direction': ticker_data['direction'],
-            'model_accuracy': float(ticker_data['model_accuracy'])
-        }
-    
-    return report
-
-
-def save_filtered_predictions(predictions, report):
-    """
-    Save filtered predictions and report
-    
-    Args:
-        predictions: List of filtered predictions
-        report: Confidence analysis report
-    """
-    
-    # Save filtered predictions
-    predictions_file = f"{PREDICTIONS_DIR}/filtered_predictions.json"
+    # Save all predictions (with confidence analysis)
+    predictions_file = f"{PREDICTIONS_DIR}/latest_predictions.json"
     with open(predictions_file, 'w') as f:
-        json.dump(predictions, f, indent=2, default=str)
-    print(f"✓ Saved: {predictions_file}")
+        json.dump(filtered_predictions, f, indent=2, default=str)
+    print(f"✓ All predictions: {predictions_file}")
+    
+    # Save filtered predictions (separate file for easy access)
+    filtered_file = f"{PREDICTIONS_DIR}/filtered_predictions.json"
+    with open(filtered_file, 'w') as f:
+        json.dump(execute_predictions, f, indent=2, default=str)
+    print(f"✓ Filtered predictions (EXECUTE only): {filtered_file}")
+    
+    # Save to docs for GitHub Pages
+    docs_file = f"{DOCS_DATA_DIR}/latest_predictions.json"
+    with open(docs_file, 'w') as f:
+        json.dump(filtered_predictions, f, indent=2, default=str)
+    print(f"✓ Dashboard data: {docs_file}")
+    
+    # Generate confidence report
+    print("\n[3-2] Generating confidence analysis...")
+    confidence_report = generate_confidence_report(filtered_predictions)
     
     # Save report
     report_file = f"{PREDICTIONS_DIR}/confidence_report.json"
     with open(report_file, 'w') as f:
-        json.dump(report, f, indent=2, default=str)
-    print(f"✓ Saved: {report_file}")
-
-
-def generate_markdown_report(predictions, report):
-    """
-    Generate human-readable markdown report
+        json.dump(confidence_report, f, indent=2, default=str)
+    print(f"✓ Confidence report: {report_file}")
     
-    Args:
-        predictions: List of filtered predictions
-        report: Confidence analysis report
+    # Save training metrics
+    metrics_file = f"{ANALYTICS_DIR}/training_metrics.json"
+    metrics = {
+        "timestamp": datetime.now().isoformat(),
+        "run_date": datetime.now().strftime('%Y-%m-%d'),
+        "results": training_results,
+        "total_trained": sum(1 for r in training_results if r['status'] == 'OK'),
+        "total_failed": sum(1 for r in training_results if r['status'] != 'OK'),
+        "predictions": {
+            "total": len(filtered_predictions),
+            "execute": len(execute_predictions),
+            "skip": len(skip_predictions)
+        },
+        "confidence": confidence_report
+    }
     
-    Returns:
-        str: Markdown report
-    """
+    with open(metrics_file, 'w') as f:
+        json.dump(metrics, f, indent=2, default=str)
+    print(f"✓ Metrics: {metrics_file}")
     
-    df = pd.DataFrame(predictions)
-    
-    markdown = f"""# 📊 Confidence-Based Trading Report
-
-**Generated:** {datetime.now().isoformat()}
-
-## 🎯 Summary
-
-- **Total Predictions:** {report['total_predictions']}
-- **Execute (High Confidence):** {report['actions']['execute']} 🟢
-- **Skip (Low Confidence):** {report['actions']['skip']} 🔴
-- **Execute Ratio:** {report['actions']['execute'] / report['total_predictions'] * 100:.1f}%
-
-## 📈 Confidence Distribution
-
-| Level | Count | Percentage |
-|-------|-------|-----------|
-| 🟢 STRONG | {report['confidence_distribution']['strong']} | {report['confidence_distribution']['strong'] / report['total_predictions'] * 100:.1f}% |
-| 🟡 MEDIUM | {report['confidence_distribution']['medium']} | {report['confidence_distribution']['medium'] / report['total_predictions'] * 100:.1f}% |
-| 🔴 WEAK | {report['confidence_distribution']['weak']} | {report['confidence_distribution']['weak'] / report['total_predictions'] * 100:.1f}% |
-
-## 📊 Confidence Statistics
-
-| Metric | Value |
-|--------|-------|
-| Average Confidence | {report['statistics']['avg_confidence']:.4f} |
-| Min Confidence | {report['statistics']['min_confidence']:.4f} |
-| Max Confidence | {report['statistics']['max_confidence']:.4f} |
-| Std Dev | {report['statistics']['std_confidence']:.4f} |
-| Avg Confidence Score | {report['statistics']['avg_confidence_score']:.2f}% |
-
-## 🎲 Detailed Predictions
-
-"""
-    
-    # Executive trades (EXECUTE)
-    execute_df = df[df['action'] == 'EXECUTE'].sort_values('confidence', ascending=False)
-    
-    markdown += "### 🟢 HIGH CONFIDENCE - EXECUTE TRADES\n\n"
-    
-    if len(execute_df) > 0:
-        markdown += "| Ticker | Direction | Confidence | Score | Model Acc | Current | Target |\n"
-        markdown += "|--------|-----------|-----------|-------|-----------|---------|--------|\n"
-        
-        for _, row in execute_df.iterrows():
-            emoji = "📈" if "Bullish" in row['direction'] else "📉"
-            markdown += (f"| {row['ticker']} | {emoji} {row['direction']} | "
-                        f"{row['confidence']:.2%} | {row['confidence_score']:.1f}% | "
-                        f"{row['model_accuracy']:.2%} | ${row['current_price']:.2f} | "
-                        f"${row['predicted_price']:.2f} |\n")
-        
-        markdown += "\n**Interpretation:** These signals have strong confidence and should be executed.\n\n"
-    else:
-        markdown += "No high-confidence signals at this time.\n\n"
-    
-    # Skip trades (HOLD)
-    skip_df = df[df['action'] == 'SKIP'].sort_values('confidence', ascending=False)
-    
-    markdown += "### 🔴 LOW CONFIDENCE - SKIP (HOLD)\n\n"
-    
-    if len(skip_df) > 0:
-        markdown += "| Ticker | Direction | Confidence | Score | Model Acc | Reason |\n"
-        markdown += "|--------|-----------|-----------|-------|-----------|--------|\n"
-        
-        for _, row in skip_df.iterrows():
-            emoji = "📈" if "Bullish" in row['direction'] else "📉"
-            markdown += (f"| {row['ticker']} | {emoji} {row['direction']} | "
-                        f"{row['confidence']:.2%} | {row['confidence_score']:.1f}% | "
-                        f"{row['model_accuracy']:.2%} | Low confidence |\n")
-        
-        markdown += "\n**Interpretation:** These signals are near coin-flip. Skip for now and wait for clearer signals.\n\n"
-    else:
-        markdown += "All predictions have sufficient confidence.\n\n"
-    
-    # Risk analysis
-    markdown += """
-## 📋 Ticker Analysis
-
-"""
-    
-    for ticker, info in report['by_ticker'].items():
-        status = "🟢" if info['action'] == 'EXECUTE' else "🟡"
-        markdown += f"### {status} {ticker}\n\n"
-        markdown += f"- **Prediction:** {info['direction']}\n"
-        markdown += f"- **Confidence:** {info['confidence']:.2%} ({info['confidence_level']})\n"
-        markdown += f"- **Model Accuracy:** {info['model_accuracy']:.2%}\n"
-        markdown += f"- **Action:** {'✅ EXECUTE' if info['action'] == 'EXECUTE' else '⏸ HOLD'}\n\n"
-    
-    # Trading rules
-    markdown += """## 🎯 Trading Rules
-
-### Confidence Levels
-- **STRONG** (Score > 15%): Execute the trade
-  - Probability > 65% or < 35%
-  - Model is very certain about direction
-  
-- **MEDIUM** (Score 5-15%): Consider with caution
-  - Probability 55-65% or 35-45%
-  - Model has some confidence
-  
-- **WEAK** (Score ≤ 5%): HOLD/SKIP
-  - Probability 45-55%
-  - Near coin-flip probability
-  - Too much noise, skip this one
-
-### Action Rules
-1. **EXECUTE:** Only trade HIGH CONFIDENCE signals
-2. **SKIP:** Wait for stronger signals on low confidence trades
-3. **Combine:** Use Model Accuracy + Confidence Score together
-   - High accuracy + High confidence = BEST
-   - High accuracy + Low confidence = CAUTION
-   - Low accuracy + Any confidence = AVOID
-
-## 💡 Insights
-
-- Filter out {report['actions']['skip']} noisy signals ({report['actions']['skip'] / report['total_predictions'] * 100:.1f}%)
-- Focus on {report['actions']['execute']} high-confidence trades ({report['actions']['execute'] / report['total_predictions'] * 100:.1f}%)
-- This reduces false signals while maintaining quality trades
-- Especially useful when market is noisy (like today with 9/10 bearish)
-
----
-
-**Next Steps:**
-1. Execute only the 🟢 HIGH CONFIDENCE trades
-2. Monitor HOLD predictions for signal strength increase
-3. Track performance: which confidence levels predict best?
-4. Adjust MIN_CONFIDENCE threshold based on results
-
-*Report generated by SuzumeBachiBlowdart Confidence Filter*
-"""
-    
-    return markdown
-
-
-def main():
-    """Main execution"""
-    
-    print("="*70)
-    print("SuzumeBachiBlowdart - Confidence-Based Filtering")
-    print("="*70)
-    
-    # Load latest predictions
-    predictions_file = f"{PREDICTIONS_DIR}/latest_predictions.json"
-    
-    if not Path(predictions_file).exists():
-        print(f"[ERROR] {predictions_file} not found")
-        return 1
-    
-    print(f"\n[1/4] Loading predictions from {predictions_file}...")
-    with open(predictions_file, 'r') as f:
-        predictions = json.load(f)
-    print(f"  ✓ Loaded {len(predictions)} predictions")
-    
-    # Apply confidence filter
-    print(f"\n[2/4] Applying confidence filter (MIN_CONFIDENCE={MIN_CONFIDENCE})...")
-    filtered_predictions = apply_confidence_filter(predictions, min_confidence=MIN_CONFIDENCE)
-    print(f"  ✓ Filtered {len(filtered_predictions)} predictions")
-    
-    # Generate report
-    print(f"\n[3/4] Generating confidence report...")
-    report = generate_confidence_report(filtered_predictions)
-    print(f"  ✓ Execute: {report['actions']['execute']}")
-    print(f"  ✓ Skip: {report['actions']['skip']}")
-    
-    # Save results
-    print(f"\n[4/4] Saving results...")
-    save_filtered_predictions(filtered_predictions, report)
-    
-    # Generate markdown report
-    md_report = generate_markdown_report(filtered_predictions, report)
-    md_file = f"{PREDICTIONS_DIR}/confidence_report.md"
-    with open(md_file, 'w') as f:
-        f.write(md_report)
-    print(f"✓ Saved: {md_file}")
-    
-    # Print summary
+    # ===== Phase 4: Market Environment Analysis =====
     print("\n" + "="*70)
-    print("CONFIDENCE FILTER SUMMARY")
+    print("[PHASE 4] Market Environment Analysis (Phase 2)")
+    print("-" * 70)
+    
+    try:
+        result = subprocess.run(
+            ["python", "market_regime_analysis.py"],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        if result.returncode == 0:
+            print("✓ Market regime analysis completed")
+            if result.stdout:
+                print(result.stdout)
+        else:
+            print(f"⚠️ Market regime analysis failed: {result.stderr[:200]}")
+    except subprocess.TimeoutExpired:
+        print("⚠️ Market regime analysis timeout")
+    except Exception as e:
+        print(f"⚠️ Market regime analysis error: {str(e)[:60]}")
+    
+    # ===== Phase 5: Backtest Validation =====
+    print("\n" + "="*70)
+    print("[PHASE 5] Backtest Validation (Phase 3)")
+    print("-" * 70)
+    
+    try:
+        result = subprocess.run(
+            ["python", "backtest_engine.py"],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        if result.returncode == 0:
+            print("✓ Backtest validation completed")
+            if result.stdout:
+                print(result.stdout)
+        else:
+            print(f"⚠️ Backtest validation failed: {result.stderr[:200]}")
+    except subprocess.TimeoutExpired:
+        print("⚠️ Backtest validation timeout")
+    except Exception as e:
+        print(f"⚠️ Backtest validation error: {str(e)[:60]}")
+    
+    # ===== Summary =====
+    print("\n" + "="*70)
+    print("SUMMARY")
+    print("-" * 70)
+    print(f"Predictions generated: {len(filtered_predictions)}/{len(TICKERS)}")
+    print(f"Models trained: {metrics['total_trained']}")
+    print(f"Failed: {metrics['total_failed']}")
+    print(f"\nConfidence Filter Results:")
+    print(f"  Execute (High Conf): {len(execute_predictions)}")
+    print(f"  Skip (Low Conf): {len(skip_predictions)}")
+    print(f"  Execute Ratio: {len(execute_predictions) / len(filtered_predictions) * 100:.1f}%")
+    
+    if execute_predictions:
+        avg_confidence_execute = np.mean([p['confidence'] for p in execute_predictions])
+        print(f"  Avg Confidence (Execute): {avg_confidence_execute:.4f}")
+    
+    if skip_predictions:
+        avg_confidence_skip = np.mean([p['confidence'] for p in skip_predictions])
+        print(f"  Avg Confidence (Skip): {avg_confidence_skip:.4f}")
+    
+    # Calculate average improvement
+    improvements = [r.get('improvement', 0) for r in training_results if r.get('status') == 'OK']
+    if improvements:
+        avg_improvement = np.mean(improvements)
+        print(f"Average accuracy improvement: {avg_improvement:+.4f}")
+    
+    print(f"Logs: {LOGS_DIR}/fetch_log_*.txt")
     print("="*70)
-    print(f"\nTotal Predictions: {report['total_predictions']}")
-    print(f"Execute (High Conf): {report['actions']['execute']} 🟢")
-    print(f"Skip (Low Conf): {report['actions']['skip']} 🔴")
-    print(f"Execute Ratio: {report['actions']['execute'] / report['total_predictions'] * 100:.1f}%")
-    
-    print(f"\nConfidence Distribution:")
-    print(f"  Strong: {report['confidence_distribution']['strong']}")
-    print(f"  Medium: {report['confidence_distribution']['medium']}")
-    print(f"  Weak: {report['confidence_distribution']['weak']}")
-    
-    print(f"\nAverage Confidence: {report['statistics']['avg_confidence']:.4f}")
-    print(f"Avg Confidence Score: {report['statistics']['avg_confidence_score']:.2f}%")
-    
-    print("\n✅ Confidence filter applied successfully!")
+    print(f"End: {datetime.now().isoformat()}")
     print("="*70)
     
-    return 0
+    # Return status
+    if execute_predictions:
+        print("\n✓ SUCCESS: Complete pipeline executed")
+        return 0
+    else:
+        print("\n⚠️  WARNING: No high-confidence predictions")
+        return 1
+
+
+def print_confidence_summary(execute_predictions, skip_predictions):
+    """Print detailed confidence analysis"""
+    
+    print("\n" + "="*70)
+    print("CONFIDENCE-BASED TRADING SUMMARY")
+    print("="*70)
+    
+    if execute_predictions:
+        print("\n🟢 HIGH CONFIDENCE - EXECUTE THESE TRADES:")
+        print("-" * 70)
+        for pred in sorted(execute_predictions, key=lambda x: x['confidence'], reverse=True):
+            direction_emoji = "📈" if "Bullish" in pred['direction'] else "📉"
+            print(f"{pred['ticker']:6s} | {direction_emoji} {pred['direction']:12s} | "
+                  f"Conf: {pred['confidence']:.2%} | "
+                  f"Model Acc: {pred['model_accuracy']:.2%} | "
+                  f"${pred['current_price']:.2f} → ${pred['predicted_price']:.2f}")
+    else:
+        print("\n🟢 HIGH CONFIDENCE - EXECUTE THESE TRADES:")
+        print("-" * 70)
+        print("No high-confidence signals at this time.")
+    
+    if skip_predictions:
+        print("\n🔴 LOW CONFIDENCE - SKIP THESE (HOLD):")
+        print("-" * 70)
+        for pred in sorted(skip_predictions, key=lambda x: x['confidence'], reverse=True):
+            direction_emoji = "📈" if "Bullish" in pred['direction'] else "📉"
+            print(f"{pred['ticker']:6s} | {direction_emoji} {pred['direction']:12s} | "
+                  f"Conf: {pred['confidence']:.2%} | "
+                  f"Model Acc: {pred['model_accuracy']:.2%} | Reason: Low confidence")
+    else:
+        print("\n🔴 LOW CONFIDENCE - SKIP THESE (HOLD):")
+        print("-" * 70)
+        print("All predictions have sufficient confidence!")
+    
+    print("="*70)
 
 
 if __name__ == "__main__":
-    exit(main())
+    exit_code = main()
+    
+    # Print confidence summary
+    try:
+        predictions_file = f"{PREDICTIONS_DIR}/latest_predictions.json"
+        with open(predictions_file, 'r') as f:
+            filtered_predictions = json.load(f)
+        
+        execute_preds = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
+        skip_preds = [p for p in filtered_predictions if p.get('action') == 'SKIP']
+        
+        print_confidence_summary(execute_preds, skip_preds)
+    except Exception as e:
+        print(f"\n[WARNING] Could not print confidence summary: {str(e)}")
+    
+    sys.exit(exit_code)
