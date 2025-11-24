@@ -1,6 +1,6 @@
 # 📊 Confidence-Based Trading Report
 
-**Generated:** 2025-11-24T08:21:19.271442
+**Generated:** 2025-11-24T08:51:13.754740
 
 ## 🎯 Summary
 
