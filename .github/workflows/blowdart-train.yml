@@ -20,7 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
 
       - uses: actions/setup-python@v5
         with:
@@ -30,6 +37,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Prepare artifact directories
+        run: |
+          mkdir -p analytics models daily_predictions docs/data data/cache logs
 
       - name: Train XGBoost models
         run: |

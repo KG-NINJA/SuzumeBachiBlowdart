@@ -13,10 +13,11 @@ from typing import Callable, Dict, Iterable, Optional
 
 import pandas as pd
 import requests
+import yfinance as yf
 
 REQUEST_UA = os.getenv("REQUEST_UA", "Mozilla/5.0 (Codex GitHub Runner)")
-DATA_CACHE_DIR = Path("data_cache")
-DATA_CACHE_DIR.mkdir(exist_ok=True)
+DATA_CACHE_DIR = Path("data/cache")
+DATA_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 REQUIRED_COLUMNS = ["DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME"]
 
@@ -86,11 +87,11 @@ def _save_cache(ticker: str, df: pd.DataFrame) -> None:
         print(f"[cache] Failed to save cache for {ticker}: {exc}")
 
 
-def polygon_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
+def polygon_fetch(ticker: str, range_value: str = "2y") -> pd.DataFrame:
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
         raise ValueError("POLYGON_API_KEY is not set")
-    start_date = _range_to_start_date(range).strftime("%Y-%m-%d")
+    start_date = _range_to_start_date(range_value).strftime("%Y-%m-%d")
     end_date = datetime.utcnow().strftime("%Y-%m-%d")
     url = f"https://api.polygon.io/v2/aggs/ticker/{ticker.upper()}/range/1/day/{start_date}/{end_date}"
     params = {"adjusted": "true", "limit": 50000, "sort": "asc", "apiKey": api_key}
@@ -118,7 +119,7 @@ def polygon_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
     return _validate_df(df)
 
 
-def alpha_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
+def alpha_fetch(ticker: str, range_value: str = "2y") -> pd.DataFrame:
     api_key = os.getenv("ALPHAVANTAGE_API_KEY")
     if not api_key:
         raise ValueError("ALPHAVANTAGE_API_KEY is not set")
@@ -158,16 +159,16 @@ def alpha_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
     df["LOW"] = pd.to_numeric(df["LOW"], errors="coerce")
     df["CLOSE"] = pd.to_numeric(df["CLOSE"], errors="coerce")
     df["VOLUME"] = pd.to_numeric(df["VOLUME"], errors="coerce")
-    start_cutoff = _range_to_start_date(range)
+    start_cutoff = _range_to_start_date(range_value)
     df = df[df["DATE"] >= start_cutoff.strftime("%Y-%m-%d")]
     return _validate_df(df)
 
 
-def tiingo_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
+def tiingo_fetch(ticker: str, range_value: str = "2y") -> pd.DataFrame:
     api_key = os.getenv("TIINGO_API_KEY")
     if not api_key:
         raise ValueError("TIINGO_API_KEY is not set")
-    start_date = _range_to_start_date(range).strftime("%Y-%m-%d")
+    start_date = _range_to_start_date(range_value).strftime("%Y-%m-%d")
     end_date = datetime.utcnow().strftime("%Y-%m-%d")
     url = f"https://api.tiingo.com/tiingo/daily/{ticker.lower()}/prices"
     params = {
@@ -200,28 +201,42 @@ def tiingo_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
     return _validate_df(df)
 
 
+def yfinance_fetch(ticker: str, range_value: str = "2y") -> pd.DataFrame:
+    start_date = _range_to_start_date(range_value)
+    end_date = datetime.utcnow()
+    data = yf.download(ticker, start=start_date, end=end_date, progress=False, auto_adjust=False)
+    if data is None or data.empty:
+        raise ValueError("yfinance returned no data")
+    data.reset_index(inplace=True)
+    data.rename(columns={"Date": "DATE", "Open": "OPEN", "High": "HIGH", "Low": "LOW", "Close": "CLOSE", "Volume": "VOLUME"}, inplace=True)
+    df = data[REQUIRED_COLUMNS]
+    return _validate_df(df)
+
+
 def _attempt_fetchers(
-    fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range: str
+    fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range_value: str
 ) -> Optional[pd.DataFrame]:
     for fetcher in fetchers:
         try:
-            df = fetcher(ticker, range)
+            print(f"[fetch] Attempting {fetcher.__name__} for {ticker}")
+            df = fetcher(ticker, range_value)
             return df
         except Exception as exc:
             print(f"[fetch:{fetcher.__name__}] {ticker} failed: {exc}")
     return None
 
 
-def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -> pd.DataFrame:
+def safe_price_download(ticker: str, range_value: str = "2y", max_attempts: int = 6) -> pd.DataFrame:
     ticker = ticker.upper()
     cached = _load_cache(ticker)
     if cached is not None:
+        print(f"[cache] Using cached prices for {ticker}")
         return cached
 
-    fetchers = [polygon_fetch, alpha_fetch, tiingo_fetch]
+    fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch, yfinance_fetch]
     for attempt in range(max_attempts):
         print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker}")
-        df = _attempt_fetchers(fetchers, ticker, range)
+        df = _attempt_fetchers(fetchers, ticker, range_value)
         if df is not None:
             df = _validate_df(df)
             _save_cache(ticker, df)
@@ -238,4 +253,5 @@ __all__ = [
     "polygon_fetch",
     "alpha_fetch",
     "tiingo_fetch",
+    "yfinance_fetch",
 ]

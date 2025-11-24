@@ -2,3 +2,5 @@
 *.jpg
 analytics/*.png
 analytics/*.jpg
+__pycache__/
+*.pyc

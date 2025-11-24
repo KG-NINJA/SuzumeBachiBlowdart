@@ -20,7 +20,8 @@ LOG_DIR = Path("logs")
 def ensure_directories() -> None:
     """Create required data directories."""
     DATA_DIR.mkdir(exist_ok=True)
-    (DATA_DIR / "cache").mkdir(exist_ok=True)
+    (DATA_DIR / "cache").mkdir(parents=True, exist_ok=True)
+    LOG_DIR.mkdir(exist_ok=True)
 
 
 def _latest_file(pattern: str, directory: Path) -> Optional[Path]:
@@ -69,7 +70,7 @@ def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
 def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
     """Download price history and standardize columns."""
     ensure_directories()
-    price_df = safe_price_download(ticker, range=period)
+    price_df = safe_price_download(ticker, range_value=period)
     # ensure standard columns and ordering
     price_df = price_df.reset_index(drop=True)
     price_df.sort_values("DATE", inplace=True)
@@ -79,22 +80,34 @@ def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
 
 def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:
     for window in windows:
-        df[f"{column}_MA_{window}"] = df[column].rolling(window).mean()
-        df[f"{column}_STD_{window}"] = df[column].rolling(window).std()
+        df[f"{column}_MA_{window}"] = df[column].rolling(window, min_periods=1).mean()
+        df[f"{column}_STD_{window}"] = df[column].rolling(window, min_periods=1).std()
 
 
 def _momentum_features(df: pd.DataFrame) -> None:
     df["RETURN_1D"] = df["CLOSE"].pct_change()
     df["RETURN_3D"] = df["CLOSE"].pct_change(3)
     df["RETURN_7D"] = df["CLOSE"].pct_change(7)
+    df["RETURN_14D"] = df["CLOSE"].pct_change(14)
+    df["RETURN_21D"] = df["CLOSE"].pct_change(21)
     df["LOG_RETURN"] = np.log(df["CLOSE"] / df["CLOSE"].shift(1))
 
 
 def _volatility_features(df: pd.DataFrame) -> None:
     df["VOLATILITY_5"] = df["RETURN_1D"].rolling(5).std()
     df["VOLATILITY_10"] = df["RETURN_1D"].rolling(10).std()
+    df["VOLATILITY_21"] = df["RETURN_1D"].rolling(21).std()
     df["HIGH_LOW_SPREAD"] = (df["HIGH"] - df["LOW"]) / df["CLOSE"]
     df["INTRADAY_RANGE"] = (df["CLOSE"] - df["OPEN"]) / df["OPEN"]
+    df["ATR_STYLE_RANGE"] = (df["HIGH"] - df["LOW"]).rolling(14).mean()
+
+
+def _lagged_price_features(df: pd.DataFrame) -> None:
+    for lag in [1, 2, 3, 5, 10]:
+        df[f"CLOSE_LAG_{lag}"] = df["CLOSE"].shift(lag)
+        df[f"RETURN_LAG_{lag}"] = df["RETURN_1D"].shift(lag)
+    df["CUM_RETURN_30"] = (df["CLOSE"] / df["CLOSE"].shift(30)) - 1
+    df["CUM_RETURN_60"] = (df["CLOSE"] / df["CLOSE"].shift(60)) - 1
 
 
 def _momentum_indicators(df: pd.DataFrame) -> None:
@@ -121,6 +134,13 @@ def _momentum_indicators(df: pd.DataFrame) -> None:
     df["BB_WIDTH"] = df["BB_UPPER"] - df["BB_LOWER"]
 
 
+def _seasonality_features(df: pd.DataFrame) -> None:
+    df["DAY_OF_WEEK"] = df["DATE"].dt.dayofweek
+    df["MONTH"] = df["DATE"].dt.month
+    df["DAY_OF_MONTH"] = df["DATE"].dt.day
+    df["QUARTER"] = df["DATE"].dt.quarter
+
+
 def add_cv_runner_columns(df: pd.DataFrame, cv_features: Dict[str, float]) -> None:
     df["CV_CONFIDENCE"] = cv_features.get("cv_confidence", 0.5)
     df["CV_SIGNAL_STRENGTH"] = cv_features.get("signal_strength", 0.5)
@@ -139,13 +159,20 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
     _momentum_features(df)
     _volatility_features(df)
     _momentum_indicators(df)
+    _lagged_price_features(df)
+    _seasonality_features(df)
     add_cv_runner_columns(df, cv_features)
 
     df["PRICE_TO_MA5"] = df["CLOSE"] / df["CLOSE_MA_5"]
     df["PRICE_TO_MA20"] = df["CLOSE"] / df["CLOSE_MA_20"]
+    df["PRICE_TO_MA50"] = df["CLOSE"] / df["CLOSE_MA_50"]
     df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
     df["TARGET"] = (df["CLOSE"].shift(-1) > df["CLOSE"]).astype(int)
-    df.dropna(inplace=True)
+
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df.fillna(method="bfill", inplace=True)
+    df.fillna(method="ffill", inplace=True)
+    df.fillna(0, inplace=True)
 
     return df
 
@@ -154,8 +181,15 @@ def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, Li
     """Download data, engineer features, and return dataframe with feature columns."""
     price_df = download_price_history(ticker, period=period)
     enriched = engineer_features(price_df)
+
     if enriched.empty:
-        return enriched, []
+        cv_features = load_cv_runner_features()
+        fallback = price_df.copy()
+        add_cv_runner_columns(fallback, cv_features)
+        fallback["RETURN_1D"] = fallback["CLOSE"].pct_change().fillna(0)
+        fallback["TARGET"] = (fallback["CLOSE"].shift(-1) > fallback["CLOSE"]).astype(int)
+        fallback.fillna(0, inplace=True)
+        enriched = fallback
 
     feature_cols = [
         col
@@ -170,6 +204,10 @@ def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, Li
             "LOW",
         }
     ]
+
+    for required in ["CV_CONFIDENCE", "CV_SIGNAL_STRENGTH"]:
+        if required not in feature_cols and required in enriched.columns:
+            feature_cols.append(required)
     return enriched, feature_cols
 
 

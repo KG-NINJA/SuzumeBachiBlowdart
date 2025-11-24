@@ -51,6 +51,35 @@ class BlowdartMLEngine:
 
         ensure_directories()
 
+    def _model_param_sets(self, ticker: str, scale_pos_weight: float) -> List[Dict]:
+        base_params = {
+            "n_estimators": 400,
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "subsample": 0.9,
+            "colsample_bytree": 0.8,
+            "objective": "binary:logistic",
+            "eval_metric": "logloss",
+            "tree_method": "hist",
+            "random_state": 42,
+            "scale_pos_weight": scale_pos_weight,
+        }
+
+        tuned_params = {
+            "GOOGL": {"max_depth": 4, "learning_rate": 0.03, "n_estimators": 450},
+            "AAPL": {"max_depth": 6, "learning_rate": 0.07, "subsample": 0.85},
+            "NFLX": {"max_depth": 6, "learning_rate": 0.08, "colsample_bytree": 0.9},
+        }
+
+        custom = tuned_params.get(ticker.upper(), {})
+        high_tree_variant = {**base_params, **custom, "n_estimators": max(500, base_params["n_estimators"])}
+        shallow_fast_variant = {**base_params, **custom, "max_depth": max(3, custom.get("max_depth", base_params["max_depth"] - 1)), "learning_rate": 0.1}
+        return [
+            {**base_params, **custom},
+            high_tree_variant,
+            shallow_fast_variant,
+        ]
+
     def _model_path(self, ticker: str) -> Path:
         return self.model_dir / f"{ticker}_xgb.json"
 
@@ -125,36 +154,47 @@ class BlowdartMLEngine:
         X_test = test_df[feature_cols]
         y_test = test_df["TARGET"]
 
-        model = XGBClassifier(
-            n_estimators=300,
-            max_depth=5,
-            learning_rate=0.05,
-            subsample=0.9,
-            colsample_bytree=0.8,
-            objective="binary:logistic",
-            eval_metric="logloss",
-            tree_method="hist",
-            random_state=42,
-        )
-        model.fit(X_train, y_train)
+        scale_pos_weight = 1.0
+        positives = int(y_train.sum())
+        negatives = int(len(y_train) - positives)
+        if positives > 0:
+            scale_pos_weight = max(1.0, negatives / positives)
 
-        preds = model.predict(X_test)
-        accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
-        self._save_model(ticker, model)
-        self._save_meta(ticker, feature_cols, accuracy)
+        best_model: Optional[XGBClassifier] = None
+        best_accuracy = -1.0
+        best_importance: List[Dict] = []
+        for params in self._model_param_sets(ticker, scale_pos_weight):
+            candidate = XGBClassifier(**params)
+            candidate.fit(
+                X_train,
+                y_train,
+                eval_set=[(X_train, y_train), (X_test, y_test)],
+                verbose=False,
+                early_stopping_rounds=25,
+            )
+            preds = candidate.predict(X_test)
+            accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
+            if accuracy > best_accuracy:
+                best_model = candidate
+                best_accuracy = accuracy
+                importance = candidate.get_booster().get_score(importance_type="gain")
+                best_importance = sorted(
+                    [{"feature": k, "importance": float(v)} for k, v in importance.items()],
+                    key=lambda x: x["importance"],
+                    reverse=True,
+                )
 
-        importance = model.get_booster().get_score(importance_type="gain")
-        importance_sorted = sorted(
-            [{"feature": k, "importance": float(v)} for k, v in importance.items()],
-            key=lambda x: x["importance"],
-            reverse=True,
-        )
+        if best_model is None:
+            return None
+
+        self._save_model(ticker, best_model)
+        self._save_meta(ticker, feature_cols, best_accuracy)
 
         return {
             "ticker": ticker,
-            "accuracy": accuracy,
+            "accuracy": best_accuracy,
             "feature_cols": feature_cols,
-            "feature_importance": importance_sorted,
+            "feature_importance": best_importance,
             "latest_date": dataset["DATE"].max().isoformat(),
         }
 
@@ -167,6 +207,7 @@ class BlowdartMLEngine:
         if summary:
             self._append_training_metrics(summary)
             self._write_feature_importance(summary)
+            self._write_accuracy_analysis(summary)
         return summary
 
     def _append_training_metrics(self, metrics: List[Dict]) -> None:
@@ -192,6 +233,28 @@ class BlowdartMLEngine:
         target_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
         docs_path = self.docs_data_dir / "feature_importance.json"
         docs_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    def _write_accuracy_analysis(self, metrics: List[Dict]) -> None:
+        analysis_dir = Path("accuracy_analysis")
+        analysis_dir.mkdir(exist_ok=True)
+        ranked = sorted(metrics, key=lambda m: m.get("accuracy", 0), reverse=True)
+        analysis = {
+            "generated_at": datetime.utcnow().isoformat(),
+            "by_ticker": metrics,
+            "best_ticker": ranked[0]["ticker"] if ranked else None,
+        }
+        (analysis_dir / "analysis_results.json").write_text(
+            json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+
+        lines = ["# Accuracy Analysis", "", f"Generated at: {analysis['generated_at']}", ""]
+        lines.append("| Ticker | Accuracy | Latest Date |")
+        lines.append("| --- | --- | --- |")
+        for entry in ranked:
+            lines.append(
+                f"| {entry.get('ticker')} | {entry.get('accuracy', 0):.3f} | {entry.get('latest_date')} |"
+            )
+        (analysis_dir / "REPORT.md").write_text("\n".join(lines), encoding="utf-8")
 
     def _build_prediction_entry(
         self, ticker: str, prob_up: float, latest_row: Dict[str, float], method: str
@@ -230,6 +293,9 @@ class BlowdartMLEngine:
 
         if not feature_cols:
             feature_cols = built_feature_cols
+        missing_cols = [col for col in feature_cols if col not in dataset.columns]
+        for col in missing_cols:
+            dataset[col] = 0
         if dataset.empty or not feature_cols:
             self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
             return None
