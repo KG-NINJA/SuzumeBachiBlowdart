@@ -1,0 +1,28 @@
+theme: jekyll-theme-minimal
+title: SuzumeBachiBlowdart
+description: Automated Stock Price Prediction System
+url: https://kg-ninja.github.io/SuzumeBachiBlowdart
+
+# GitHub Pages settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+  hard_wrap: false
+
+# Exclude files
+exclude:
+  - .gitignore
+  - .github
+  - models
+  - backtest_results
+  - logs
+  
+include:
+  - data
+  - analysis_report.md
