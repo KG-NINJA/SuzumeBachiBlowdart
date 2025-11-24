@@ -3,90 +3,140 @@
     "ticker": "NVDA",
     "current_price": 178.88,
     "predicted_price": 180.8453108189633,
-    "direction": "\u2191 Bullish",
-    "confidence": 0.5053342580795288,
+    "direction": "\u23f8 HOLD",
+    "confidence": 0.5143174529075623,
     "model_accuracy": 0.5,
-    "timestamp": "2025-11-23T23:19:19.947924"
+    "timestamp": "2025-11-24T09:01:22.229356",
+    "confidence_score": 0.014317452907562256,
+    "confidence_level": "WEAK",
+    "action": "SKIP",
+    "reason": "Low confidence (51.43%) - Market noise",
+    "recommendation": "Skip this trade - wait for clearer signal"
   },
   {
     "ticker": "AAPL",
     "current_price": 271.49,
     "predicted_price": 269.4836065020853,
     "direction": "\u2193 Bearish",
-    "confidence": 0.1628868132829666,
+    "confidence": 0.15961655974388123,
     "model_accuracy": 0.375,
-    "timestamp": "2025-11-23T23:19:19.969926"
+    "timestamp": "2025-11-24T09:01:22.255025",
+    "confidence_score": 0.3403834402561188,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (15.96%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "MSFT",
     "current_price": 472.12,
     "predicted_price": 469.5501128568462,
     "direction": "\u2193 Bearish",
-    "confidence": 0.12537233531475067,
+    "confidence": 0.11641691625118256,
     "model_accuracy": 0.5625,
-    "timestamp": "2025-11-23T23:19:19.991703"
+    "timestamp": "2025-11-24T09:01:22.280061",
+    "confidence_score": 0.38358308374881744,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (11.64%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "GOOGL",
     "current_price": 299.66,
     "predicted_price": 296.81227333027516,
     "direction": "\u2193 Bearish",
-    "confidence": 0.07506533712148666,
+    "confidence": 0.059758447110652924,
     "model_accuracy": 0.75,
-    "timestamp": "2025-11-23T23:19:20.013791"
+    "timestamp": "2025-11-24T09:01:22.305330",
+    "confidence_score": 0.4402415528893471,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (5.98%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "AMZN",
     "current_price": 220.69,
     "predicted_price": 218.4087348309525,
     "direction": "\u2193 Bearish",
-    "confidence": 0.14041049778461456,
+    "confidence": 0.13101133704185486,
     "model_accuracy": 0.5625,
-    "timestamp": "2025-11-23T23:19:20.035937"
+    "timestamp": "2025-11-24T09:01:22.331003",
+    "confidence_score": 0.36898866295814514,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (13.10%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "META",
     "current_price": 594.25,
     "predicted_price": 588.6813707535155,
     "direction": "\u2193 Bearish",
-    "confidence": 0.0401591993868351,
+    "confidence": 0.03557193651795387,
     "model_accuracy": 0.6875,
-    "timestamp": "2025-11-23T23:19:20.058077"
+    "timestamp": "2025-11-24T09:01:22.356313",
+    "confidence_score": 0.4644280634820461,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (3.56%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "TSLA",
     "current_price": 391.09,
     "predicted_price": 385.2609403594497,
     "direction": "\u2193 Bearish",
-    "confidence": 0.2260897010564804,
+    "confidence": 0.22198405861854553,
     "model_accuracy": 0.6875,
-    "timestamp": "2025-11-23T23:19:20.080231"
+    "timestamp": "2025-11-24T09:01:22.382210",
+    "confidence_score": 0.27801594138145447,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (22.20%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "AMD",
     "current_price": 203.78,
     "predicted_price": 199.23483052130658,
     "direction": "\u2193 Bearish",
-    "confidence": 0.03145289048552513,
-    "model_accuracy": 0.5625,
-    "timestamp": "2025-11-23T23:19:20.102258"
+    "confidence": 0.0284054446965456,
+    "model_accuracy": 0.625,
+    "timestamp": "2025-11-24T09:01:22.407182",
+    "confidence_score": 0.4715945553034544,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (2.84%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "NFLX",
     "current_price": 104.31,
     "predicted_price": 98.83348451137603,
     "direction": "\u2193 Bearish",
-    "confidence": 0.06238671764731407,
+    "confidence": 0.05563763901591301,
     "model_accuracy": 0.5,
-    "timestamp": "2025-11-23T23:19:20.124287"
+    "timestamp": "2025-11-24T09:01:22.432156",
+    "confidence_score": 0.444362360984087,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (5.56%) - STRONG signal",
+    "recommendation": "Execute \u2193 Bearish trade"
   },
   {
     "ticker": "QQQ",
     "current_price": 590.07,
     "predicted_price": 592.9973160794665,
-    "direction": "\u2191 Bullish",
-    "confidence": 0.542837381362915,
+    "direction": "\u23f8 HOLD",
+    "confidence": 0.5675119757652283,
     "model_accuracy": 0.5,
-    "timestamp": "2025-11-23T23:19:20.146398"
+    "timestamp": "2025-11-24T09:01:22.457096",
+    "confidence_score": 0.06751197576522827,
+    "confidence_level": "MEDIUM",
+    "action": "SKIP",
+    "reason": "Low confidence (56.75%) - Market noise",
+    "recommendation": "Skip this trade - wait for clearer signal"
   }
 ]

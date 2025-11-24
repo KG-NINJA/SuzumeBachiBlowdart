@@ -11,7 +11,15 @@
     "confidence_level": "WEAK",
     "action": "SKIP",
     "reason": "Low confidence (51.43%) - Market noise",
-    "recommendation": "Skip this trade - wait for clearer signal"
+    "recommendation": "Skip this trade - wait for clearer signal",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "BUY_CAUTION",
+      "strength_level": "STRONG",
+      "strength_score": 0.7952439597968514,
+      "recommendation": "\u26a0\ufe0f CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation"
+    }
   },
   {
     "ticker": "AAPL",
@@ -25,7 +33,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (15.96%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "WEAK",
+      "strength_score": -0.25169878786692257,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
+    }
   },
   {
     "ticker": "MSFT",
@@ -39,7 +55,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (11.64%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "WEAK",
+      "strength_score": -0.20292606791090462,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
+    }
   },
   {
     "ticker": "GOOGL",
@@ -53,7 +77,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (5.98%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "NEUTRAL",
+      "strength_score": -0.18975434111887804,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
+    }
   },
   {
     "ticker": "AMZN",
@@ -67,7 +99,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (13.10%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "NEUTRAL",
+      "strength_score": -0.16432122314981107,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
+    }
   },
   {
     "ticker": "META",
@@ -81,7 +121,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (3.56%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "WEAK",
+      "strength_score": -0.30807979948984104,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
+    }
   },
   {
     "ticker": "TSLA",
@@ -95,7 +143,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (22.20%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "NEUTRAL",
+      "strength_score": 0.18501349544097107,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
+    }
   },
   {
     "ticker": "AMD",
@@ -109,7 +165,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (2.84%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "WEAK",
+      "strength_score": -0.3813842740259045,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
+    }
   },
   {
     "ticker": "NFLX",
@@ -123,7 +187,15 @@
     "confidence_level": "STRONG",
     "action": "EXECUTE",
     "reason": "High confidence (5.56%) - STRONG signal",
-    "recommendation": "Execute \u2193 Bearish trade"
+    "recommendation": "Execute \u2193 Bearish trade",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "SELL",
+      "strength_level": "WEAK",
+      "strength_score": -0.4180459175000668,
+      "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
+    }
   },
   {
     "ticker": "QQQ",
@@ -137,6 +209,14 @@
     "confidence_level": "MEDIUM",
     "action": "SKIP",
     "reason": "Low confidence (56.75%) - Market noise",
-    "recommendation": "Skip this trade - wait for clearer signal"
+    "recommendation": "Skip this trade - wait for clearer signal",
+    "phase2": {
+      "market_regime": "STRONG_DOWNTREND",
+      "market_signal": "\ud83d\udd34 SELL",
+      "phase2_action": "BUY_CAUTION",
+      "strength_level": "STRONG",
+      "strength_score": 0.9359529558245067,
+      "recommendation": "\u26a0\ufe0f CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation"
+    }
   }
 ]
