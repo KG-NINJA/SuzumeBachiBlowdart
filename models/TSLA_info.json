@@ -1,14 +1,14 @@
 {
   "ticker": "TSLA",
   "accuracy": 0.7307692307692307,
-  "previous_accuracy": 0.6875,
-  "accuracy_improvement": 0.043269230769230727,
+  "previous_accuracy": 0.7307692307692307,
+  "accuracy_improvement": 0.0,
   "train_samples": 100,
   "test_samples": 26,
-  "total_train_samples": 344,
+  "total_train_samples": 444,
   "features": 71,
-  "learning_type": "FRESH_TRAIN",
+  "learning_type": "ONLINE_UPDATE",
   "model_path": "models/TSLA_model.json",
   "scaler_path": "models/TSLA_scaler.pkl",
-  "timestamp": "2025-11-25T05:48:43.752062"
+  "timestamp": "2025-11-25T08:28:31.544681"
 }

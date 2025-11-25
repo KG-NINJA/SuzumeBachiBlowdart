@@ -1,19 +1,19 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-25T05:48:44.927431
+**Generated:** 2025-11-25T08:28:32.769466
 
 ## 🎯 Market Regime
 
 | Metric | Value |
 |--------|-------|
-| **Regime** | MIXED 🟡 NEUTRAL |
+| **Regime** | DOWNTREND 🔴 SELL |
 | **Bullish** | 1/10 (10.0%) |
-| **Bearish** | 4/10 (40.0%) |
-| **Hold** | 5/10 (50.0%) |
+| **Bearish** | 6/10 (60.0%) |
+| **Hold** | 3/10 (30.0%) |
 
 ## 📊 Interpretation
 
-Market is mixed (10.0% bullish, 40.0% bearish). Be selective.
+Market shows downtrend bias (60.0% bearish). Prefer SELL signals.
 
 ---
 
@@ -21,11 +21,11 @@ Market is mixed (10.0% bullish, 40.0% bearish). Be selective.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AAPL | 57.69% | 🟢 STRONG | +0.42 |
-| 2 | AMZN | 46.15% | 🟢 STRONG | +0.36 |
-| 3 | NVDA | 61.54% | 🟡 NEUTRAL | +0.15 |
-| 4 | TSLA | 73.08% | 🟡 NEUTRAL | +0.13 |
-| 5 | QQQ | 57.69% | 🟡 NEUTRAL | +0.13 |
+| 1 | AAPL | 61.54% | 🟢 STRONG | +0.49 |
+| 2 | AMZN | 46.15% | 🟢 STRONG | +0.43 |
+| 3 | NVDA | 61.54% | 🟡 NEUTRAL | +0.18 |
+| 4 | TSLA | 73.08% | 🟡 NEUTRAL | +0.12 |
+| 5 | QQQ | 53.85% | 🟡 NEUTRAL | +0.08 |
 
 
 ---
@@ -33,37 +33,42 @@ Market is mixed (10.0% bullish, 40.0% bearish). Be selective.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **AMZN** 📈 BUY | Conf: 65.61% | Strength: STRONG
-  → ✅ EXECUTE - EXECUTE (MIXED environment, STRONG strength)
+- **MSFT** 📉 SELL | Conf: 24.69% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
+- **GOOGL** 📉 SELL | Conf: 33.55% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
+- **META** 📉 SELL | Conf: 3.42% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **TSLA** 📉 SELL | Conf: 33.46% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
+- **AMD** 📉 SELL | Conf: 3.61% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **NFLX** 📉 SELL | Conf: 7.43% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
 
 
 ### ⚠️ CAUTION
-No cautionary signals.
+- **NVDA** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
+- **AAPL** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
+- **AMZN** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
+- **QQQ** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
 
 
 ### ⏸️ SKIP
-- **NVDA** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **AAPL** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **MSFT** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **GOOGL** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **META** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **TSLA** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **AMD** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **NFLX** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **QQQ** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+All predictions are actionable.
 
 
 ---
 
 ## 🎯 Trading Strategy by Market Regime
 
-### Current: MIXED
+### Current: DOWNTREND
 
 **Strategy:**
-• Be selective
-• High-accuracy trades only
-• Reduce position size
-• Wait for clarity
+• Prefer SELL over BUY
+• Look for bounce exits
+• Scale out of losers
+• Tight risk management
 
 ---
 

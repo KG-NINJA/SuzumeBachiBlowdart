@@ -1,14 +1,14 @@
 {
   "ticker": "META",
   "accuracy": 0.6538461538461539,
-  "previous_accuracy": 0.6875,
-  "accuracy_improvement": -0.033653846153846145,
+  "previous_accuracy": 0.6538461538461539,
+  "accuracy_improvement": 0.0,
   "train_samples": 100,
   "test_samples": 26,
-  "total_train_samples": 344,
+  "total_train_samples": 444,
   "features": 71,
-  "learning_type": "FRESH_TRAIN",
+  "learning_type": "ONLINE_UPDATE",
   "model_path": "models/META_model.json",
   "scaler_path": "models/META_scaler.pkl",
-  "timestamp": "2025-11-25T05:48:43.650128"
+  "timestamp": "2025-11-25T08:28:31.391932"
 }
