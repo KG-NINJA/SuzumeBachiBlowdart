@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-25T08:28:32.484999",
+  "timestamp": "2025-11-25T09:22:02.404734",
   "run_date": "2025-11-25",
   "results": [
     {
@@ -15,8 +15,8 @@
       "ticker": "AAPL",
       "status": "OK",
       "accuracy": 0.6153846153846154,
-      "previous_accuracy": 0.5769230769230769,
-      "improvement": 0.03846153846153855,
+      "previous_accuracy": 0.6153846153846154,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -24,8 +24,8 @@
       "ticker": "MSFT",
       "status": "OK",
       "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6923076923076923,
-      "improvement": -0.038461538461538436,
+      "previous_accuracy": 0.6538461538461539,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -33,8 +33,8 @@
       "ticker": "GOOGL",
       "status": "OK",
       "accuracy": 0.5769230769230769,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": -0.07692307692307698,
+      "previous_accuracy": 0.5769230769230769,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -59,9 +59,9 @@
     {
       "ticker": "TSLA",
       "status": "OK",
-      "accuracy": 0.7307692307692307,
+      "accuracy": 0.7692307692307693,
       "previous_accuracy": 0.7307692307692307,
-      "improvement": 0.0,
+      "improvement": 0.03846153846153855,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -77,9 +77,9 @@
     {
       "ticker": "NFLX",
       "status": "OK",
-      "accuracy": 0.5769230769230769,
+      "accuracy": 0.5384615384615384,
       "previous_accuracy": 0.5769230769230769,
-      "improvement": 0.0,
+      "improvement": -0.038461538461538436,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -87,8 +87,8 @@
       "ticker": "QQQ",
       "status": "OK",
       "accuracy": 0.5384615384615384,
-      "previous_accuracy": 0.5769230769230769,
-      "improvement": -0.038461538461538436,
+      "previous_accuracy": 0.5384615384615384,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     }
@@ -102,13 +102,13 @@
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.321066365763545,
+    "average_confidence": 0.3125647321343422,
     "execute_count": 7,
     "skip_count": 3,
     "confidence_distribution": {
       "high": 0,
-      "medium": 4,
-      "low": 6
+      "medium": 3,
+      "low": 7
     }
   }
 }

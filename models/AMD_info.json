@@ -5,10 +5,10 @@
   "accuracy_improvement": 0.0,
   "train_samples": 100,
   "test_samples": 26,
-  "total_train_samples": 444,
+  "total_train_samples": 544,
   "features": 71,
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/AMD_model.json",
   "scaler_path": "models/AMD_scaler.pkl",
-  "timestamp": "2025-11-25T08:28:31.691612"
+  "timestamp": "2025-11-25T09:22:01.647473"
 }
