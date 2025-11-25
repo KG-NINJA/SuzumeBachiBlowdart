@@ -4,8 +4,9 @@ Calculates: RSI, MACD, Bollinger Bands, Moving Averages, Advanced Technical Indi
 Integrated with advanced_features.py for enhanced prediction
 """
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from advanced_features import build_advanced_features
 
 
@@ -41,163 +42,145 @@ def calculate_bollinger_bands(prices, period=20, num_std=2):
 def build_feature_set(price_data, ticker):
     """
     Build comprehensive feature set from price data
-    
+
     Args:
         price_data: DataFrame with OHLCV data
         ticker: Stock symbol (for logging)
-    
+
     Returns:
         DataFrame: Features ready for ML, or None if failed
     """
     try:
         if price_data is None or price_data.empty:
             return None
-        
+
         df = price_data.copy()
-        
+
         # Step 1: Normalize column names - convert ALL to proper Title Case (Close, Open, High, Low, Volume)
         print(f"  [FEATURES] Original columns: {df.columns.tolist()}")
-        
-        # Create mapping for common variations
+
         column_mapping = {}
         lower_cols = {col.lower(): col for col in df.columns}
-        
-        # Map to proper case names
+
         standard_names = ['date', 'open', 'high', 'low', 'close', 'volume']
         for std_name in standard_names:
             if std_name in lower_cols:
                 actual_col = lower_cols[std_name]
-                if std_name == 'date':
-                    column_mapping[actual_col] = 'Date'
-                elif std_name == 'open':
-                    column_mapping[actual_col] = 'Open'
-                elif std_name == 'high':
-                    column_mapping[actual_col] = 'High'
-                elif std_name == 'low':
-                    column_mapping[actual_col] = 'Low'
-                elif std_name == 'close':
-                    column_mapping[actual_col] = 'Close'
-                elif std_name == 'volume':
-                    column_mapping[actual_col] = 'Volume'
-        
-        # Apply mapping
+                column_mapping[actual_col] = std_name.capitalize()
+
         df = df.rename(columns=column_mapping)
         print(f"  [FEATURES] Renamed columns: {df.columns.tolist()}")
-        
-        # Ensure required columns exist
+
+        # Step 2: Validate required columns
         required = ['Open', 'High', 'Low', 'Close', 'Volume']
         missing = [col for col in required if col not in df.columns]
-        
         if missing:
             print(f"  [FEATURES] Missing required columns: {missing}")
             print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
             return None
-        
+
         # Convert to numeric
         for col in required:
             df[col] = pd.to_numeric(df[col], errors='coerce')
-        
+
         df = df.dropna()
-        
+
         if len(df) < 30:
             print(f"  [FEATURES] Insufficient data: {len(df)} rows")
             return None
-        
-        # Sort by date if date column exists
+
+        # Sort by date if available
         if 'Date' in df.columns:
             df = df.sort_values('Date').reset_index(drop=True)
         else:
             df = df.reset_index(drop=True)
-        
+
         close = df['Close']
         high = df['High']
         low = df['Low']
         volume = df['Volume']
-        
+
         # ===== Technical Indicators (Basic) =====
-        
+
         # Moving Averages
         df['MA5'] = close.rolling(5).mean()
         df['MA10'] = close.rolling(10).mean()
         df['MA20'] = close.rolling(20).mean()
         df['MA50'] = close.rolling(50).mean()
-        
+
         # Exponential Moving Average
         df['EMA12'] = close.ewm(span=12).mean()
         df['EMA26'] = close.ewm(span=26).mean()
-        
+
         # RSI
         df['RSI14'] = calculate_rsi(close, 14)
         df['RSI7'] = calculate_rsi(close, 7)
-        
+
         # MACD
         df['MACD'], df['MACD_Signal'], df['MACD_Hist'] = calculate_macd(close)
-        
+
         # Bollinger Bands
         df['BB_Upper'], df['BB_Middle'], df['BB_Lower'] = calculate_bollinger_bands(close)
-        
+
         # Rate of Change
         df['ROC10'] = ((close - close.shift(10)) / close.shift(10)) * 100
         df['ROC20'] = ((close - close.shift(20)) / close.shift(20)) * 100
-        
+
         # Momentum
         df['Momentum'] = close - close.shift(10)
-        
+
         # ATR (Average True Range)
         high_low = high - low
         high_close = np.abs(high - close.shift())
         low_close = np.abs(low - close.shift())
         tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
         df['ATR'] = tr.rolling(14).mean()
-        
+
         # Volume indicators
         df['Volume_MA20'] = volume.rolling(20).mean()
         df['Volume_Ratio'] = volume / (df['Volume_MA20'] + 0.0001)
-        
+
         # Price patterns
         df['HighLowRatio'] = (high - low) / close
         df['CloseOpenRatio'] = (close - df['Open']) / df['Open']
-        
+
         # Returns
         df['DailyReturn'] = close.pct_change() * 100
-        
+
         # Volatility
         df['Volatility'] = df['DailyReturn'].rolling(20).std()
-        
+
         print(f"  [FEATURES] Basic features added: {df.shape[1]} columns")
-        
+
         # ===== Advanced Features (NEW) =====
         print(f"  [FEATURES] Adding advanced indicators for {ticker}...")
-        
+
         try:
             df = build_advanced_features(df)
-            print(f"  [FEATURES] Advanced features added successfully")
+            print("  [FEATURES] Advanced features added successfully")
         except KeyError as e:
-            print(f"  [FEATURES] KeyError in build_advanced_features: {str(e)}")
-            print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
-            print(f"  [FEATURES] Continuing with basic features only")
+            print(f"  [FEATURES] KeyError: {e} | Available: {df.columns.tolist()}")
+            print("  [FEATURES] Continuing with basic features only")
         except Exception as e:
-            print(f"  [FEATURES] Error in build_advanced_features: {str(e)[:100]}")
-            print(f"  [FEATURES] Continuing with basic features only")
-        
+            print(f"  [FEATURES] Error: {str(e)[:100]}")
+            print("  [FEATURES] Continuing with basic features only")
+
         print(f"  [FEATURES] Total features: {df.shape[1]}")
-        
+
         # ===== Data Cleaning =====
-        
-        # Handle NaN and Inf
+
         df = df.replace([np.inf, -np.inf], np.nan)
         df = df.fillna(0)
-        
-        # Remove rows with NaN (from technical indicators)
+
         df = df.dropna()
-        
+
         if len(df) < 30:
             print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
             return None
-        
+
         print(f"  [FEATURES] Final dataset: {len(df)} rows × {df.shape[1]} columns")
         return df
-    
+
     except KeyError as e:
         print(f"  [FEATURES ERROR] {ticker}: KeyError - {str(e)}")
         print(f"  [FEATURES ERROR] Available columns: {df.columns.tolist() if 'df' in locals() else 'N/A'}")
