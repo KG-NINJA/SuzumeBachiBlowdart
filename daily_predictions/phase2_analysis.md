@@ -1,19 +1,19 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-25T11:41:26.357116
+**Generated:** 2025-11-25T11:46:41.361569
 
 ## 🎯 Market Regime
 
 | Metric | Value |
 |--------|-------|
 | **Regime** | DOWNTREND 🔴 SELL |
-| **Bullish** | 1/10 (10.0%) |
-| **Bearish** | 6/10 (60.0%) |
-| **Hold** | 3/10 (30.0%) |
+| **Bullish** | 3/10 (30.0%) |
+| **Bearish** | 7/10 (70.0%) |
+| **Hold** | 0/10 (0.0%) |
 
 ## 📊 Interpretation
 
-Market shows downtrend bias (60.0% bearish). Prefer SELL signals.
+Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 
 ---
 
@@ -21,10 +21,10 @@ Market shows downtrend bias (60.0% bearish). Prefer SELL signals.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AMZN | 46.15% | 🟢 STRONG | +0.57 |
-| 2 | AAPL | 61.54% | 🟢 STRONG | +0.47 |
-| 3 | TSLA | 65.38% | 🟢 STRONG | +0.41 |
-| 4 | QQQ | 65.38% | 🟡 NEUTRAL | +0.12 |
+| 1 | AMZN | 46.15% | 🟢 STRONG | +0.62 |
+| 2 | AAPL | 65.38% | 🟢 STRONG | +0.48 |
+| 3 | TSLA | 65.38% | 🟢 STRONG | +0.43 |
+| 4 | QQQ | 61.54% | 🟡 NEUTRAL | +0.12 |
 | 5 | NVDA | 61.54% | 🟡 NEUTRAL | -0.02 |
 
 
@@ -33,25 +33,26 @@ Market shows downtrend bias (60.0% bearish). Prefer SELL signals.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **NVDA** 📉 SELL | Conf: 30.53% | Strength: NEUTRAL
+- **NVDA** 📉 SELL | Conf: 29.65% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **MSFT** 📉 SELL | Conf: 17.91% | Strength: NEUTRAL
+- **MSFT** 📉 SELL | Conf: 17.01% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **GOOGL** 📉 SELL | Conf: 22.49% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **GOOGL** 📉 SELL | Conf: 25.27% | Strength: NEUTRAL
+- **META** 📉 SELL | Conf: 3.68% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **AMD** 📉 SELL | Conf: 3.74% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **NFLX** 📉 SELL | Conf: 6.84% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **QQQ** 📉 SELL | Conf: 38.00% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **META** 📉 SELL | Conf: 4.22% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **AMD** 📉 SELL | Conf: 4.52% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **NFLX** 📉 SELL | Conf: 7.49% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
 
 
 ### ⚠️ CAUTION
 - **AAPL** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
 - **AMZN** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
 - **TSLA** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
-- **QQQ** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
 
 
 ### ⏸️ SKIP

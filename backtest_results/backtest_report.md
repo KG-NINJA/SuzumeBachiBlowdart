@@ -1,24 +1,24 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-25T11:41:26.685920
+**Generated:** 2025-11-25T11:46:41.661658
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 7 🟢 |
-| **Skip** | 3 🔴 |
-| **Avg Expected Move** | 1.61% |
-| **Avg Confidence** | 0.3224 |
-| **Avg Model Accuracy** | 0.6077 |
+| **Execute** | 1 🟢 |
+| **Skip** | 7 🔴 |
+| **Avg Expected Move** | 1.62% |
+| **Avg Confidence** | 0.3134 |
+| **Avg Model Accuracy** | 0.6038 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
-| 🟢 **BEST** | 0 | 30.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 3 | 30.0% | Above average on both metrics |
+| 🟢 **BEST** | 2 | 20.0% | High accuracy (>65%) + High confidence (>15%) |
+| 🟡 **GOOD** | 4 | 40.0% | Above average on both metrics |
 | 🟠 **FAIR** | 4 | 40.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
@@ -28,18 +28,18 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| MSFT | 65.38% | 17.91% | 1.93% | SELL |
-| TSLA | 65.38% | 56.46% | 0.39% | BUY_CAUTION |
-| QQQ | 65.38% | 37.23% | 0.77% | BUY_CAUTION |
+| AAPL | 65.38% | 59.02% | 0.54% | BUY_CAUTION |
+| TSLA | 65.38% | 55.42% | 0.33% | BUY_CAUTION |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- NVDA - Acc: 61.54%, Conf: 30.53%
-- AAPL - Acc: 61.54%, Conf: 62.11%
-- GOOGL - Acc: 61.54%, Conf: 25.27%
+- NVDA - Acc: 61.54%, Conf: 29.65%
+- MSFT - Acc: 61.54%, Conf: 17.01%
+- GOOGL - Acc: 61.54%, Conf: 22.49%
+- QQQ - Acc: 61.54%, Conf: 38.00%
 
 
 ## 🔍 Analysis by Accuracy
@@ -47,9 +47,9 @@
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
 | > 70% | 0 | 0.00% |
-| 60-70% | 8 | 1.49% |
-| 50-60% | 1 | 2.55% |
-| < 50% | 1 | 1.60% |
+| 60-70% | 8 | 1.50% |
+| 50-60% | 1 | 2.59% |
+| < 50% | 1 | 1.65% |
 
 ---
 
