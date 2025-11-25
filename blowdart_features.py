@@ -55,42 +55,47 @@ def build_feature_set(price_data, ticker):
         
         df = price_data.copy()
         
-        # Standardize column names to match advanced_features.py expectations
-        # First, try to normalize: lowercase and strip whitespace
-        df.columns = [col.lower().strip() for col in df.columns]
+        # Step 1: Normalize column names - convert ALL to proper Title Case (Close, Open, High, Low, Volume)
+        print(f"  [FEATURES] Original columns: {df.columns.tolist()}")
         
-        # Rename common variations to standard names
-        rename_map = {
-            'date': 'date',
-            'open': 'open',
-            'high': 'high',
-            'low': 'low',
-            'close': 'close',
-            'volume': 'volume',
-            'adj_close': 'close',
-            'adjusted_close': 'close'
-        }
+        # Create mapping for common variations
+        column_mapping = {}
+        lower_cols = {col.lower(): col for col in df.columns}
+        
+        # Map to proper case names
+        standard_names = ['date', 'open', 'high', 'low', 'close', 'volume']
+        for std_name in standard_names:
+            if std_name in lower_cols:
+                actual_col = lower_cols[std_name]
+                if std_name == 'date':
+                    column_mapping[actual_col] = 'Date'
+                elif std_name == 'open':
+                    column_mapping[actual_col] = 'Open'
+                elif std_name == 'high':
+                    column_mapping[actual_col] = 'High'
+                elif std_name == 'low':
+                    column_mapping[actual_col] = 'Low'
+                elif std_name == 'close':
+                    column_mapping[actual_col] = 'Close'
+                elif std_name == 'volume':
+                    column_mapping[actual_col] = 'Volume'
         
         # Apply mapping
-        df.rename(columns=rename_map, inplace=True)
-        
-        # Also create UPPERCASE versions for advanced_features.py compatibility
-        df_upper = df.copy()
-        df_upper.columns = [col.upper() for col in df_upper.columns]
+        df = df.rename(columns=column_mapping)
+        print(f"  [FEATURES] Renamed columns: {df.columns.tolist()}")
         
         # Ensure required columns exist
-        required = ['open', 'high', 'low', 'close', 'volume']
-        missing_lower = [col for col in required if col not in df.columns]
+        required = ['Open', 'High', 'Low', 'Close', 'Volume']
+        missing = [col for col in required if col not in df.columns]
         
-        if missing_lower:
-            print(f"  [FEATURES] Missing required columns: {missing_lower}")
+        if missing:
+            print(f"  [FEATURES] Missing required columns: {missing}")
             print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
             return None
         
         # Convert to numeric
         for col in required:
-            if col in df.columns:
-                df[col] = pd.to_numeric(df[col], errors='coerce')
+            df[col] = pd.to_numeric(df[col], errors='coerce')
         
         df = df.dropna()
         
@@ -99,87 +104,80 @@ def build_feature_set(price_data, ticker):
             return None
         
         # Sort by date if date column exists
-        if 'date' in df.columns:
-            df = df.sort_values('date').reset_index(drop=True)
+        if 'Date' in df.columns:
+            df = df.sort_values('Date').reset_index(drop=True)
         else:
             df = df.reset_index(drop=True)
         
-        close = df['close']
-        high = df['high']
-        low = df['low']
-        volume = df['volume']
+        close = df['Close']
+        high = df['High']
+        low = df['Low']
+        volume = df['Volume']
         
         # ===== Technical Indicators (Basic) =====
         
         # Moving Averages
-        df['ma5'] = close.rolling(5).mean()
-        df['ma10'] = close.rolling(10).mean()
-        df['ma20'] = close.rolling(20).mean()
-        df['ma50'] = close.rolling(50).mean()
+        df['MA5'] = close.rolling(5).mean()
+        df['MA10'] = close.rolling(10).mean()
+        df['MA20'] = close.rolling(20).mean()
+        df['MA50'] = close.rolling(50).mean()
         
         # Exponential Moving Average
-        df['ema12'] = close.ewm(span=12).mean()
-        df['ema26'] = close.ewm(span=26).mean()
+        df['EMA12'] = close.ewm(span=12).mean()
+        df['EMA26'] = close.ewm(span=26).mean()
         
         # RSI
-        df['rsi14'] = calculate_rsi(close, 14)
-        df['rsi7'] = calculate_rsi(close, 7)
+        df['RSI14'] = calculate_rsi(close, 14)
+        df['RSI7'] = calculate_rsi(close, 7)
         
         # MACD
-        df['macd'], df['macd_signal'], df['macd_hist'] = calculate_macd(close)
+        df['MACD'], df['MACD_Signal'], df['MACD_Hist'] = calculate_macd(close)
         
         # Bollinger Bands
-        df['bb_upper'], df['bb_middle'], df['bb_lower'] = calculate_bollinger_bands(close)
+        df['BB_Upper'], df['BB_Middle'], df['BB_Lower'] = calculate_bollinger_bands(close)
         
         # Rate of Change
-        df['roc10'] = ((close - close.shift(10)) / close.shift(10)) * 100
-        df['roc20'] = ((close - close.shift(20)) / close.shift(20)) * 100
+        df['ROC10'] = ((close - close.shift(10)) / close.shift(10)) * 100
+        df['ROC20'] = ((close - close.shift(20)) / close.shift(20)) * 100
         
         # Momentum
-        df['momentum'] = close - close.shift(10)
+        df['Momentum'] = close - close.shift(10)
         
         # ATR (Average True Range)
         high_low = high - low
         high_close = np.abs(high - close.shift())
         low_close = np.abs(low - close.shift())
         tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
-        df['atr'] = tr.rolling(14).mean()
+        df['ATR'] = tr.rolling(14).mean()
         
         # Volume indicators
-        df['volume_ma20'] = volume.rolling(20).mean()
-        df['volume_ratio'] = volume / (df['volume_ma20'] + 0.0001)
+        df['Volume_MA20'] = volume.rolling(20).mean()
+        df['Volume_Ratio'] = volume / (df['Volume_MA20'] + 0.0001)
         
         # Price patterns
-        df['high_low_ratio'] = (high - low) / close
-        df['close_open_ratio'] = (close - df['open']) / df['open']
+        df['HighLowRatio'] = (high - low) / close
+        df['CloseOpenRatio'] = (close - df['Open']) / df['Open']
         
         # Returns
-        df['daily_return'] = close.pct_change() * 100
+        df['DailyReturn'] = close.pct_change() * 100
         
         # Volatility
-        df['volatility'] = df['daily_return'].rolling(20).std()
+        df['Volatility'] = df['DailyReturn'].rolling(20).std()
+        
+        print(f"  [FEATURES] Basic features added: {df.shape[1]} columns")
         
         # ===== Advanced Features (NEW) =====
         print(f"  [FEATURES] Adding advanced indicators for {ticker}...")
         
         try:
-            # Try with lowercase columns first
             df = build_advanced_features(df)
+            print(f"  [FEATURES] Advanced features added successfully")
         except KeyError as e:
-            print(f"  [FEATURES] KeyError with lowercase columns: {str(e)}")
-            print(f"  [FEATURES] Retrying with UPPERCASE columns...")
-            try:
-                # Retry with uppercase columns
-                df.columns = [col.upper() for col in df.columns]
-                df = build_advanced_features(df)
-                # Convert back to lowercase
-                df.columns = [col.lower() for col in df.columns]
-            except Exception as e2:
-                print(f"  [FEATURES] Failed with UPPERCASE also: {str(e2)}")
-                print(f"  [FEATURES] Skipping advanced features, continuing with basic features")
-                # Continue without advanced features
+            print(f"  [FEATURES] KeyError in build_advanced_features: {str(e)}")
+            print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
+            print(f"  [FEATURES] Continuing with basic features only")
         except Exception as e:
-            print(f"  [FEATURES] Error in build_advanced_features: {str(e)[:60]}")
+            print(f"  [FEATURES] Error in build_advanced_features: {str(e)[:100]}")
             print(f"  [FEATURES] Continuing with basic features only")
         
         print(f"  [FEATURES] Total features: {df.shape[1]}")
@@ -197,6 +195,7 @@ def build_feature_set(price_data, ticker):
             print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
             return None
         
+        print(f"  [FEATURES] Final dataset: {len(df)} rows × {df.shape[1]} columns")
         return df
     
     except KeyError as e:
@@ -204,7 +203,7 @@ def build_feature_set(price_data, ticker):
         print(f"  [FEATURES ERROR] Available columns: {df.columns.tolist() if 'df' in locals() else 'N/A'}")
         return None
     except Exception as e:
-        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:60]}")
+        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:100]}")
         import traceback
-        print(f"  [FEATURES ERROR] Traceback: {traceback.format_exc()[:200]}")
+        traceback.print_exc()
         return None
