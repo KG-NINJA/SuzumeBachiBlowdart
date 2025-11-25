@@ -1,25 +1,25 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-24T09:22:49.351712
+**Generated:** 2025-11-25T09:22:03.038139
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 8 🟢 |
-| **Skip** | 2 🔴 |
-| **Avg Expected Move** | 1.48% |
-| **Avg Confidence** | 0.1869 |
-| **Avg Model Accuracy** | 0.5687 |
+| **Execute** | 7 🟢 |
+| **Skip** | 3 🔴 |
+| **Avg Expected Move** | 1.33% |
+| **Avg Confidence** | 0.3126 |
+| **Avg Model Accuracy** | 0.6077 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
-| 🟢 **BEST** | 0 | 10.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 2 | 20.0% | Above average on both metrics |
-| 🟠 **FAIR** | 7 | 70.0% | Decent on at least one metric |
+| 🟢 **BEST** | 0 | 20.0% | High accuracy (>65%) + High confidence (>15%) |
+| 🟡 **GOOD** | 3 | 30.0% | Above average on both metrics |
+| 🟠 **FAIR** | 5 | 50.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
 ## 🏆 BEST Trades (Execute Priority)
@@ -28,33 +28,35 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| TSLA | 68.75% | 20.18% | 1.49% | SELL |
+| TSLA | 76.92% | 34.01% | 1.66% | SELL |
+| MSFT | 65.38% | 22.55% | 0.53% | SELL |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- MSFT - Acc: 62.50%, Conf: 12.08%
-- AMZN - Acc: 56.25%, Conf: 13.27%
+- NVDA - Acc: 61.54%, Conf: 41.87%
+- AAPL - Acc: 61.54%, Conf: 62.79%
+- GOOGL - Acc: 57.69%, Conf: 30.69%
 
 
 ## 🔍 Analysis by Accuracy
 
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
-| > 70% | 1 | 0.95% |
-| 60-70% | 3 | 0.99% |
-| 50-60% | 4 | 2.40% |
-| < 50% | 2 | 0.62% |
+| > 70% | 1 | 1.66% |
+| 60-70% | 5 | 1.04% |
+| 50-60% | 3 | 1.82% |
+| < 50% | 1 | 0.98% |
 
 ---
 
 ## 📊 High Quality Indicators
 
-- **High Accuracy (>60%):** 4/10
-- **High Confidence (>15%):** 4/10
-- **Both (High Quality):** 1/10
+- **High Accuracy (>60%):** 6/10
+- **High Confidence (>15%):** 7/10
+- **Both (High Quality):** 4/10
 
 ---
 

@@ -1,6 +1,6 @@
 """
 confidence_filter.py - Add confidence-based filtering to predictions
-Converts low-confidence predictions to HOLD recommendations
+Converts low-confidence predictions to HOLD/SKIP recommendations based on probability thresholds.
 """
 
 import json
@@ -13,7 +13,8 @@ import pandas as pd
 PREDICTIONS_DIR = "daily_predictions"
 Path(PREDICTIONS_DIR).mkdir(parents=True, exist_ok=True)
 
-MIN_CONFIDENCE = 0.15
+# 注: 新ロジックでは関数内でハードコードされた閾値(0.6/0.5/0.4)を使用します
+DEFAULT_MIN_CONFIDENCE = 0.60 
 
 
 def calculate_confidence_score(pred_proba):
@@ -75,10 +76,29 @@ def generate_confidence_report(filtered_predictions):
         "total_predictions": len(filtered_predictions),
         "average_confidence": float(np.mean(confidences)),
         "execute_count": sum(1 for p in filtered_predictions if p.get('action') == 'EXECUTE'),
+        "hold_count": sum(1 for p in filtered_predictions if p.get('action') == 'HOLD'),
         "skip_count": sum(1 for p in filtered_predictions if p.get('action') == 'SKIP'),
         "confidence_distribution": {
-            "high": sum(1 for c in confidences if c >= 0.7),
-            "medium": sum(1 for c in confidences if 0.4 <= c < 0.7),
-            "low": sum(1 for c in confidences if c < 0.4)
+            # 新しいロジックに合わせて分布の閾値を調整 (Strong >= 0.6, Medium >= 0.4)
+            "high_strong": sum(1 for c in confidences if c >= 0.6),
+            "medium": sum(1 for c in confidences if 0.4 <= c < 0.6),
+            "low_weak": sum(1 for c in confidences if c < 0.4)
         }
     }
+
+if __name__ == "__main__":
+    # テスト用データ
+    test_predictions = [
+        {"confidence": 0.75, "direction": "Bullish"}, # Should be EXECUTE
+        {"confidence": 0.55, "direction": "Bearish"}, # Should be HOLD
+        {"confidence": 0.45, "direction": "Bullish"}, # Should be HOLD
+        {"confidence": 0.30, "direction": "Bearish"}  # Should be SKIP
+    ]
+
+    print("--- Testing Confidence Filter ---")
+    filtered = apply_confidence_filter(test_predictions)
+    print(json.dumps(filtered, indent=2, ensure_ascii=False))
+    
+    print("\n--- Report ---")
+    report = generate_confidence_report(filtered)
+    print(json.dumps(report, indent=2))

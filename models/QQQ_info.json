@@ -1,14 +1,14 @@
 {
   "ticker": "QQQ",
-  "accuracy": 0.4375,
-  "previous_accuracy": 0.4375,
+  "accuracy": 0.5384615384615384,
+  "previous_accuracy": 0.5384615384615384,
   "accuracy_improvement": 0.0,
-  "train_samples": 61,
-  "test_samples": 16,
-  "total_train_samples": 244,
-  "features": 31,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/QQQ_model.json",
   "scaler_path": "models/QQQ_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:14.081924"
+  "timestamp": "2025-11-25T09:22:01.817744"
 }

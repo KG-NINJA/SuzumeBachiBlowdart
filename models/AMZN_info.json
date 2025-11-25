@@ -1,14 +1,14 @@
 {
   "ticker": "AMZN",
-  "accuracy": 0.5625,
-  "previous_accuracy": 0.5625,
+  "accuracy": 0.46153846153846156,
+  "previous_accuracy": 0.46153846153846156,
   "accuracy_improvement": 0.0,
-  "train_samples": 61,
-  "test_samples": 16,
-  "total_train_samples": 244,
-  "features": 31,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/AMZN_model.json",
   "scaler_path": "models/AMZN_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:13.822682"
+  "timestamp": "2025-11-25T09:22:01.386031"
 }
