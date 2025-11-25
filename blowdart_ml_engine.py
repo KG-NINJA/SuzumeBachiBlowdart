@@ -57,10 +57,10 @@ def load_existing_model(ticker):
         try:
             booster = xgb.Booster()
             booster.load_model(model_path)
-            
+
             with open(scaler_path, 'rb') as f:
                 scaler = pickle.load(f)
-            
+
             return booster, scaler
         except Exception as e:
             print(f"  [WARNING] Failed to load existing model: {str(e)[:40]}")
@@ -120,10 +120,24 @@ def train_ticker(ticker, features_df, use_online_learning=True):
         if use_online_learning:
             existing_model, existing_scaler = load_existing_model(ticker)
             model_info = load_model_info(ticker)
-            
+
             if model_info:
                 previous_accuracy = model_info.get('accuracy', 0)
                 previous_train_count = model_info.get('total_train_samples', 0)
+
+            # Ensure feature compatibility before attempting an online update
+            if existing_model is not None:
+                try:
+                    model_feature_count = existing_model.num_features()
+                    data_feature_count = X.shape[1]
+                    if model_feature_count != data_feature_count:
+                        print(f"  [ONLINE] Feature mismatch (model={model_feature_count}, data={data_feature_count}); retraining from scratch")
+                        existing_model = None
+                        existing_scaler = None
+                except Exception as e:
+                    print(f"  [ONLINE] Failed to inspect existing model: {str(e)[:40]}")
+                    existing_model = None
+                    existing_scaler = None
         
         # Use existing scaler or create new one
         if existing_scaler is not None:
@@ -142,34 +156,40 @@ def train_ticker(ticker, features_df, use_online_learning=True):
         )
         
         # ===== Train or Update Model =====
+        model = None
+        learning_type = "FRESH_TRAIN"
+
         if existing_model is not None and use_online_learning:
             # Online Learning: Update existing model
             print(f"  [ONLINE] Updating existing model...")
-            
-            # Convert to DMatrix
-            dtrain_new = xgb.DMatrix(X_train, label=y_train)
-            
-            # Train on new data while keeping old knowledge
-            # num_boost_round determines how many new rounds
-            model = xgb.train(
-                params={
-                    'objective': 'binary:logistic',
-                    'max_depth': 5,
-                    'learning_rate': 0.05,  # Lower LR for gradual updates
-                    'subsample': 0.8,
-                    'colsample_bytree': 0.8
-                },
-                dtrain=dtrain_new,
-                num_boost_round=50,  # Add 50 new boosting rounds
-                xgb_model=existing_model  # Start from existing model
-            )
-            
-            learning_type = "ONLINE_UPDATE"
-        
-        else:
+
+            try:
+                # Convert to DMatrix
+                dtrain_new = xgb.DMatrix(X_train, label=y_train)
+
+                # Train on new data while keeping old knowledge
+                model = xgb.train(
+                    params={
+                        'objective': 'binary:logistic',
+                        'max_depth': 5,
+                        'learning_rate': 0.05,  # Lower LR for gradual updates
+                        'subsample': 0.8,
+                        'colsample_bytree': 0.8
+                    },
+                    dtrain=dtrain_new,
+                    num_boost_round=50,  # Add 50 new boosting rounds
+                    xgb_model=existing_model  # Start from existing model
+                )
+
+                learning_type = "ONLINE_UPDATE"
+            except Exception as e:
+                print(f"  [ONLINE] Update failed: {str(e)[:60]} - retraining from scratch")
+                model = None
+
+        if model is None:
             # Fresh Training: Create new model
             print(f"  [ONLINE] Training new model...")
-            
+
             model = xgb.XGBClassifier(
                 n_estimators=100,
                 max_depth=5,
@@ -179,10 +199,10 @@ def train_ticker(ticker, features_df, use_online_learning=True):
                 random_state=42,
                 verbosity=0
             )
-            
+
             model.fit(X_train, y_train)
             model = model.get_booster()  # Convert to Booster for consistency
-            
+
             learning_type = "FRESH_TRAIN"
         
         # Evaluate
