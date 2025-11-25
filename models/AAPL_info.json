@@ -1,14 +1,14 @@
 {
   "ticker": "AAPL",
-  "accuracy": 0.375,
+  "accuracy": 0.5769230769230769,
   "previous_accuracy": 0.375,
-  "accuracy_improvement": 0.0,
-  "train_samples": 61,
-  "test_samples": 16,
-  "total_train_samples": 244,
-  "features": 31,
-  "learning_type": "ONLINE_UPDATE",
+  "accuracy_improvement": 0.20192307692307687,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 344,
+  "features": 71,
+  "learning_type": "FRESH_TRAIN",
   "model_path": "models/AAPL_model.json",
   "scaler_path": "models/AAPL_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:13.613623"
+  "timestamp": "2025-11-25T05:48:43.237160"
 }

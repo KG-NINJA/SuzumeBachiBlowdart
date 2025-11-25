@@ -1,102 +1,11 @@
 {
-  "timestamp": "2025-11-25T01:29:06.285151",
   "total_predictions": 10,
+  "average_confidence": 0.3333843298256397,
+  "execute_count": 5,
+  "skip_count": 5,
   "confidence_distribution": {
-    "strong": 8,
-    "medium": 1,
-    "weak": 1
-  },
-  "actions": {
-    "execute": 8,
-    "skip": 2
-  },
-  "statistics": {
-    "avg_confidence": 0.18584500942379237,
-    "min_confidence": 0.027254249900579453,
-    "max_confidence": 0.6172474026679993,
-    "std_confidence": 0.2090992542468555,
-    "avg_confidence_score": 34.09687837585807
-  },
-  "by_ticker": {
-    "NVDA": {
-      "ticker": "NVDA",
-      "confidence": 0.516821563243866,
-      "confidence_level": "WEAK",
-      "action": "SKIP",
-      "direction": "\u23f8 HOLD",
-      "model_accuracy": 0.5
-    },
-    "AAPL": {
-      "ticker": "AAPL",
-      "confidence": 0.1575942486524582,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.375
-    },
-    "MSFT": {
-      "ticker": "MSFT",
-      "confidence": 0.11427946388721466,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.625
-    },
-    "GOOGL": {
-      "ticker": "GOOGL",
-      "confidence": 0.041943568736314774,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.75
-    },
-    "AMZN": {
-      "ticker": "AMZN",
-      "confidence": 0.11566878855228424,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.5625
-    },
-    "META": {
-      "ticker": "META",
-      "confidence": 0.03047175519168377,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.6875
-    },
-    "TSLA": {
-      "ticker": "TSLA",
-      "confidence": 0.1816602647304535,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.6875
-    },
-    "AMD": {
-      "ticker": "AMD",
-      "confidence": 0.027254249900579453,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.5625
-    },
-    "NFLX": {
-      "ticker": "NFLX",
-      "confidence": 0.05550878867506981,
-      "confidence_level": "STRONG",
-      "action": "EXECUTE",
-      "direction": "\u2193 Bearish",
-      "model_accuracy": 0.5
-    },
-    "QQQ": {
-      "ticker": "QQQ",
-      "confidence": 0.6172474026679993,
-      "confidence_level": "MEDIUM",
-      "action": "SKIP",
-      "direction": "\u23f8 HOLD",
-      "model_accuracy": 0.4375
-    }
+    "high": 0,
+    "medium": 4,
+    "low": 6
   }
 }
