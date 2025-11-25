@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> SuzumeBachiBlowdart Dashboard</title>
+    <title>SuzumeBachiBlowdart Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -21,24 +20,22 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
         
         header {
             background: white;
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
         
         h1 {
             color: #333;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 36px;
         }
         
         .timestamp {
@@ -48,9 +45,9 @@
         
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
         }
         
         .summary-card {
@@ -59,6 +56,11 @@
             padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             border-left: 5px solid #667eea;
+            transition: transform 0.2s;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
         }
         
         .summary-card.execute {
@@ -75,10 +77,11 @@
         
         .summary-card h3 {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 600;
         }
         
         .summary-value {
@@ -93,10 +96,19 @@
             margin-top: 8px;
         }
         
+        .section-title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        
         .trades-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
             margin: 25px 0;
         }
         
@@ -105,16 +117,17 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #667eea;
+            border-top: 5px solid #10b981;
+            transition: transform 0.2s;
         }
         
-        .trade-card.execute {
-            border-top-color: #10b981;
+        .trade-card:hover {
+            transform: translateY(-5px);
         }
         
         .trade-card.skip {
             border-top-color: #ef4444;
-            opacity: 0.8;
+            opacity: 0.7;
         }
         
         .trade-header {
@@ -122,16 +135,18 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 12px;
         }
         
         .ticker {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: #333;
         }
         
         .direction {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
         }
         
@@ -146,15 +161,14 @@
         .trade-metrics {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
             margin: 12px 0;
         }
         
         .metric {
             background: #f3f4f6;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            font-size: 12px;
         }
         
         .metric-label {
@@ -162,24 +176,22 @@
             font-size: 11px;
             text-transform: uppercase;
             margin-bottom: 4px;
+            font-weight: 600;
         }
         
         .metric-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: #333;
         }
         
         .action-badge {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: bold;
             margin-top: 12px;
-        }
-        
-        .action-badge.execute {
             background: #d1fae5;
             color: #065f46;
         }
@@ -195,8 +207,6 @@
             padding: 25px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             margin: 25px 0;
-            max-height: 400px;
-            position: relative;
         }
         
         .chart-title {
@@ -206,44 +216,67 @@
             margin-bottom: 20px;
         }
         
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+            margin-bottom: 20px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 30px 0;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            margin: 25px 0;
         }
         
         thead {
-            background: #f3f4f6;
-            border-bottom: 2px solid #e5e7eb;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
         
         th {
-            padding: 15px;
+            padding: 18px 15px;
             text-align: left;
-            color: #666;
             font-weight: 600;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        th:last-child {
+            border-right: none;
         }
         
         td {
             padding: 15px;
             border-bottom: 1px solid #e5e7eb;
             color: #333;
+            font-size: 14px;
+        }
+        
+        tbody tr {
+            transition: background 0.2s;
         }
         
         tbody tr:hover {
             background: #f9fafb;
         }
         
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
         .rank {
             font-weight: bold;
             color: #667eea;
+            font-size: 16px;
         }
         
         .accuracy-high {
@@ -263,8 +296,8 @@
         
         .confidence-badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -287,8 +320,27 @@
         .footer {
             text-align: center;
             color: white;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 60px;
+            padding: 30px;
+            border-top: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .tweet-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-top: 20px;
+            background: #1DA1F2;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .tweet-button:hover {
+            background: #1a8cd8;
         }
         
         .loading {
@@ -300,14 +352,11 @@
         
         @media (max-width: 768px) {
             .summary-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             
             .trades-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .trade-metrics {
                 grid-template-columns: 1fr;
             }
             
@@ -325,25 +374,46 @@
     <div class="container">
         <header>
             <h1>🚀 SuzumeBachiBlowdart Dashboard</h1>
-            <p class="timestamp">最終更新: <span id="lastUpdate">読み込み中...</span></p>
+            <p class="timestamp">Last Update: <span id="lastUpdate">Loading...</span></p>
         </header>
         
         <div id="content">
-            <div class="loading">📊 データを読み込み中...</div>
+            <div class="loading">📊 Loading data...</div>
         </div>
     </div>
 
     <script>
+        function tweetDashboard() {
+            const execute = document.querySelector('.summary-card.execute .summary-value')?.textContent || '8';
+            const skip = document.querySelector('.summary-card.skip .summary-value')?.textContent || '2';
+            const best = document.querySelector('.summary-card.best .summary-value')?.textContent || '1';
+            
+            const text = `🚀 SuzumeBachiBlowdart Daily Prediction Report
+
+📊 Total Predictions: 10
+✅ Recommended Actions: ${execute}
+⏸️ Skip: ${skip}
+⭐ High Quality: ${best}
+
+Automated AI-powered stock price prediction system.
+Daily updated with Phase 1-3 analysis.
+
+🔗 Dashboard: https://kg-ninja.github.io/SuzumeBachiBlowdart/dashboard.html
+
+#KGNINJA #SuzumeBachiBlowdart #Stockprediction #AI #Trading`;
+            
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'width=550,height=420');
+        }
+        
         async function loadDashboard() {
             try {
-                // Load predictions data
                 const response = await fetch('./data/latest_predictions.json');
                 const predictions = await response.json();
                 
-                // Load backtest data if available
                 let backtest = null;
                 try {
-                    const backtestResponse = await fetch('./backtest_results/backtest_report.json');
+                    const backtestResponse = await fetch('./data/backtest_report.json');
                     if (backtestResponse.ok) {
                         backtest = await backtestResponse.json();
                     }
@@ -355,7 +425,7 @@
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 document.getElementById('content').innerHTML = 
-                    '<div class="loading" style="color: #ff6b6b;">❌ データ読み込みエラー</div>';
+                    '<div class="loading" style="color: #ff6b6b;">❌ Error loading data</div>';
             }
         }
         
@@ -375,113 +445,112 @@
             let html = `
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h3>📊 総予測</h3>
+                        <h3>📊 Total Predictions</h3>
                         <div class="summary-value">${predictions.length}</div>
-                        <div class="summary-subtext">10銘柄の分析</div>
+                        <div class="summary-subtext">10 stocks analyzed</div>
                     </div>
                     
                     <div class="summary-card execute">
-                        <h3>✅ 実行推奨</h3>
+                        <h3>✅ Recommended</h3>
                         <div class="summary-value">${execute.length}</div>
-                        <div class="summary-subtext">${(execute.length/predictions.length*100).toFixed(0)}% 高信頼度</div>
+                        <div class="summary-subtext">${(execute.length/predictions.length*100).toFixed(0)}% high confidence</div>
                     </div>
                     
                     <div class="summary-card skip">
-                        <h3>⏸️ スキップ</h3>
+                        <h3>⏸️ Skip</h3>
                         <div class="summary-value">${skip.length}</div>
-                        <div class="summary-subtext">${(skip.length/predictions.length*100).toFixed(0)}% 低信頼度</div>
+                        <div class="summary-subtext">${(skip.length/predictions.length*100).toFixed(0)}% low confidence</div>
                     </div>
                     
                     <div class="summary-card best">
-                        <h3>⭐ 高品質</h3>
+                        <h3>⭐ High Quality</h3>
                         <div class="summary-value">${best}</div>
-                        <div class="summary-subtext">BEST取引</div>
+                        <div class="summary-subtext">BEST trades</div>
                     </div>
                     
                     <div class="summary-card">
-                        <h3>📈 平均信頼度</h3>
+                        <h3>📈 Avg Confidence</h3>
                         <div class="summary-value">${avgConfidence}%</div>
-                        <div class="summary-subtext">市場のシグナル強度</div>
+                        <div class="summary-subtext">Signal strength</div>
                     </div>
                     
                     <div class="summary-card">
-                        <h3>🎯 平均精度</h3>
+                        <h3>🎯 Avg Accuracy</h3>
                         <div class="summary-value">${avgAccuracy}%</div>
-                        <div class="summary-subtext">モデル精度</div>
+                        <div class="summary-subtext">Model accuracy</div>
                     </div>
                 </div>
                 
                 <div class="chart-container">
-                    <div class="chart-title">📊 精度分布</div>
-                    <div style="height: 300px;"><canvas id="accuracyChart"></canvas></div>
+                    <div class="chart-title">📊 Accuracy Distribution by Ticker</div>
+                    <div class="chart-wrapper"><canvas id="accuracyChart"></canvas></div>
                 </div>
                 
                 <div class="chart-container">
-                    <div class="chart-title">💡 信頼度レベル</div>
-                    <div style="height: 300px;"><canvas id="confidenceChart"></canvas></div>
+                    <div class="chart-title">💡 Confidence Level Distribution</div>
+                    <div class="chart-wrapper"><canvas id="confidenceChart"></canvas></div>
                 </div>
                 
                 <div class="chart-container">
-                    <div class="chart-title">🎲 アクション分布</div>
-                    <div style="height: 300px;"><canvas id="actionChart"></canvas></div>
+                    <div class="chart-title">🎲 Action Distribution</div>
+                    <div class="chart-wrapper"><canvas id="actionChart"></canvas></div>
                 </div>
                 
-                <div class="chart-container">
-                    <div class="chart-title">🟢 実行推奨 (高信頼度)</div>
+                <div class="section-title">🟢 Recommended Trades (High Confidence)</div>
             `;
             
             if (execute.length > 0) {
                 html += '<div class="trades-container">';
                 execute.forEach(pred => {
                     const direction = pred.direction.includes('Bullish') ? 'bullish' : 'bearish';
-                    const directonText = direction === 'bullish' ? '📈 強気' : '📉 弱気';
+                    const directionText = direction === 'bullish' ? '📈 BULLISH' : '📉 BEARISH';
                     html += `
-                        <div class="trade-card execute">
+                        <div class="trade-card">
                             <div class="trade-header">
                                 <span class="ticker">${pred.ticker}</span>
-                                <span class="direction ${direction}">${directonText}</span>
+                                <span class="direction ${direction}">${directionText}</span>
                             </div>
                             <div class="trade-metrics">
                                 <div class="metric">
-                                    <div class="metric-label">信頼度</div>
+                                    <div class="metric-label">Confidence</div>
                                     <div class="metric-value">${(pred.confidence * 100).toFixed(1)}%</div>
                                 </div>
                                 <div class="metric">
-                                    <div class="metric-label">精度</div>
+                                    <div class="metric-label">Accuracy</div>
                                     <div class="metric-value">${(pred.model_accuracy * 100).toFixed(1)}%</div>
                                 </div>
                                 <div class="metric">
-                                    <div class="metric-label">現在値</div>
+                                    <div class="metric-label">Current</div>
                                     <div class="metric-value">$${pred.current_price.toFixed(2)}</div>
                                 </div>
                                 <div class="metric">
-                                    <div class="metric-label">目標値</div>
+                                    <div class="metric-label">Target</div>
                                     <div class="metric-value">$${pred.predicted_price.toFixed(2)}</div>
                                 </div>
                             </div>
-                            <span class="action-badge execute">✅ 実行</span>
+                            <span class="action-badge">✅ EXECUTE</span>
                         </div>
                     `;
                 });
                 html += '</div>';
             } else {
-                html += '<p style="color: #666; text-align: center;">高信頼度のシグナルはありません</p>';
+                html += '<p style="color: #666; text-align: center; margin: 30px 0;">No high-confidence signals at this time</p>';
             }
             
             html += `
-                </div>
-                
+                <div class="section-title">📊 Complete Rankings</div>
+                <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>順位</th>
-                            <th>銘柄</th>
-                            <th>方向</th>
-                            <th>信頼度</th>
-                            <th>精度</th>
-                            <th>現在値</th>
-                            <th>目標値</th>
-                            <th>アクション</th>
+                            <th>Rank</th>
+                            <th>Ticker</th>
+                            <th>Direction</th>
+                            <th>Confidence</th>
+                            <th>Accuracy</th>
+                            <th>Current Price</th>
+                            <th>Target Price</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -489,7 +558,7 @@
             
             predictions.sort((a, b) => b.model_accuracy - a.model_accuracy).forEach((pred, idx) => {
                 const direction = pred.direction.includes('Bullish') ? '📈' : '📉';
-                const directionText = pred.direction.includes('Bullish') ? '強気' : '弱気';
+                const directionText = pred.direction.includes('Bullish') ? 'BULLISH' : 'BEARISH';
                 
                 let accuracyClass = 'accuracy-low';
                 if (pred.model_accuracy > 0.65) accuracyClass = 'accuracy-high';
@@ -499,7 +568,7 @@
                 if (pred.confidence_level === 'STRONG') confidenceClass = 'confidence-strong';
                 else if (pred.confidence_level === 'MEDIUM') confidenceClass = 'confidence-medium';
                 
-                const action = pred.action === 'EXECUTE' ? '✅ 実行' : '⏸️ スキップ';
+                const action = pred.action === 'EXECUTE' ? '✅ EXECUTE' : '⏸️ SKIP';
                 
                 html += `
                     <tr>
@@ -518,22 +587,24 @@
             html += `
                     </tbody>
                 </table>
+                </div>
                 
                 <div class="footer">
                     <p>🚀 SuzumeBachiBlowdart - Automated Trading Prediction System</p>
                     <p>Phase 1: Confidence Filter | Phase 2: Market Analysis | Phase 3: Backtest</p>
+                    <button onclick="tweetDashboard()" class="tweet-button">
+                        🐦 Share on Twitter
+                    </button>
                 </div>
             `;
             
             document.getElementById('content').innerHTML = html;
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ja-JP');
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('en-US');
             
-            // Create charts
             createCharts(predictions);
         }
         
         function createCharts(predictions) {
-            // Accuracy distribution
             const accuracyCtx = document.getElementById('accuracyChart');
             if (accuracyCtx) {
                 new Chart(accuracyCtx, {
@@ -548,7 +619,8 @@
                                 if (p.model_accuracy > 0.55) return '#f59e0b';
                                 return '#ef4444';
                             }),
-                            borderRadius: 6
+                            borderRadius: 8,
+                            borderSkipped: false
                         }]
                     },
                     options: {
@@ -556,13 +628,12 @@
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
                         scales: {
-                            y: { beginAtZero: true, max: 100 }
+                            y: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } }
                         }
                     }
                 });
             }
             
-            // Confidence level distribution
             const levels = {
                 STRONG: predictions.filter(p => p.confidence_level === 'STRONG').length,
                 MEDIUM: predictions.filter(p => p.confidence_level === 'MEDIUM').length,
@@ -583,14 +654,11 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
+                        plugins: { legend: { position: 'bottom' } }
                     }
                 });
             }
             
-            // Action distribution
             const execute = predictions.filter(p => p.action === 'EXECUTE').length;
             const skip = predictions.filter(p => p.action === 'SKIP').length;
             
@@ -599,7 +667,7 @@
                 new Chart(actionCtx, {
                     type: 'pie',
                     data: {
-                        labels: ['実行', 'スキップ'],
+                        labels: ['EXECUTE', 'SKIP'],
                         datasets: [{
                             data: [execute, skip],
                             backgroundColor: ['#10b981', '#ef4444']
@@ -608,15 +676,12 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
+                        plugins: { legend: { position: 'bottom' } }
                     }
                 });
             }
         }
         
-        // Auto-refresh every 5 minutes
         loadDashboard();
         setInterval(loadDashboard, 300000);
     </script>
