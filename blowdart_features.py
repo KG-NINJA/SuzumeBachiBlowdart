@@ -1,10 +1,12 @@
 """
 blowdart_features.py - Feature engineering for SuzumeBachiBlowdart
-Calculates: RSI, MACD, Bollinger Bands, Moving Averages, etc.
+Calculates: RSI, MACD, Bollinger Bands, Moving Averages, Advanced Technical Indicators
+Integrated with advanced_features.py for enhanced prediction
 """
 
 import pandas as pd
 import numpy as np
+from advanced_features import build_advanced_features
 
 
 def calculate_rsi(prices, period=14):
@@ -80,7 +82,7 @@ def build_feature_set(price_data, ticker):
         low = df['low']
         volume = df['volume']
         
-        # ===== Technical Indicators =====
+        # ===== Technical Indicators (Basic) =====
         
         # Moving Averages
         df['ma5'] = close.rolling(5).mean()
@@ -100,45 +102,55 @@ def build_feature_set(price_data, ticker):
         df['macd'], df['macd_signal'], df['macd_hist'] = calculate_macd(close)
         
         # Bollinger Bands
-        df['bb_upper'], df['bb_middle'], df['bb_lower'] = calculate_bollinger_bands(close, 20)
-        df['bb_width'] = df['bb_upper'] - df['bb_lower']
-        df['bb_position'] = (close - df['bb_lower']) / (df['bb_upper'] - df['bb_lower'])
+        df['bb_upper'], df['bb_middle'], df['bb_lower'] = calculate_bollinger_bands(close)
         
-        # Returns & Volatility
-        df['return_1d'] = close.pct_change()
-        df['return_5d'] = close.pct_change(5)
-        df['volatility_5d'] = df['return_1d'].rolling(5).std()
-        df['volatility_20d'] = df['return_1d'].rolling(20).std()
+        # Rate of Change
+        df['roc10'] = ((close - close.shift(10)) / close.shift(10)) * 100
+        df['roc20'] = ((close - close.shift(20)) / close.shift(20)) * 100
+        
+        # Momentum
+        df['momentum'] = close - close.shift(10)
+        
+        # ATR (Average True Range)
+        high_low = high - low
+        high_close = np.abs(high - close.shift())
+        low_close = np.abs(low - close.shift())
+        tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+        df['atr'] = tr.rolling(14).mean()
         
         # Volume indicators
         df['volume_ma20'] = volume.rolling(20).mean()
-        df['volume_ratio'] = volume / df['volume_ma20']
+        df['volume_ratio'] = volume / (df['volume_ma20'] + 0.0001)
         
-        # Price range
-        df['high_low_range'] = (high - low) / close
-        df['open_close_range'] = (close - df['open']) / df['open']
+        # Price patterns
+        df['high_low_ratio'] = (high - low) / close
+        df['close_open_ratio'] = (close - df['open']) / df['open']
         
-        # Trend indicators
-        df['ma5_ma20_ratio'] = df['ma5'] / df['ma20']
-        df['close_to_ma20'] = close / df['ma20']
-        df['price_to_bb_upper'] = close / df['bb_upper']
+        # Returns
+        df['daily_return'] = close.pct_change() * 100
         
-        # Drop rows with NaN (indicators need warmup period)
+        # Volatility
+        df['volatility'] = df['daily_return'].rolling(20).std()
+        
+        # ===== Advanced Features (NEW) =====
+        print(f"  [FEATURES] Adding advanced indicators for {ticker}...")
+        
+        df = build_advanced_features(df)
+        
+        print(f"  [FEATURES] Total features: {df.shape[1]}")
+        
+        # ===== Data Cleaning =====
+        
+        # Handle NaN and Inf
+        df = df.replace([np.inf, -np.inf], np.nan)
+        df = df.fillna(0)
+        
+        # Remove rows with NaN (from technical indicators)
         df = df.dropna()
         
-        if len(df) < 20:
-            print(f"  [FEATURES] Insufficient valid features: {len(df)} rows after NaN drop")
+        if len(df) < 30:
+            print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
             return None
-        
-        # Rename columns to be consistent with ML engine
-        df = df.rename(columns={
-            'date': 'Date',
-            'open': 'Open',
-            'high': 'High',
-            'low': 'Low',
-            'close': 'Close',
-            'volume': 'Volume'
-        })
         
         return df
     
