@@ -1,6 +1,6 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-24T12:44:49.747087
+**Generated:** 2025-11-25T01:29:05.724980
 
 ## 📊 Executive Summary
 
@@ -10,8 +10,8 @@
 | **Execute** | 8 🟢 |
 | **Skip** | 2 🔴 |
 | **Avg Expected Move** | 1.48% |
-| **Avg Confidence** | 0.1865 |
-| **Avg Model Accuracy** | 0.5750 |
+| **Avg Confidence** | 0.1858 |
+| **Avg Model Accuracy** | 0.5687 |
 
 ## 🎯 Trade Quality Distribution
 
@@ -28,15 +28,15 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| TSLA | 68.75% | 19.90% | 1.49% | SELL |
+| TSLA | 68.75% | 18.17% | 1.49% | SELL |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- MSFT - Acc: 62.50%, Conf: 11.47%
-- AMZN - Acc: 56.25%, Conf: 12.73%
+- MSFT - Acc: 62.50%, Conf: 11.43%
+- AMZN - Acc: 56.25%, Conf: 11.57%
 
 
 ## 🔍 Analysis by Accuracy
@@ -45,8 +45,8 @@
 |--------|-------|-------------|
 | > 70% | 1 | 0.95% |
 | 60-70% | 3 | 0.99% |
-| 50-60% | 5 | 2.02% |
-| < 50% | 1 | 0.74% |
+| 50-60% | 4 | 2.40% |
+| < 50% | 2 | 0.62% |
 
 ---
 

@@ -1,13 +1,13 @@
 # 📊 Model Accuracy Analysis Report
 
-**Generated:** 2025-11-24 12:44:50
+**Generated:** 2025-11-25 01:29:06
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Models | 10 |
-| Average Accuracy | 0.5750 |
+| Average Accuracy | 0.5687 |
 | Best Performer | GOOGL (0.7500) |
 | Needs Work | AAPL (0.3750) |
 
@@ -20,8 +20,8 @@
 
 ## ⚠️ Needs Improvement
 
-- **NVDA**: 0.5000 accuracy (Δ+0.0000)
-- **QQQ**: 0.5000 accuracy (Δ+0.0625)
+- **NVDA**: 0.5000 accuracy (Δ-0.0625)
+- **QQQ**: 0.4375 accuracy (Δ+0.0000)
 - **AAPL**: 0.3750 accuracy (Δ+0.0000)
 
 
@@ -52,8 +52,8 @@
 | 5 | AMZN | 0.5625 | 0.5625 | +0.0000 |
 | 6 | AMD | 0.5625 | 0.5625 | +0.0000 |
 | 7 | NFLX | 0.5000 | 0.5000 | +0.0000 |
-| 8 | NVDA | 0.5000 | 0.5000 | +0.0000 |
-| 9 | QQQ | 0.5000 | 0.4375 | +0.0625 |
+| 8 | NVDA | 0.5000 | 0.5625 | -0.0625 |
+| 9 | QQQ | 0.4375 | 0.4375 | +0.0000 |
 | 10 | AAPL | 0.3750 | 0.3750 | +0.0000 |
 
 
@@ -62,8 +62,8 @@
 - **Total Predictions:** 10
 - **Bullish:** 0
 - **Bearish:** 8
-- **Average Confidence:** 0.1865
-- **Average Model Accuracy:** 0.5750
+- **Average Confidence:** 0.1858
+- **Average Model Accuracy:** 0.5687
 
 
 ## 🔧 Next Steps

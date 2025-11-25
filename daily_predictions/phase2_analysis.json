@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-11-24T23:20:14.607792",
+  "timestamp": "2025-11-25T01:29:05.368139",
   "market_sentiment": {
-    "timestamp": "2025-11-24T23:20:14.606458",
+    "timestamp": "2025-11-25T01:29:05.366703",
     "bullish_count": 0,
     "bearish_count": 8,
     "hold_count": 2,
@@ -14,92 +14,92 @@
   "relative_strength": {
     "NVDA": {
       "ticker": "NVDA",
-      "accuracy": 0.5625,
-      "accuracy_vs_avg": -0.012499999999999956,
-      "confidence": 0.49570316076278687,
-      "confidence_vs_avg": 0.3131182102486491,
-      "strength_score": 0.8465894131018652,
+      "accuracy": 0.5,
+      "accuracy_vs_avg": -0.06874999999999998,
+      "confidence": 0.516821563243866,
+      "confidence_vs_avg": 0.3309765538200736,
+      "strength_score": 0.8300243665882835,
       "strength_level": "STRONG"
     },
     "AAPL": {
       "ticker": "AAPL",
       "accuracy": 0.375,
-      "accuracy_vs_avg": -0.19999999999999996,
-      "confidence": 0.15583641827106476,
-      "confidence_vs_avg": -0.026748532243072998,
-      "strength_score": -0.24716259709084576,
+      "accuracy_vs_avg": -0.19374999999999998,
+      "confidence": 0.1575942486524582,
+      "confidence_vs_avg": -0.028250760771334177,
+      "strength_score": -0.24633591031137583,
       "strength_level": "WEAK"
     },
     "MSFT": {
       "ticker": "MSFT",
       "accuracy": 0.625,
-      "accuracy_vs_avg": 0.050000000000000044,
-      "confidence": 0.11836989969015121,
-      "confidence_vs_avg": -0.06421505082398654,
-      "strength_score": -0.13237153026372506,
+      "accuracy_vs_avg": 0.05625000000000002,
+      "confidence": 0.11427946388721466,
+      "confidence_vs_avg": -0.07156554553657771,
+      "strength_score": -0.14309039033165083,
       "strength_level": "NEUTRAL"
     },
     "GOOGL": {
       "ticker": "GOOGL",
       "accuracy": 0.75,
-      "accuracy_vs_avg": 0.17500000000000004,
-      "confidence": 0.04859660193324089,
-      "confidence_vs_avg": -0.13398834858089687,
-      "strength_score": -0.21474665791157968,
+      "accuracy_vs_avg": 0.18125000000000002,
+      "confidence": 0.041943568736314774,
+      "confidence_vs_avg": -0.1439014406874776,
+      "strength_score": -0.22781377954806917,
       "strength_level": "WEAK"
     },
     "AMZN": {
       "ticker": "AMZN",
       "accuracy": 0.5625,
-      "accuracy_vs_avg": -0.012499999999999956,
-      "confidence": 0.12497340887784958,
-      "confidence_vs_avg": -0.05761154163628818,
-      "strength_score": -0.1686359678537007,
+      "accuracy_vs_avg": -0.006249999999999978,
+      "confidence": 0.11566878855228424,
+      "confidence_vs_avg": -0.07017622087150813,
+      "strength_score": -0.1942975868607678,
       "strength_level": "NEUTRAL"
     },
     "META": {
       "ticker": "META",
       "accuracy": 0.6875,
-      "accuracy_vs_avg": 0.11250000000000004,
-      "confidence": 0.034708425402641296,
-      "confidence_vs_avg": -0.14787652511149646,
-      "strength_score": -0.30712657944641436,
+      "accuracy_vs_avg": 0.11875000000000002,
+      "confidence": 0.03047175519168377,
+      "confidence_vs_avg": -0.1553732542321086,
+      "strength_score": -0.31362276132171923,
       "strength_level": "WEAK"
     },
     "TSLA": {
       "ticker": "TSLA",
       "accuracy": 0.6875,
-      "accuracy_vs_avg": 0.11250000000000004,
-      "confidence": 0.1861203908920288,
-      "confidence_vs_avg": 0.0035354403778910526,
-      "strength_score": 0.10750771835038987,
+      "accuracy_vs_avg": 0.11875000000000002,
+      "confidence": 0.1816602647304535,
+      "confidence_vs_avg": -0.0041847446933388766,
+      "strength_score": 0.09313690902812166,
       "strength_level": "NEUTRAL"
     },
     "AMD": {
       "ticker": "AMD",
       "accuracy": 0.5625,
-      "accuracy_vs_avg": -0.012499999999999956,
-      "confidence": 0.02726619876921177,
-      "confidence_vs_avg": -0.155318751744926,
-      "strength_score": -0.4362024070194309,
+      "accuracy_vs_avg": -0.006249999999999978,
+      "confidence": 0.027254249900579453,
+      "confidence_vs_avg": -0.15859075952321292,
+      "strength_score": -0.43216929222921374,
       "strength_level": "WEAK"
     },
     "NFLX": {
       "ticker": "NFLX",
       "accuracy": 0.5,
-      "accuracy_vs_avg": -0.07499999999999996,
-      "confidence": 0.05941758677363396,
-      "confidence_vs_avg": -0.1231673637405038,
-      "strength_score": -0.4025052219653058,
+      "accuracy_vs_avg": -0.06874999999999998,
+      "confidence": 0.05550878867506981,
+      "confidence_vs_avg": -0.13033622074872256,
+      "strength_score": -0.41109794280028844,
       "strength_level": "WEAK"
     },
     "QQQ": {
       "ticker": "QQQ",
       "accuracy": 0.4375,
-      "accuracy_vs_avg": -0.13749999999999996,
-      "confidence": 0.5748574137687683,
-      "confidence_vs_avg": 0.39227246325463055,
-      "strength_score": 0.9546538300987474,
+      "accuracy_vs_avg": -0.13124999999999998,
+      "confidence": 0.6172474026679993,
+      "confidence_vs_avg": 0.4314023932442069,
+      "strength_score": 1.04526638778668,
       "strength_level": "STRONG"
     }
   },
@@ -109,7 +109,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "BUY_CAUTION",
       "strength_level": "STRONG",
-      "strength_score": 0.8465894131018652,
+      "strength_score": 0.8300243665882835,
       "recommendation": "\u26a0\ufe0f CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation"
     },
     "AAPL": {
@@ -117,7 +117,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "WEAK",
-      "strength_score": -0.24716259709084576,
+      "strength_score": -0.24633591031137583,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
     },
     "MSFT": {
@@ -125,7 +125,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "NEUTRAL",
-      "strength_score": -0.13237153026372506,
+      "strength_score": -0.14309039033165083,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
     },
     "GOOGL": {
@@ -133,7 +133,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "WEAK",
-      "strength_score": -0.21474665791157968,
+      "strength_score": -0.22781377954806917,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
     },
     "AMZN": {
@@ -141,7 +141,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "NEUTRAL",
-      "strength_score": -0.1686359678537007,
+      "strength_score": -0.1942975868607678,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
     },
     "META": {
@@ -149,7 +149,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "WEAK",
-      "strength_score": -0.30712657944641436,
+      "strength_score": -0.31362276132171923,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
     },
     "TSLA": {
@@ -157,7 +157,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "NEUTRAL",
-      "strength_score": 0.10750771835038987,
+      "strength_score": 0.09313690902812166,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)"
     },
     "AMD": {
@@ -165,7 +165,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "WEAK",
-      "strength_score": -0.4362024070194309,
+      "strength_score": -0.43216929222921374,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
     },
     "NFLX": {
@@ -173,7 +173,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "SELL",
       "strength_level": "WEAK",
-      "strength_score": -0.4025052219653058,
+      "strength_score": -0.41109794280028844,
       "recommendation": "\u2705 EXECUTE - SELL (STRONG_DOWNTREND environment, WEAK strength)"
     },
     "QQQ": {
@@ -181,7 +181,7 @@
       "market_signal": "\ud83d\udd34 SELL",
       "phase2_action": "BUY_CAUTION",
       "strength_level": "STRONG",
-      "strength_score": 0.9546538300987474,
+      "strength_score": 1.04526638778668,
       "recommendation": "\u26a0\ufe0f CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation"
     }
   }

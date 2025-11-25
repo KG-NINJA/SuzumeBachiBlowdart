@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-11-24T12:44:49.746654",
-  "backtest_date": "2025-11-24",
+  "timestamp": "2025-11-25T01:29:05.724562",
+  "backtest_date": "2025-11-25",
   "total_predictions": 10,
   "execute_count": 8,
   "skip_count": 2,
@@ -9,8 +9,8 @@
     "execute_trades": 8,
     "skip_trades": 2,
     "avg_expected_move": 1.4770357913696748,
-    "avg_confidence": 0.18653289880603552,
-    "avg_model_accuracy": 0.575,
+    "avg_confidence": 0.18584500942379237,
+    "avg_model_accuracy": 0.56875,
     "high_accuracy_trades": 4,
     "high_confidence_trades": 4,
     "high_quality_trades": 1
@@ -29,11 +29,11 @@
         "target_price": 385.2609403594497,
         "predicted_direction": "DOWN",
         "expected_move_pct": 1.4904650184229384,
-        "confidence": 0.19897685945034027,
+        "confidence": 0.1816602647304535,
         "model_accuracy": 0.6875,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.985177"
+        "timestamp": "2025-11-25T01:29:04.971311"
       }
     ],
     "GOOD": [
@@ -43,11 +43,11 @@
         "target_price": 469.5501128568462,
         "predicted_direction": "DOWN",
         "expected_move_pct": 0.5443292262886085,
-        "confidence": 0.11473586410284042,
+        "confidence": 0.11427946388721466,
         "model_accuracy": 0.625,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.878074"
+        "timestamp": "2025-11-25T01:29:04.858641"
       },
       {
         "ticker": "AMZN",
@@ -55,11 +55,11 @@
         "target_price": 218.4087348309525,
         "predicted_direction": "DOWN",
         "expected_move_pct": 1.0336966645736039,
-        "confidence": 0.12729327380657196,
+        "confidence": 0.11566878855228424,
         "model_accuracy": 0.5625,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.932312"
+        "timestamp": "2025-11-25T01:29:04.914865"
       }
     ],
     "FAIR": [
@@ -69,11 +69,11 @@
         "target_price": 180.8453108189633,
         "predicted_direction": "UP",
         "expected_move_pct": 1.0986755472737606,
-        "confidence": 0.5255106687545776,
+        "confidence": 0.516821563243866,
         "model_accuracy": 0.5,
         "phase1_action": "SKIP",
         "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-24T12:44:48.825454"
+        "timestamp": "2025-11-25T01:29:04.803701"
       },
       {
         "ticker": "AAPL",
@@ -81,11 +81,11 @@
         "target_price": 269.4836065020853,
         "predicted_direction": "DOWN",
         "expected_move_pct": 0.7390303502577261,
-        "confidence": 0.16075733304023743,
+        "confidence": 0.1575942486524582,
         "model_accuracy": 0.375,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.852182"
+        "timestamp": "2025-11-25T01:29:04.831512"
       },
       {
         "ticker": "GOOGL",
@@ -93,11 +93,11 @@
         "target_price": 296.81227333027516,
         "predicted_direction": "DOWN",
         "expected_move_pct": 0.9503192517269117,
-        "confidence": 0.04693164303898811,
+        "confidence": 0.041943568736314774,
         "model_accuracy": 0.75,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.905729"
+        "timestamp": "2025-11-25T01:29:04.886967"
       },
       {
         "ticker": "META",
@@ -105,11 +105,11 @@
         "target_price": 588.6813707535155,
         "predicted_direction": "DOWN",
         "expected_move_pct": 0.9370852749658449,
-        "confidence": 0.032893139868974686,
+        "confidence": 0.03047175519168377,
         "model_accuracy": 0.6875,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:48.958574"
+        "timestamp": "2025-11-25T01:29:04.942737"
       },
       {
         "ticker": "AMD",
@@ -117,11 +117,11 @@
         "target_price": 199.23483052130658,
         "predicted_direction": "DOWN",
         "expected_move_pct": 2.2304296195374542,
-        "confidence": 0.02750558592379093,
+        "confidence": 0.027254249900579453,
         "model_accuracy": 0.5625,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:49.015030"
+        "timestamp": "2025-11-25T01:29:04.999316"
       },
       {
         "ticker": "NFLX",
@@ -129,11 +129,11 @@
         "target_price": 98.83348451137603,
         "predicted_direction": "DOWN",
         "expected_move_pct": 5.2502305518396835,
-        "confidence": 0.05468321964144707,
+        "confidence": 0.05550878867506981,
         "model_accuracy": 0.5,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-24T12:44:49.041060"
+        "timestamp": "2025-11-25T01:29:05.026750"
       },
       {
         "ticker": "QQQ",
@@ -141,11 +141,11 @@
         "target_price": 592.9973160794665,
         "predicted_direction": "UP",
         "expected_move_pct": 0.49609640881021505,
-        "confidence": 0.5760414004325867,
-        "model_accuracy": 0.5,
+        "confidence": 0.6172474026679993,
+        "model_accuracy": 0.4375,
         "phase1_action": "SKIP",
         "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-24T12:44:49.067092"
+        "timestamp": "2025-11-25T01:29:05.054394"
       }
     ],
     "POOR": []
