@@ -55,18 +55,42 @@ def build_feature_set(price_data, ticker):
         
         df = price_data.copy()
         
-        # Standardize column names
+        # Standardize column names to match advanced_features.py expectations
+        # First, try to normalize: lowercase and strip whitespace
         df.columns = [col.lower().strip() for col in df.columns]
         
-        # Ensure required columns
-        required = ['date', 'open', 'high', 'low', 'close', 'volume']
-        if not all(col in df.columns for col in required):
-            print(f"  [FEATURES] Missing columns: {set(required) - set(df.columns)}")
+        # Rename common variations to standard names
+        rename_map = {
+            'date': 'date',
+            'open': 'open',
+            'high': 'high',
+            'low': 'low',
+            'close': 'close',
+            'volume': 'volume',
+            'adj_close': 'close',
+            'adjusted_close': 'close'
+        }
+        
+        # Apply mapping
+        df.rename(columns=rename_map, inplace=True)
+        
+        # Also create UPPERCASE versions for advanced_features.py compatibility
+        df_upper = df.copy()
+        df_upper.columns = [col.upper() for col in df_upper.columns]
+        
+        # Ensure required columns exist
+        required = ['open', 'high', 'low', 'close', 'volume']
+        missing_lower = [col for col in required if col not in df.columns]
+        
+        if missing_lower:
+            print(f"  [FEATURES] Missing required columns: {missing_lower}")
+            print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
             return None
         
         # Convert to numeric
-        for col in ['open', 'high', 'low', 'close', 'volume']:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
+        for col in required:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
         
         df = df.dropna()
         
@@ -74,8 +98,11 @@ def build_feature_set(price_data, ticker):
             print(f"  [FEATURES] Insufficient data: {len(df)} rows")
             return None
         
-        # Sort by date
-        df = df.sort_values('date').reset_index(drop=True)
+        # Sort by date if date column exists
+        if 'date' in df.columns:
+            df = df.sort_values('date').reset_index(drop=True)
+        else:
+            df = df.reset_index(drop=True)
         
         close = df['close']
         high = df['high']
@@ -135,7 +162,25 @@ def build_feature_set(price_data, ticker):
         # ===== Advanced Features (NEW) =====
         print(f"  [FEATURES] Adding advanced indicators for {ticker}...")
         
-        df = build_advanced_features(df)
+        try:
+            # Try with lowercase columns first
+            df = build_advanced_features(df)
+        except KeyError as e:
+            print(f"  [FEATURES] KeyError with lowercase columns: {str(e)}")
+            print(f"  [FEATURES] Retrying with UPPERCASE columns...")
+            try:
+                # Retry with uppercase columns
+                df.columns = [col.upper() for col in df.columns]
+                df = build_advanced_features(df)
+                # Convert back to lowercase
+                df.columns = [col.lower() for col in df.columns]
+            except Exception as e2:
+                print(f"  [FEATURES] Failed with UPPERCASE also: {str(e2)}")
+                print(f"  [FEATURES] Skipping advanced features, continuing with basic features")
+                # Continue without advanced features
+        except Exception as e:
+            print(f"  [FEATURES] Error in build_advanced_features: {str(e)[:60]}")
+            print(f"  [FEATURES] Continuing with basic features only")
         
         print(f"  [FEATURES] Total features: {df.shape[1]}")
         
@@ -154,6 +199,12 @@ def build_feature_set(price_data, ticker):
         
         return df
     
+    except KeyError as e:
+        print(f"  [FEATURES ERROR] {ticker}: KeyError - {str(e)}")
+        print(f"  [FEATURES ERROR] Available columns: {df.columns.tolist() if 'df' in locals() else 'N/A'}")
+        return None
     except Exception as e:
         print(f"  [FEATURES ERROR] {ticker}: {str(e)[:60]}")
+        import traceback
+        print(f"  [FEATURES ERROR] Traceback: {traceback.format_exc()[:200]}")
         return None
