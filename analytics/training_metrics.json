@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-25T11:46:41.091676",
+  "timestamp": "2025-11-25T23:19:41.406702",
   "run_date": "2025-11-25",
   "results": [
     {
@@ -15,8 +15,8 @@
       "ticker": "AAPL",
       "status": "OK",
       "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6153846153846154,
-      "improvement": 0.038461538461538436,
+      "previous_accuracy": 0.6538461538461539,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -24,8 +24,8 @@
       "ticker": "MSFT",
       "status": "OK",
       "accuracy": 0.6153846153846154,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": -0.038461538461538436,
+      "previous_accuracy": 0.6153846153846154,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -41,9 +41,9 @@
     {
       "ticker": "AMZN",
       "status": "OK",
-      "accuracy": 0.46153846153846156,
+      "accuracy": 0.4230769230769231,
       "previous_accuracy": 0.46153846153846156,
-      "improvement": 0.0,
+      "improvement": -0.03846153846153849,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -87,8 +87,8 @@
       "ticker": "QQQ",
       "status": "OK",
       "accuracy": 0.6153846153846154,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": -0.038461538461538436,
+      "previous_accuracy": 0.6153846153846154,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     }
@@ -102,8 +102,8 @@
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.3134110391139984,
-    "average_confidence_pct": "31.3%",
+    "average_confidence": 0.30473631992936134,
+    "average_confidence_pct": "30.5%",
     "execute_count": 1,
     "hold_count": 2,
     "skip_count": 7,
