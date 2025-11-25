@@ -1,6 +1,6 @@
 """
-blowdart_ml_engine.py - XGBoost with Online Learning
-毎日新しいデータで既存モデルを改善
+blowdart_ml_engine.py - XGBoost with Online Learning & Metadata Validation
+毎日新しいデータで既存モデルを改善し、特徴量の不整合を自動検知して修復
 """
 
 import os
@@ -12,74 +12,127 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from pathlib import Path
 import pickle
+from datetime import datetime
 
 # Configuration
-MODELS_DIR = "models"
-TRAINING_LOG_DIR = "analytics"
-Path(MODELS_DIR).mkdir(parents=True, exist_ok=True)
-Path(TRAINING_LOG_DIR).mkdir(parents=True, exist_ok=True)
+MODELS_ROOT = Path("models")
+TRAINING_LOG_DIR = Path("analytics")
+MODELS_ROOT.mkdir(parents=True, exist_ok=True)
+TRAINING_LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def get_model_info_path(ticker):
-    """Get path to model metadata"""
-    return f"{MODELS_DIR}/{ticker}_info.json"
+def get_ticker_dir(ticker):
+    """Get (and create) the directory for a specific ticker"""
+    ticker_dir = MODELS_ROOT / ticker
+    ticker_dir.mkdir(parents=True, exist_ok=True)
+    return ticker_dir
 
 
-def load_model_info(ticker):
-    """Load model training info"""
-    info_path = get_model_info_path(ticker)
-    if os.path.exists(info_path):
-        try:
-            with open(info_path, 'r') as f:
-                return json.load(f)
-        except:
-            return None
-    return None
-
-
-def save_model_info(ticker, info):
-    """Save model training info"""
-    info_path = get_model_info_path(ticker)
+def save_checkpoint(ticker, model, scaler, feature_names, metrics=None):
+    """
+    モデル、スケーラー、メタデータを一括保存
+    
+    Args:
+        ticker: 銘柄コード
+        model: XGBoost Booster object
+        scaler: Fitted StandardScaler
+        feature_names: List of feature column names (order matters)
+        metrics: Dictionary of performance metrics
+    """
+    ticker_dir = get_ticker_dir(ticker)
+    
     try:
-        with open(info_path, 'w') as f:
-            json.dump(info, f, indent=2)
+        # 1. Save XGBoost Model (JSON for compatibility)
+        model_path = ticker_dir / "model.json"
+        model.save_model(str(model_path))
+        
+        # 2. Save Scaler (Pickle)
+        scaler_path = ticker_dir / "scaler.pkl"
+        with open(scaler_path, 'wb') as f:
+            pickle.dump(scaler, f)
+            
+        # 3. Save Metadata
+        metadata = {
+            "ticker": ticker,
+            "feature_names": feature_names,
+            "feature_count": len(feature_names),
+            "saved_at": datetime.now().isoformat(),
+            "metrics": metrics or {},
+            "model_type": "XGBoost_Booster"
+        }
+        
+        metadata_path = ticker_dir / "metadata.json"
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+            
+        print(f"  [SAVE] Checkpoint saved for {ticker} at {ticker_dir}")
         return True
-    except:
+        
+    except Exception as e:
+        print(f"  [ERROR] Failed to save checkpoint for {ticker}: {e}")
         return False
 
 
-def load_existing_model(ticker):
-    """Load existing model if available"""
-    model_path = f"{MODELS_DIR}/{ticker}_model.json"
-    scaler_path = f"{MODELS_DIR}/{ticker}_scaler.pkl"
+def load_checkpoint(ticker, current_feature_names=None):
+    """
+    モデルとスケーラーをロードし、特徴量の整合性を検証する
     
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-        try:
-            booster = xgb.Booster()
-            booster.load_model(model_path)
-
-            with open(scaler_path, 'rb') as f:
-                scaler = pickle.load(f)
-
-            return booster, scaler
-        except Exception as e:
-            print(f"  [WARNING] Failed to load existing model: {str(e)[:40]}")
-            return None, None
+    Args:
+        ticker: 銘柄コード
+        current_feature_names: 検証用現在の特徴量リスト（Noneの場合は検証スキップ）
+        
+    Returns:
+        tuple: (booster, scaler, metadata) or (None, None, None)
+    """
+    ticker_dir = get_ticker_dir(ticker)
+    model_path = ticker_dir / "model.json"
+    scaler_path = ticker_dir / "scaler.pkl"
+    metadata_path = ticker_dir / "metadata.json"
     
-    return None, None
+    # ファイル存在確認
+    if not (model_path.exists() and scaler_path.exists() and metadata_path.exists()):
+        return None, None, None
+        
+    try:
+        # 1. Validate Metadata First
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+            
+        if current_feature_names is not None:
+            saved_features = metadata.get('feature_names', [])
+            
+            # リストの完全一致を確認（XGBoostは順序に敏感なため、setではなくlist比較）
+            if saved_features != current_feature_names:
+                print(f"  [VALIDATION FAIL] Feature mismatch for {ticker}")
+                print(f"    Expected: {len(saved_features)} features")
+                print(f"    Got:      {len(current_feature_names)} features")
+                # 差分があれば表示（デバッグ用）
+                set_saved = set(saved_features)
+                set_current = set(current_feature_names)
+                if set_saved != set_current:
+                    print(f"    Missing: {set_saved - set_current}")
+                    print(f"    Extra:   {set_current - set_saved}")
+                
+                print("    -> Triggering fresh training.")
+                return None, None, None
+
+        # 2. Load Model & Scaler
+        booster = xgb.Booster()
+        booster.load_model(str(model_path))
+        
+        with open(scaler_path, 'rb') as f:
+            scaler = pickle.load(f)
+            
+        return booster, scaler, metadata
+
+    except Exception as e:
+        print(f"  [LOAD ERROR] Failed to load {ticker}: {e}")
+        return None, None, None
 
 
 def train_ticker(ticker, features_df, use_online_learning=True):
     """
-    Train or update XGBoost model for a ticker
-    
-    Args:
-        ticker: Stock symbol
-        features_df: DataFrame with features and target
-        use_online_learning: If True, update existing model; if False, train new
-    
-    Returns:
-        dict: Training info (accuracy, samples, etc.) or None
+    Train or update XGBoost model for a ticker with validation
     """
     try:
         if features_df is None or features_df.empty or len(features_df) < 30:
@@ -102,7 +155,9 @@ def train_ticker(ticker, features_df, use_online_learning=True):
             return None
         
         # Separate features and target
-        X = df[numeric_cols].drop('Close', axis=1) if 'Close' in numeric_cols else df[numeric_cols]
+        # 特徴量の名前リストを保存（重要）
+        feature_cols = [c for c in numeric_cols if c != 'Close']
+        X = df[feature_cols]
         y = df['Target']
         
         if X.empty or len(X) < 30:
@@ -111,43 +166,40 @@ def train_ticker(ticker, features_df, use_online_learning=True):
         # Remove NaN/Inf
         X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
         
-        # ===== Online Learning Logic =====
+        # ===== Online Learning Preparation =====
         existing_model = None
         existing_scaler = None
+        existing_metadata = None
         previous_accuracy = 0
-        previous_train_count = 0
+        total_train_samples = 0
+        learning_type = "FRESH_TRAIN"
         
         if use_online_learning:
-            existing_model, existing_scaler = load_existing_model(ticker)
-            model_info = load_model_info(ticker)
-
-            if model_info:
-                previous_accuracy = model_info.get('accuracy', 0)
-                previous_train_count = model_info.get('total_train_samples', 0)
-
-            # Ensure feature compatibility before attempting an online update
+            # ここで特徴量名のリストを渡して整合性チェックを行う
+            existing_model, existing_scaler, existing_metadata = load_checkpoint(ticker, feature_cols)
+            
             if existing_model is not None:
-                try:
-                    model_feature_count = existing_model.num_features()
-                    data_feature_count = X.shape[1]
-                    if model_feature_count != data_feature_count:
-                        print(f"  [ONLINE] Feature mismatch (model={model_feature_count}, data={data_feature_count}); retraining from scratch")
-                        existing_model = None
-                        existing_scaler = None
-                except Exception as e:
-                    print(f"  [ONLINE] Failed to inspect existing model: {str(e)[:40]}")
-                    existing_model = None
-                    existing_scaler = None
-        
-        # Use existing scaler or create new one
+                print(f"  [ONLINE] Valid existing model found for {ticker}")
+                learning_type = "ONLINE_UPDATE"
+                if existing_metadata:
+                    metrics = existing_metadata.get('metrics', {})
+                    previous_accuracy = metrics.get('accuracy', 0)
+                    total_train_samples = metrics.get('total_train_samples', 0)
+
+        # Scaler Logic
         if existing_scaler is not None:
             scaler = existing_scaler
-            print(f"  [ONLINE] Using existing scaler")
         else:
             scaler = StandardScaler()
-            print(f"  [ONLINE] Creating new scaler")
-        
-        X_scaled = scaler.fit_transform(X)
+            scaler.fit(X) # Fresh fit if new scaler
+            
+        # Transform (Note: if online update, we generally should fit scaler on new data too? 
+        # Ideally, online learning updates scaler, but StandardScaler is static. 
+        # For simplicity in this script, we re-fit scaler on FRESH, use existing on UPDATE)
+        if learning_type == "FRESH_TRAIN":
+            X_scaled = scaler.fit_transform(X)
+        else:
+            X_scaled = scaler.transform(X)
         
         # Train-test split
         X_train, X_test, y_train, y_test = train_test_split(
@@ -155,193 +207,125 @@ def train_ticker(ticker, features_df, use_online_learning=True):
             stratify=y if len(np.unique(y)) > 1 else None
         )
         
-        # ===== Train or Update Model =====
+        # ===== Train or Update =====
         model = None
-        learning_type = "FRESH_TRAIN"
+        
+        dtrain = xgb.DMatrix(X_train, label=y_train, feature_names=feature_cols)
+        dtest = xgb.DMatrix(X_test, label=y_test, feature_names=feature_cols)
 
-        if existing_model is not None and use_online_learning:
-            # Online Learning: Update existing model
-            print(f"  [ONLINE] Updating existing model...")
+        params = {
+            'objective': 'binary:logistic',
+            'max_depth': 5,
+            'learning_rate': 0.05 if learning_type == "ONLINE_UPDATE" else 0.1,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'eval_metric': 'logloss'
+        }
 
+        if learning_type == "ONLINE_UPDATE":
             try:
-                # Convert to DMatrix
-                dtrain_new = xgb.DMatrix(X_train, label=y_train)
-
-                # Train on new data while keeping old knowledge
+                # Update existing model
                 model = xgb.train(
-                    params={
-                        'objective': 'binary:logistic',
-                        'max_depth': 5,
-                        'learning_rate': 0.05,  # Lower LR for gradual updates
-                        'subsample': 0.8,
-                        'colsample_bytree': 0.8
-                    },
-                    dtrain=dtrain_new,
-                    num_boost_round=50,  # Add 50 new boosting rounds
-                    xgb_model=existing_model  # Start from existing model
+                    params=params,
+                    dtrain=dtrain,
+                    num_boost_round=50,
+                    xgb_model=existing_model
                 )
-
-                learning_type = "ONLINE_UPDATE"
             except Exception as e:
-                print(f"  [ONLINE] Update failed: {str(e)[:60]} - retraining from scratch")
-                model = None
+                print(f"  [ONLINE FAIL] Update failed: {e}. Fallback to fresh train.")
+                learning_type = "FRESH_TRAIN"
 
-        if model is None:
-            # Fresh Training: Create new model
-            print(f"  [ONLINE] Training new model...")
-
-            model = xgb.XGBClassifier(
-                n_estimators=100,
-                max_depth=5,
-                learning_rate=0.1,
-                subsample=0.8,
-                colsample_bytree=0.8,
-                random_state=42,
-                verbosity=0
+        if model is None or learning_type == "FRESH_TRAIN":
+            # Fresh train
+            model = xgb.train(
+                params=params,
+                dtrain=dtrain,
+                num_boost_round=100
             )
 
-            model.fit(X_train, y_train)
-            model = model.get_booster()  # Convert to Booster for consistency
-
-            learning_type = "FRESH_TRAIN"
-        
         # Evaluate
-        dtest = xgb.DMatrix(X_test, label=y_test)
         predictions = model.predict(dtest)
         pred_binary = (predictions > 0.5).astype(int)
         accuracy = np.mean(pred_binary == y_test)
         
-        # Calculate improvement
         accuracy_improvement = accuracy - previous_accuracy
         
-        # Save model
-        model_path = f"{MODELS_DIR}/{ticker}_model.json"
-        model.save_model(model_path)
-        print(f"  [ONLINE] Model saved: {model_path}")
-        
-        # Save scaler
-        scaler_path = f"{MODELS_DIR}/{ticker}_scaler.pkl"
-        with open(scaler_path, 'wb') as f:
-            pickle.dump(scaler, f)
-        
-        # Save model info
-        model_info = {
-            "ticker": ticker,
-            "accuracy": accuracy,
-            "previous_accuracy": previous_accuracy,
-            "accuracy_improvement": accuracy_improvement,
+        # Metrics to save
+        new_metrics = {
+            "accuracy": float(accuracy),
+            "previous_accuracy": float(previous_accuracy),
+            "accuracy_improvement": float(accuracy_improvement),
             "train_samples": len(X_train),
-            "test_samples": len(X_test),
-            "total_train_samples": previous_train_count + len(X_train),
-            "features": len(X.columns),
-            "learning_type": learning_type,
-            "model_path": model_path,
-            "scaler_path": scaler_path,
-            "timestamp": pd.Timestamp.now().isoformat()
+            "total_train_samples": total_train_samples + len(X_train),
+            "learning_type": learning_type
         }
         
-        save_model_info(ticker, model_info)
+        # ===== Save Checkpoint =====
+        save_checkpoint(ticker, model, scaler, feature_cols, new_metrics)
         
-        print(f"  [ONLINE] Accuracy: {accuracy:.4f} (Δ{accuracy_improvement:+.4f})")
+        print(f"  [RESULT] {ticker} | Acc: {accuracy:.4f} ({accuracy_improvement:+.4f}) | {learning_type}")
         
-        return model_info
+        return new_metrics
     
     except Exception as e:
-        print(f"  [TRAIN ERROR] {ticker}: {str(e)[:60]}")
+        print(f"  [TRAIN ERROR] {ticker}: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
 def predict_ticker(ticker, features_df):
     """
-    Generate prediction for a ticker using trained model
-    
-    Args:
-        ticker: Stock symbol
-        features_df: DataFrame with features
-    
-    Returns:
-        dict: Prediction data or None
+    Generate prediction for a ticker using trained model with validation
     """
     try:
         if features_df is None or features_df.empty or len(features_df) < 5:
             return None
         
-        # Get latest row
-        latest_row = features_df.iloc[-1]
-        current_close = latest_row.get('Close')
-        
-        if current_close is None or current_close <= 0:
-            return None
-        
-        # Load model
-        model_path = f"{MODELS_DIR}/{ticker}_model.json"
-        scaler_path = f"{MODELS_DIR}/{ticker}_scaler.pkl"
-        
-        if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-            return None
-        
-        # Load model and scaler
-        booster = xgb.Booster()
-        booster.load_model(model_path)
-        
-        with open(scaler_path, 'rb') as f:
-            scaler = pickle.load(f)
-        
-        # Prepare features
+        # Prepare features same as training
         numeric_cols = features_df.select_dtypes(include=[np.number]).columns.tolist()
         feature_cols = [c for c in numeric_cols if c != 'Close']
         
         if not feature_cols:
             return None
+            
+        # Load Checkpoint with Validation
+        # ここで現在のデータフレームのカラム構造が保存時と一致するか確認
+        model, scaler, metadata = load_checkpoint(ticker, feature_cols)
+        
+        if model is None:
+            print(f"  [PREDICT] Model not found or incompatible for {ticker}")
+            return None
+            
+        # Get latest data
+        latest_row = features_df.iloc[-1]
+        current_close = latest_row.get('Close')
         
         X_latest = features_df[feature_cols].iloc[-1:].copy()
         X_latest = X_latest.replace([np.inf, -np.inf], np.nan).fillna(0)
-        X_latest_scaled = scaler.transform(X_latest)
-        
-        # Create DMatrix
-        dmatrix = xgb.DMatrix(X_latest_scaled)
         
         # Predict
-        pred_proba = booster.predict(dmatrix)[0]
-        pred_class = 1 if pred_proba > 0.5 else 0
+        X_latest_scaled = scaler.transform(X_latest)
+        dmatrix = xgb.DMatrix(X_latest_scaled, feature_names=feature_cols)
         
-        # Estimate price change (use historical volatility)
-        returns = features_df['Close'].pct_change().dropna()
-        volatility = returns.std() if len(returns) > 0 else 0.02
+        pred_proba = model.predict(dmatrix)[0]
         
-        if pred_class == 1:
-            predicted_price = current_close * (1 + abs(volatility) * 0.5)
-            direction = "↑ Bullish"
-        else:
-            predicted_price = current_close * (1 - abs(volatility) * 0.5)
-            direction = "↓ Bearish"
+        # Context info
+        metrics = metadata.get('metrics', {})
+        accuracy = metrics.get('accuracy', 0)
         
-        # Get model info for additional context
-        model_info = load_model_info(ticker)
-        model_accuracy = model_info.get('accuracy', 0) if model_info else 0
+        # Estimate direction
+        direction = "↑ Bullish" if pred_proba > 0.5 else "↓ Bearish"
         
         return {
             "ticker": ticker,
             "current_price": float(current_close),
-            "predicted_price": float(predicted_price),
             "direction": direction,
             "confidence": float(pred_proba),
-            "model_accuracy": float(model_accuracy),
+            "model_accuracy": float(accuracy),
             "timestamp": pd.Timestamp.now().isoformat()
         }
     
     except Exception as e:
-        print(f"  [PREDICT ERROR] {ticker}: {str(e)[:60]}")
+        print(f"  [PREDICT ERROR] {ticker}: {e}")
         return None
-
-
-def get_training_history(ticker):
-    """Get training history for a ticker"""
-    info_path = get_model_info_path(ticker)
-    if os.path.exists(info_path):
-        try:
-            with open(info_path, 'r') as f:
-                return json.load(f)
-        except:
-            return None
-    return None
