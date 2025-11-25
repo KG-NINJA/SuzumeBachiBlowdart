@@ -260,7 +260,12 @@ def main():
     print(f"\nConfidence Filter Results:")
     print(f"  Execute (High Conf): {len(execute_predictions)}")
     print(f"  Skip (Low Conf): {len(skip_predictions)}")
-    print(f"  Execute Ratio: {len(execute_predictions) / len(filtered_predictions) * 100:.1f}%")
+
+    if len(filtered_predictions) > 0:
+        execute_ratio = len(execute_predictions) / len(filtered_predictions) * 100
+        print(f"  Execute Ratio: {execute_ratio:.1f}%")
+    else:
+        print("  Execute Ratio: N/A (no predictions)")
     
     if execute_predictions:
         avg_confidence_execute = np.mean([p['confidence'] for p in execute_predictions])
