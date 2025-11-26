@@ -1,6 +1,6 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-26T01:29:04.109181
+**Generated:** 2025-11-26T08:27:52.953527
 
 ## 🎯 Market Regime
 
@@ -21,11 +21,11 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AMZN | 42.31% | 🟢 STRONG | +0.66 |
-| 2 | AAPL | 65.38% | 🟢 STRONG | +0.52 |
-| 3 | TSLA | 61.54% | 🟢 STRONG | +0.38 |
-| 4 | QQQ | 61.54% | 🟡 NEUTRAL | +0.14 |
-| 5 | NVDA | 61.54% | 🟡 NEUTRAL | -0.02 |
+| 1 | AMZN | 46.15% | 🟢 STRONG | +0.74 |
+| 2 | AAPL | 65.38% | 🟢 STRONG | +0.48 |
+| 3 | TSLA | 61.54% | 🟢 STRONG | +0.41 |
+| 4 | QQQ | 57.69% | 🟡 NEUTRAL | +0.09 |
+| 5 | NVDA | 61.54% | 🟡 NEUTRAL | -0.05 |
 
 
 ---
@@ -33,19 +33,19 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **NVDA** 📉 SELL | Conf: 28.55% | Strength: NEUTRAL
+- **NVDA** 📉 SELL | Conf: 26.04% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **MSFT** 📉 SELL | Conf: 14.77% | Strength: WEAK
+- **MSFT** 📉 SELL | Conf: 14.49% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **GOOGL** 📉 SELL | Conf: 20.07% | Strength: NEUTRAL
+- **GOOGL** 📉 SELL | Conf: 19.31% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **META** 📉 SELL | Conf: 3.22% | Strength: WEAK
+- **META** 📉 SELL | Conf: 2.93% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **AMD** 📉 SELL | Conf: 2.69% | Strength: WEAK
+- **AMD** 📉 SELL | Conf: 2.67% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **NFLX** 📉 SELL | Conf: 5.98% | Strength: WEAK
+- **NFLX** 📉 SELL | Conf: 5.94% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **QQQ** 📉 SELL | Conf: 38.45% | Strength: NEUTRAL
+- **QQQ** 📉 SELL | Conf: 36.12% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
 
 

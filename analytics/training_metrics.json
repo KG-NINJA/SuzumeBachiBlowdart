@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-26T01:29:03.807044",
+  "timestamp": "2025-11-26T08:27:52.689692",
   "run_date": "2025-11-26",
   "results": [
     {
@@ -32,18 +32,18 @@
     {
       "ticker": "GOOGL",
       "status": "OK",
-      "accuracy": 0.5769230769230769,
+      "accuracy": 0.6153846153846154,
       "previous_accuracy": 0.6153846153846154,
-      "improvement": -0.03846153846153855,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "AMZN",
       "status": "OK",
-      "accuracy": 0.4230769230769231,
+      "accuracy": 0.46153846153846156,
       "previous_accuracy": 0.4230769230769231,
-      "improvement": 0.0,
+      "improvement": 0.03846153846153849,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -86,9 +86,9 @@
     {
       "ticker": "QQQ",
       "status": "OK",
-      "accuracy": 0.6153846153846154,
+      "accuracy": 0.5769230769230769,
       "previous_accuracy": 0.6153846153846154,
-      "improvement": 0.0,
+      "improvement": -0.03846153846153855,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     }
@@ -102,8 +102,8 @@
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.3060416070744395,
-    "average_confidence_pct": "30.6%",
+    "average_confidence": 0.2963630259037018,
+    "average_confidence_pct": "29.6%",
     "execute_count": 1,
     "hold_count": 2,
     "skip_count": 7,
