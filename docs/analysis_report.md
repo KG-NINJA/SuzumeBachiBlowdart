@@ -1,33 +1,33 @@
 # 📊 Model Accuracy Analysis Report
 
-**Generated:** 2025-11-25 01:29:06
+**Generated:** 2025-11-26 01:29:05
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Models | 10 |
-| Average Accuracy | 0.5687 |
-| Best Performer | GOOGL (0.7500) |
-| Needs Work | AAPL (0.3750) |
+| Average Accuracy | 0.6077 |
+| Best Performer | TSLA (0.7692) |
+| Needs Work | AMZN (0.4615) |
 
 ## 🎯 Top Performers
 
-1. **GOOGL**: 0.7500 accuracy (Δ+0.0000)
-2. **META**: 0.6875 accuracy (Δ+0.0000)
-3. **TSLA**: 0.6875 accuracy (Δ+0.0000)
+1. **TSLA**: 0.7692 accuracy (Δ+0.0385)
+2. **MSFT**: 0.6538 accuracy (Δ+0.0000)
+3. **AMD**: 0.6538 accuracy (Δ+0.0000)
 
 
 ## ⚠️ Needs Improvement
 
-- **NVDA**: 0.5000 accuracy (Δ-0.0625)
-- **QQQ**: 0.4375 accuracy (Δ+0.0000)
-- **AAPL**: 0.3750 accuracy (Δ+0.0000)
+- **NFLX**: 0.5385 accuracy (Δ-0.0385)
+- **QQQ**: 0.5385 accuracy (Δ+0.0000)
+- **AMZN**: 0.4615 accuracy (Δ+0.0000)
 
 
-## 🎯 Why is GOOGL the Best?
+## 🎯 Why is TSLA the Best?
 
-**GOOGL** is outperforming with **0.7500** accuracy.
+**TSLA** is outperforming with **0.7692** accuracy.
 
 **Key factors:**
 - Consistent trending behavior
@@ -36,7 +36,7 @@
 - Strong feature correlations
 
 **How to replicate on other tickers:**
-1. Analyze GOOGL's feature importance
+1. Analyze TSLA's feature importance
 2. Apply similar feature engineering to underperformers
 3. Consider ticker-specific hyperparameter tuning
 4. Monitor market regime changes
@@ -45,25 +45,25 @@
 
 | Rank | Ticker | Accuracy | Previous | Change |
 |------|--------|----------|----------|--------|
-| 1 | GOOGL | 0.7500 | 0.7500 | +0.0000 |
-| 2 | META | 0.6875 | 0.6875 | +0.0000 |
-| 3 | TSLA | 0.6875 | 0.6875 | +0.0000 |
-| 4 | MSFT | 0.6250 | 0.6250 | +0.0000 |
-| 5 | AMZN | 0.5625 | 0.5625 | +0.0000 |
-| 6 | AMD | 0.5625 | 0.5625 | +0.0000 |
-| 7 | NFLX | 0.5000 | 0.5000 | +0.0000 |
-| 8 | NVDA | 0.5000 | 0.5625 | -0.0625 |
-| 9 | QQQ | 0.4375 | 0.4375 | +0.0000 |
-| 10 | AAPL | 0.3750 | 0.3750 | +0.0000 |
+| 1 | TSLA | 0.7692 | 0.7308 | +0.0385 |
+| 2 | MSFT | 0.6538 | 0.6538 | +0.0000 |
+| 3 | AMD | 0.6538 | 0.6538 | +0.0000 |
+| 4 | META | 0.6538 | 0.6538 | +0.0000 |
+| 5 | AAPL | 0.6154 | 0.6154 | +0.0000 |
+| 6 | NVDA | 0.6154 | 0.6154 | +0.0000 |
+| 7 | GOOGL | 0.5769 | 0.5769 | +0.0000 |
+| 8 | NFLX | 0.5385 | 0.5769 | -0.0385 |
+| 9 | QQQ | 0.5385 | 0.5385 | +0.0000 |
+| 10 | AMZN | 0.4615 | 0.4615 | +0.0000 |
 
 
 ## 📈 Predictions Summary
 
 - **Total Predictions:** 10
-- **Bullish:** 0
-- **Bearish:** 8
-- **Average Confidence:** 0.1858
-- **Average Model Accuracy:** 0.5687
+- **Bullish:** 3
+- **Bearish:** 7
+- **Average Confidence:** 0.3060
+- **Average Model Accuracy:** 0.5962
 
 
 ## 🔧 Next Steps

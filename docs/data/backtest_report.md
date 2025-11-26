@@ -1,25 +1,25 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-25T01:29:05.724980
+**Generated:** 2025-11-26T01:29:04.454212
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 8 🟢 |
-| **Skip** | 2 🔴 |
-| **Avg Expected Move** | 1.48% |
-| **Avg Confidence** | 0.1858 |
-| **Avg Model Accuracy** | 0.5687 |
+| **Execute** | 1 🟢 |
+| **Skip** | 7 🔴 |
+| **Avg Expected Move** | 1.67% |
+| **Avg Confidence** | 0.3060 |
+| **Avg Model Accuracy** | 0.5962 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
-| 🟢 **BEST** | 0 | 10.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 2 | 20.0% | Above average on both metrics |
-| 🟠 **FAIR** | 7 | 70.0% | Decent on at least one metric |
+| 🟢 **BEST** | 2 | 10.0% | High accuracy (>65%) + High confidence (>15%) |
+| 🟡 **GOOD** | 5 | 50.0% | Above average on both metrics |
+| 🟠 **FAIR** | 4 | 40.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
 ## 🏆 BEST Trades (Execute Priority)
@@ -28,33 +28,36 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| TSLA | 68.75% | 18.17% | 1.49% | SELL |
+| AAPL | 65.38% | 59.51% | 0.57% | BUY_CAUTION |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- MSFT - Acc: 62.50%, Conf: 11.43%
-- AMZN - Acc: 56.25%, Conf: 11.57%
+- NVDA - Acc: 61.54%, Conf: 28.55%
+- MSFT - Acc: 61.54%, Conf: 14.77%
+- GOOGL - Acc: 57.69%, Conf: 20.07%
+- TSLA - Acc: 61.54%, Conf: 53.17%
+- QQQ - Acc: 61.54%, Conf: 38.45%
 
 
 ## 🔍 Analysis by Accuracy
 
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
-| > 70% | 1 | 0.95% |
-| 60-70% | 3 | 0.99% |
-| 50-60% | 4 | 2.40% |
-| < 50% | 2 | 0.62% |
+| > 70% | 0 | 0.00% |
+| 60-70% | 7 | 1.50% |
+| 50-60% | 2 | 2.22% |
+| < 50% | 1 | 1.78% |
 
 ---
 
 ## 📊 High Quality Indicators
 
-- **High Accuracy (>60%):** 4/10
-- **High Confidence (>15%):** 4/10
-- **Both (High Quality):** 1/10
+- **High Accuracy (>60%):** 7/10
+- **High Confidence (>15%):** 6/10
+- **Both (High Quality):** 4/10
 
 ---
 

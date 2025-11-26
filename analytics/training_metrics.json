@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-11-25T23:19:41.406702",
-  "run_date": "2025-11-25",
+  "timestamp": "2025-11-26T01:29:03.807044",
+  "run_date": "2025-11-26",
   "results": [
     {
       "ticker": "NVDA",
@@ -32,9 +32,9 @@
     {
       "ticker": "GOOGL",
       "status": "OK",
-      "accuracy": 0.6153846153846154,
+      "accuracy": 0.5769230769230769,
       "previous_accuracy": 0.6153846153846154,
-      "improvement": 0.0,
+      "improvement": -0.03846153846153855,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -42,8 +42,8 @@
       "ticker": "AMZN",
       "status": "OK",
       "accuracy": 0.4230769230769231,
-      "previous_accuracy": 0.46153846153846156,
-      "improvement": -0.03846153846153849,
+      "previous_accuracy": 0.4230769230769231,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -59,9 +59,9 @@
     {
       "ticker": "TSLA",
       "status": "OK",
-      "accuracy": 0.6538461538461539,
+      "accuracy": 0.6153846153846154,
       "previous_accuracy": 0.6538461538461539,
-      "improvement": 0.0,
+      "improvement": -0.038461538461538436,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -77,9 +77,9 @@
     {
       "ticker": "NFLX",
       "status": "OK",
-      "accuracy": 0.5,
+      "accuracy": 0.5384615384615384,
       "previous_accuracy": 0.5,
-      "improvement": 0.0,
+      "improvement": 0.038461538461538436,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
@@ -102,8 +102,8 @@
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.30473631992936134,
-    "average_confidence_pct": "30.5%",
+    "average_confidence": 0.3060416070744395,
+    "average_confidence_pct": "30.6%",
     "execute_count": 1,
     "hold_count": 2,
     "skip_count": 7,
