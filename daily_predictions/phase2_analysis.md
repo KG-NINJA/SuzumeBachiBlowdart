@@ -1,6 +1,6 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-26T09:21:31.566464
+**Generated:** 2025-11-26T23:20:01.793521
 
 ## 🎯 Market Regime
 
@@ -21,11 +21,11 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AMZN | 46.15% | 🟢 STRONG | +0.76 |
+| 1 | AMZN | 46.15% | 🟢 STRONG | +0.79 |
 | 2 | AAPL | 65.38% | 🟢 STRONG | +0.48 |
-| 3 | TSLA | 61.54% | 🟢 STRONG | +0.40 |
-| 4 | QQQ | 57.69% | 🟡 NEUTRAL | +0.11 |
-| 5 | NVDA | 61.54% | 🟡 NEUTRAL | -0.06 |
+| 3 | TSLA | 61.54% | 🟢 STRONG | +0.39 |
+| 4 | QQQ | 57.69% | 🟡 NEUTRAL | +0.12 |
+| 5 | NVDA | 65.38% | 🟡 NEUTRAL | -0.04 |
 
 
 ---
@@ -33,19 +33,19 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **NVDA** 📉 SELL | Conf: 25.39% | Strength: NEUTRAL
+- **NVDA** 📉 SELL | Conf: 24.45% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **MSFT** 📉 SELL | Conf: 14.06% | Strength: WEAK
+- **MSFT** 📉 SELL | Conf: 13.73% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **GOOGL** 📉 SELL | Conf: 18.48% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **META** 📉 SELL | Conf: 2.55% | Strength: WEAK
+- **GOOGL** 📉 SELL | Conf: 16.67% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **AMD** 📉 SELL | Conf: 2.49% | Strength: WEAK
+- **META** 📉 SELL | Conf: 2.39% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **NFLX** 📉 SELL | Conf: 5.56% | Strength: WEAK
+- **AMD** 📉 SELL | Conf: 2.26% | Strength: WEAK
   → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **QQQ** 📉 SELL | Conf: 36.94% | Strength: NEUTRAL
+- **NFLX** 📉 SELL | Conf: 5.25% | Strength: WEAK
+  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
+- **QQQ** 📉 SELL | Conf: 37.56% | Strength: NEUTRAL
   → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
 
 
