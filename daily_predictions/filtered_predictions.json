@@ -2,15 +2,15 @@
   {
     "ticker": "AMZN",
     "current_price": 220.69,
-    "predicted_price": 224.69905630455017,
+    "predicted_price": 224.7588924239397,
     "direction": "\u2191 Bullish",
-    "confidence": 0.8027667999267578,
+    "confidence": 0.8072856664657593,
     "model_accuracy": 0.46153846153846156,
-    "timestamp": "2025-11-26T08:27:52.444309",
+    "timestamp": "2025-11-26T09:21:30.956441",
     "confidence_level": "STRONG",
     "action": "EXECUTE",
-    "reason": "\u9ad8\u78ba\u7387\u30b7\u30b0\u30ca\u30eb (80.3%)",
-    "confidence_score": 0.8027667999267578,
+    "reason": "\u9ad8\u78ba\u7387\u30b7\u30b0\u30ca\u30eb (80.7%)",
+    "confidence_score": 0.8072856664657593,
     "recommendation": "Execute \u2191 Bullish trade"
   }
 ]

@@ -74,13 +74,13 @@
     "Distance_to_Resistance"
   ],
   "feature_count": 71,
-  "saved_at": "2025-11-26T08:27:51.524248",
+  "saved_at": "2025-11-26T09:21:29.787970",
   "metrics": {
     "accuracy": 0.6538461538461539,
     "previous_accuracy": 0.6538461538461539,
     "accuracy_improvement": 0.0,
     "train_samples": 100,
-    "total_train_samples": 500,
+    "total_train_samples": 600,
     "learning_type": "ONLINE_UPDATE"
   },
   "model_type": "XGBoost_Booster"
