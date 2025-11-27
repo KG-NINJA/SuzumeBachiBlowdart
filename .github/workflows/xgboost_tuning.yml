@@ -1,17 +1,13 @@
 # .github/workflows/xgboost_tuning.yml
 # XGBoost ハイパーパラメータチューニングを定期実行するワークフロー
+# 修正版: v3 → v4, upload-artifact なし
 
 name: Phase 2 - XGBoost Tuning
 
 on:
-  # 手動トリガー
   workflow_dispatch:
-  
-  # 週1回実行（毎週日曜午前3時 UTC）
   schedule:
     - cron: '0 3 * * 0'
-  
-  # Push時に実行（任意）
   push:
     branches:
       - main
@@ -22,60 +18,63 @@ on:
 jobs:
   xgboost-tuning:
     runs-on: ubuntu-latest
-    timeout-minutes: 120  # 2時間のタイムアウト
-    
-    strategy:
-      matrix:
-        python-version: ['3.10']
+    timeout-minutes: 120
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.10'
           cache: 'pip'
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install scikit-learn pandas numpy xgboost joblib
-      
+
       - name: Run XGBoost Tuning
         run: |
+          echo "=========================================="
           echo "Starting XGBoost Hyperparameter Tuning..."
+          echo "=========================================="
           python xgboost_tuning.py > tuning_output.log 2>&1
+          echo "✅ XGBoost Tuning completed"
         continue-on-error: true
-      
-      - name: Upload tuning results
-        uses: actions/upload-artifact@v3
-        with:
-          name: xgboost-tuning-results
-          path: |
-            tuning_output.log
-            tuning_results/
-          retention-days: 30
-      
-      - name: Commit and push tuning results
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          if [ -d "tuning_results" ]; then
-            git add tuning_results/
-            git add tuning_output.log
-            git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')" || true
-            git push
-          fi
-        continue-on-error: true
-      
+
       - name: Display tuning output
         if: always()
         run: |
           if [ -f "tuning_output.log" ]; then
             echo "=== XGBoost Tuning Output ==="
-            tail -150 tuning_output.log
+            tail -100 tuning_output.log
           fi
+
+      - name: Commit and push tuning results
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 変更があったら全て追加
+          git add -A || true
+          
+          # コミット
+          git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
+          
+          # プッシュ
+          git push origin main || echo "Nothing to push"
+        continue-on-error: true
+
+      - name: Tuning Complete
+        run: |
+          echo "=========================================="
+          echo "✅ XGBoost Tuning Workflow Completed"
+          echo "=========================================="
+          echo "Date: $(date)"
+          echo ""
+          echo "Results saved:"
+          echo "  - tuning_output.log"
+          echo "  - tuning_results/"
