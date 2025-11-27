@@ -7,7 +7,7 @@ Feature Analysis for All Tickers
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 06:43:47] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:49] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -23,19 +23,23 @@ Fetching NVDA...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NVDA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 80
+    - High correlation pairs: 9
 
 >>> AAPL
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 06:43:48] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:50] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -51,19 +55,23 @@ Fetching AAPL...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AAPL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 98
+    - High correlation pairs: 14
 
 >>> MSFT
 
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 06:43:48] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:50] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -79,19 +87,23 @@ Fetching MSFT...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for MSFT
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 79
+    - High correlation pairs: 6
 
 >>> GOOGL
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 06:43:48] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:50] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -107,19 +119,23 @@ Fetching GOOGL...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for GOOGL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 94
+    - High correlation pairs: 14
 
 >>> AMZN
 
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 06:43:49] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:51] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -135,19 +151,23 @@ Fetching AMZN...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMZN
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 64
+    - High correlation pairs: 4
 
 >>> META
 
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 06:43:49] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:51] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -163,19 +183,23 @@ Fetching META...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for META
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 83
+    - High correlation pairs: 9
 
 >>> TSLA
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 06:43:49] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:51] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -191,19 +215,23 @@ Fetching TSLA...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for TSLA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 73
+    - High correlation pairs: 11
 
 >>> AMD
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 06:43:50] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:51] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -219,19 +247,23 @@ Fetching AMD...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMD
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 109
+    - High correlation pairs: 13
 
 >>> NFLX
 
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 06:43:50] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:51] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -247,19 +279,23 @@ Fetching NFLX...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NFLX
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 422
+    - High correlation pairs: 49
 
 >>> QQQ
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 06:43:50] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 08:51:52] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -275,12 +311,16 @@ Fetching QQQ...
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for QQQ
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
   ✓ Analysis complete
-    - Total features: 71
+    - Total features: 20
     - Top 20 features selected
-    - High correlation pairs: 91
+    - High correlation pairs: 10
 
 ======================================================================
 Feature Analysis Complete
@@ -290,24 +330,24 @@ Analyzed tickers: 10/10
 
 Top 10 Most Important Features Across All Tickers:
 feature
-DailyReturn            0.035081
-Momentum_10            0.033892
-OBV                    0.033795
-Volume                 0.031058
-HighLowRatio           0.030555
-MACD                   0.030350
-ATR_Percent            0.029862
-Minus_DI               0.029447
-EMA_Distance_10_50     0.028300
-Momentum               0.028290
-VROC                   0.027899
-RSI7                   0.027122
-EMA26                  0.027084
-Momentum_5             0.027070
-CloseOpenRatio         0.026998
-ATR                    0.026833
-Volume_Ratio           0.026765
-Distance_to_Support    0.025851
-PVT                    0.025675
-Low                    0.025049
+ATR                    0.069317
+Minus_DI               0.068229
+OBV                    0.066006
+DailyReturn            0.065358
+CloseOpenRatio         0.062408
+Momentum_10            0.059757
+HighLowRatio           0.059716
+Volume                 0.059620
+Momentum               0.058993
+ATR_Percent            0.058859
+VROC                   0.057896
+MACD                   0.057875
+Volume_Ratio           0.056772
+Distance_to_Support    0.055342
+Low                    0.054414
+RSI7                   0.054308
+PVT                    0.053562
+Momentum_5             0.052770
+EMA26                  0.051631
+EMA_Distance_10_50     0.050162
 Name: importance, dtype: float64

@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 06:44:01 UTC 2025
+**Execution Date:** Thu Nov 27 08:52:01 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -21,32 +21,32 @@ Analyzed tickers: 10/10
 
 Top 10 Most Important Features Across All Tickers:
 feature
-DailyReturn            0.035081
-Momentum_10            0.033892
-OBV                    0.033795
-Volume                 0.031058
-HighLowRatio           0.030555
-MACD                   0.030350
-ATR_Percent            0.029862
-Minus_DI               0.029447
-EMA_Distance_10_50     0.028300
-Momentum               0.028290
-VROC                   0.027899
-RSI7                   0.027122
-EMA26                  0.027084
-Momentum_5             0.027070
-CloseOpenRatio         0.026998
-ATR                    0.026833
-Volume_Ratio           0.026765
-Distance_to_Support    0.025851
-PVT                    0.025675
-Low                    0.025049
+ATR                    0.069317
+Minus_DI               0.068229
+OBV                    0.066006
+DailyReturn            0.065358
+CloseOpenRatio         0.062408
+Momentum_10            0.059757
+HighLowRatio           0.059716
+Volume                 0.059620
+Momentum               0.058993
+ATR_Percent            0.058859
+VROC                   0.057896
+MACD                   0.057875
+Volume_Ratio           0.056772
+Distance_to_Support    0.055342
+Low                    0.054414
+RSI7                   0.054308
+PVT                    0.053562
+Momentum_5             0.052770
+EMA26                  0.051631
+EMA_Distance_10_50     0.050162
 Name: importance, dtype: float64
 ```
 
 ### Step 2 - XGBoost Tuning
 ```
-    Training set: (100, 72)
+    Training set: (100, 21)
     Starting grid search...
     ✓ Best params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
     ✓ CV Score: 1.0000
@@ -80,27 +80,27 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-  ✓ Retrained: Accuracy=0.5769 (+0.0000)
+  ✓ Retrained: Accuracy=0.6538 (+0.6538)
 
 ======================================================================
 RETRAINING SUMMARY
 ======================================================================
-  ticker  accuracy  improvement  learning_type   status
-0   NVDA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-1   AAPL  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-2   MSFT  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-3  GOOGL  0.576923    -0.038462  ONLINE_UPDATE  SUCCESS
-4   AMZN  0.461538     0.000000  ONLINE_UPDATE  SUCCESS
-5   META  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-6   TSLA  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
-7    AMD  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-8   NFLX  0.500000    -0.038462  ONLINE_UPDATE  SUCCESS
-9    QQQ  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
+  ticker  accuracy  improvement learning_type   status
+0   NVDA  0.576923     0.576923   FRESH_TRAIN  SUCCESS
+1   AAPL  0.576923     0.576923   FRESH_TRAIN  SUCCESS
+2   MSFT  0.692308     0.692308   FRESH_TRAIN  SUCCESS
+3  GOOGL  0.615385     0.615385   FRESH_TRAIN  SUCCESS
+4   AMZN  0.423077     0.423077   FRESH_TRAIN  SUCCESS
+5   META  0.538462     0.538462   FRESH_TRAIN  SUCCESS
+6   TSLA  0.653846     0.653846   FRESH_TRAIN  SUCCESS
+7    AMD  0.500000     0.500000   FRESH_TRAIN  SUCCESS
+8   NFLX  0.576923     0.576923   FRESH_TRAIN  SUCCESS
+9    QQQ  0.653846     0.653846   FRESH_TRAIN  SUCCESS
 
 📊 Statistics:
   - Successful: 10/10
-  - Average Accuracy: 0.6038
-  - Average Improvement: -0.0038
+  - Average Accuracy: 0.5808
+  - Average Improvement: +0.5808
   - Target Achieved: ⚠️ NO (70%+ target)
 
 ✅ Results saved to:
@@ -125,10 +125,10 @@ Phase 3: Backtest & Validation
   ✓ Simulated 10 trades
 
 [3/4] Calculating metrics...
-  ✓ Best trades: 2
-  ✓ Good trades: 4
-  ✓ Fair trades: 3
-  ✓ Poor trades: 1
+  ✓ Best trades: 3
+  ✓ Good trades: 3
+  ✓ Fair trades: 4
+  ✓ Poor trades: 0
 
 [4/4] Generating reports...
   ✓ Saved: backtest_results/backtest_report.json
@@ -140,10 +140,10 @@ Phase 3 Backtest Complete
 ======================================================================
 
 Trade Quality:
-  Best:  2
-  Good:  4
-  Fair:  3
-  Poor:  1
+  Best:  3
+  Good:  3
+  Fair:  4
+  Poor:  0
 ```
 
 ---
