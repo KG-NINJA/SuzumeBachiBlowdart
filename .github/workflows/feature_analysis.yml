@@ -1,0 +1,93 @@
+# .github/workflows/feature_analysis.yml
+# Feature Analysis を定期実行し、結果を自動保存するワークフロー
+
+name: Phase 2 - Feature Analysis
+
+on:
+  # 手動トリガー
+  workflow_dispatch:
+  
+  # 日次実行（毎日午前2時 UTC）
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Push時に実行（任意）
+  push:
+    branches:
+      - main
+    paths:
+      - 'feature_analysis.py'
+      - '.github/workflows/feature_analysis.yml'
+
+jobs:
+  feature-analysis:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ['3.10']
+    
+    steps:
+      # ステップ1: リポジトリをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # ステップ2: Python環境をセットアップ
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      # ステップ3: 依存ライブラリをインストール
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install scikit-learn pandas numpy matplotlib seaborn xgboost
+      
+      # ステップ4: Feature Analysis を実行
+      - name: Run Feature Analysis
+        run: |
+          python feature_analysis.py > feature_analysis_output.log 2>&1
+        continue-on-error: true  # エラーが発生してもワークフローを続行
+      
+      # ステップ5: 結果をアーティファクトに保存
+      - name: Upload analysis results
+        uses: actions/upload-artifact@v3
+        with:
+          name: feature-analysis-results
+          path: |
+            feature_analysis_output.log
+            feature_analysis/
+          retention-days: 30
+      
+      # ステップ6: 結果をコミット＆プッシュ（オプション）
+      - name: Commit and push results
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 結果ディレクトリが存在する場合のみ実行
+          if [ -d "feature_analysis" ]; then
+            git add feature_analysis/
+            git add feature_analysis_output.log
+            git commit -m "🔄 Auto: Feature Analysis Results - $(date +'%Y-%m-%d %H:%M:%S')" || true
+            git push
+          fi
+        continue-on-error: true
+      
+      # ステップ7: 実行ログを表示
+      - name: Display analysis output
+        if: always()
+        run: |
+          if [ -f "feature_analysis_output.log" ]; then
+            echo "=== Feature Analysis Output ==="
+            tail -100 feature_analysis_output.log
+          fi
+      
+      # ステップ8: 失敗時の通知（オプション）
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "⚠️ Feature Analysis failed. Check the logs in the Actions tab."
