@@ -1,36 +1,9 @@
 {
-  "timestamp": "2025-11-27T08:28:18.523166",
+  "timestamp": "2025-11-27T09:21:05.451578",
   "run_date": "2025-11-27",
   "results": [
     {
       "ticker": "NVDA",
-      "status": "OK",
-      "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": 0.0,
-      "train_samples": 100,
-      "learning_type": "ONLINE_UPDATE"
-    },
-    {
-      "ticker": "AAPL",
-      "status": "OK",
-      "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": 0.0,
-      "train_samples": 100,
-      "learning_type": "ONLINE_UPDATE"
-    },
-    {
-      "ticker": "MSFT",
-      "status": "OK",
-      "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6538461538461539,
-      "improvement": 0.0,
-      "train_samples": 100,
-      "learning_type": "ONLINE_UPDATE"
-    },
-    {
-      "ticker": "GOOGL",
       "status": "OK",
       "accuracy": 0.5769230769230769,
       "previous_accuracy": 0.5769230769230769,
@@ -39,10 +12,37 @@
       "learning_type": "ONLINE_UPDATE"
     },
     {
+      "ticker": "AAPL",
+      "status": "OK",
+      "accuracy": 0.6538461538461539,
+      "previous_accuracy": 0.6153846153846154,
+      "improvement": 0.038461538461538436,
+      "train_samples": 100,
+      "learning_type": "ONLINE_UPDATE"
+    },
+    {
+      "ticker": "MSFT",
+      "status": "OK",
+      "accuracy": 0.7307692307692307,
+      "previous_accuracy": 0.6923076923076923,
+      "improvement": 0.038461538461538436,
+      "train_samples": 100,
+      "learning_type": "ONLINE_UPDATE"
+    },
+    {
+      "ticker": "GOOGL",
+      "status": "OK",
+      "accuracy": 0.6538461538461539,
+      "previous_accuracy": 0.6538461538461539,
+      "improvement": 0.0,
+      "train_samples": 100,
+      "learning_type": "ONLINE_UPDATE"
+    },
+    {
       "ticker": "AMZN",
       "status": "OK",
-      "accuracy": 0.46153846153846156,
-      "previous_accuracy": 0.46153846153846156,
+      "accuracy": 0.4230769230769231,
+      "previous_accuracy": 0.4230769230769231,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -50,8 +50,8 @@
     {
       "ticker": "META",
       "status": "OK",
-      "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6538461538461539,
+      "accuracy": 0.5769230769230769,
+      "previous_accuracy": 0.5769230769230769,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -68,8 +68,8 @@
     {
       "ticker": "AMD",
       "status": "OK",
-      "accuracy": 0.6538461538461539,
-      "previous_accuracy": 0.6538461538461539,
+      "accuracy": 0.5769230769230769,
+      "previous_accuracy": 0.5769230769230769,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -77,17 +77,17 @@
     {
       "ticker": "NFLX",
       "status": "OK",
-      "accuracy": 0.5,
-      "previous_accuracy": 0.5,
-      "improvement": 0.0,
+      "accuracy": 0.5769230769230769,
+      "previous_accuracy": 0.5384615384615384,
+      "improvement": 0.038461538461538436,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "QQQ",
       "status": "OK",
-      "accuracy": 0.5769230769230769,
-      "previous_accuracy": 0.5769230769230769,
+      "accuracy": 0.6923076923076923,
+      "previous_accuracy": 0.6923076923076923,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -97,21 +97,21 @@
   "total_failed": 0,
   "predictions": {
     "total": 10,
-    "execute": 1,
-    "skip": 7
+    "execute": 2,
+    "skip": 6
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.28011560793966056,
-    "average_confidence_pct": "28.0%",
-    "execute_count": 1,
+    "average_confidence": 0.3553609263151884,
+    "average_confidence_pct": "35.5%",
+    "execute_count": 2,
     "hold_count": 2,
-    "skip_count": 7,
+    "skip_count": 6,
     "confidence_distribution": {
-      "strong": 1,
+      "strong": 2,
       "medium": 2,
-      "weak": 7
+      "weak": 6
     },
-    "execute_ratio": "10.0%"
+    "execute_ratio": "20.0%"
   }
 }

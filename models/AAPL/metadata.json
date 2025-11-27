@@ -23,13 +23,13 @@
     "Low"
   ],
   "feature_count": 20,
-  "saved_at": "2025-11-27T09:01:54.048091",
+  "saved_at": "2025-11-27T09:21:04.271236",
   "metrics": {
-    "accuracy": 0.6153846153846154,
-    "previous_accuracy": 0.5769230769230769,
-    "accuracy_improvement": 0.03846153846153855,
+    "accuracy": 0.6538461538461539,
+    "previous_accuracy": 0.6153846153846154,
+    "accuracy_improvement": 0.038461538461538436,
     "train_samples": 100,
-    "total_train_samples": 200,
+    "total_train_samples": 300,
     "learning_type": "ONLINE_UPDATE",
     "feature_count": 20
   },
