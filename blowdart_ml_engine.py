@@ -1,6 +1,7 @@
 """
 blowdart_ml_engine.py - XGBoost with Online Learning & Metadata Validation (修正版)
 毎日新しいデータで既存モデルを改善し、特徴量の不整合を自動検知して修復
+特徴削減（74→20）に対応した新バージョン
 """
 
 import os
@@ -19,6 +20,9 @@ MODELS_ROOT = Path("models")
 TRAINING_LOG_DIR = Path("analytics")
 MODELS_ROOT.mkdir(parents=True, exist_ok=True)
 TRAINING_LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+# ===== NEW: 特徴削減対応 =====
+EXPECTED_FEATURE_COUNT = 20  # 削減後の特徴数
 
 
 def get_ticker_dir(ticker):
@@ -51,7 +55,8 @@ def save_checkpoint(ticker, model, scaler, feature_names, metrics=None):
             "feature_count": len(feature_names),
             "saved_at": datetime.now().isoformat(),
             "metrics": metrics or {},
-            "model_type": "XGBoost_Booster"
+            "model_type": "XGBoost_Booster",
+            "feature_reduction_applied": True
         }
         
         metadata_path = ticker_dir / "metadata.json"
@@ -69,6 +74,7 @@ def save_checkpoint(ticker, model, scaler, feature_names, metrics=None):
 def load_checkpoint(ticker, current_feature_names=None):
     """
     モデルとスケーラーをロードし、特徴量の整合性を検証する
+    特徴削減対応版：Close を含めずに比較
     """
     ticker_dir = get_ticker_dir(ticker)
     model_path = ticker_dir / "model.json"
@@ -87,17 +93,25 @@ def load_checkpoint(ticker, current_feature_names=None):
         if current_feature_names is not None:
             saved_features = metadata.get('feature_names', [])
             
+            # Close を除外して比較（削減後は Close が含まれていない）
+            saved_features_clean = [f for f in saved_features if f != 'Close']
+            current_features_clean = [f for f in current_feature_names if f != 'Close']
+            
             # リストの完全一致を確認
-            if saved_features != current_feature_names:
+            if saved_features_clean != current_features_clean:
                 print(f"  [VALIDATION FAIL] Feature mismatch for {ticker}")
-                print(f"    Expected: {len(saved_features)} features")
-                print(f"    Got:      {len(current_feature_names)} features")
+                print(f"    Saved:   {len(saved_features_clean)} features")
+                print(f"    Current: {len(current_features_clean)} features")
                 
-                set_saved = set(saved_features)
-                set_current = set(current_feature_names)
+                set_saved = set(saved_features_clean)
+                set_current = set(current_features_clean)
                 if set_saved != set_current:
-                    print(f"    Missing: {set_saved - set_current}")
-                    print(f"    Extra:   {set_current - set_saved}")
+                    missing = set_saved - set_current
+                    extra = set_current - set_saved
+                    if missing:
+                        print(f"    Missing: {missing}")
+                    if extra:
+                        print(f"    Extra:   {extra}")
                 
                 print("    -> Triggering fresh training.")
                 return None, None, None
@@ -109,6 +123,7 @@ def load_checkpoint(ticker, current_feature_names=None):
         with open(scaler_path, 'rb') as f:
             scaler = pickle.load(f)
             
+        print(f"  [ONLINE] Valid checkpoint loaded for {ticker} ({len(saved_features_clean)} features)")
         return booster, scaler, metadata
 
     except Exception as e:
@@ -116,9 +131,10 @@ def load_checkpoint(ticker, current_feature_names=None):
         return None, None, None
 
 
-def train_ticker(ticker, features_df, use_online_learning=True):
+def train_ticker(ticker, features_df, use_online_learning=True, use_feature_reduction=True):
     """
     Train or update XGBoost model for a ticker with validation
+    特徴削減対応版
     """
     try:
         if features_df is None or features_df.empty or len(features_df) < 30:
@@ -140,8 +156,13 @@ def train_ticker(ticker, features_df, use_online_learning=True):
         if len(df) < 30:
             return None
         
-        # Separate features and target
+        # Separate features and target（Close 除外）
         feature_cols = [c for c in numeric_cols if c != 'Close']
+        
+        # Close が二重に含まれないように削除
+        if 'Close' in feature_cols:
+            feature_cols.remove('Close')
+        
         X = df[feature_cols]
         y = df['Target']
         
@@ -150,6 +171,8 @@ def train_ticker(ticker, features_df, use_online_learning=True):
         
         # Remove NaN/Inf
         X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
+        
+        print(f"  [TRAIN] {ticker}: {len(feature_cols)} features, {len(X)} samples")
         
         # ===== Online Learning Preparation =====
         existing_model = None
@@ -238,7 +261,8 @@ def train_ticker(ticker, features_df, use_online_learning=True):
             "accuracy_improvement": float(accuracy_improvement),
             "train_samples": len(X_train),
             "total_train_samples": total_train_samples + len(X_train),
-            "learning_type": learning_type
+            "learning_type": learning_type,
+            "feature_count": len(feature_cols)
         }
         
         # ===== Save Checkpoint =====
