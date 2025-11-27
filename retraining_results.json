@@ -1,72 +1,52 @@
 [
   {
     "ticker": "NVDA",
-    "accuracy": 0.5769230769230769,
-    "improvement": 0.0,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AAPL",
-    "accuracy": 0.6153846153846154,
-    "improvement": 0.03846153846153855,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "MSFT",
-    "accuracy": 0.6923076923076923,
-    "improvement": 0.0,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "GOOGL",
-    "accuracy": 0.6538461538461539,
-    "improvement": 0.038461538461538436,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AMZN",
-    "accuracy": 0.4230769230769231,
-    "improvement": 0.0,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "META",
-    "accuracy": 0.5769230769230769,
-    "improvement": 0.038461538461538436,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "TSLA",
-    "accuracy": 0.6538461538461539,
-    "improvement": 0.0,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AMD",
-    "accuracy": 0.5769230769230769,
-    "improvement": 0.07692307692307687,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "NFLX",
-    "accuracy": 0.5384615384615384,
-    "improvement": -0.038461538461538436,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "QQQ",
-    "accuracy": 0.6923076923076923,
-    "improvement": 0.038461538461538436,
-    "learning_type": "ONLINE_UPDATE",
-    "status": "SUCCESS"
+    "status": "FAILED",
+    "reason": "Training failed"
   }
 ]

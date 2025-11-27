@@ -1,13 +1,39 @@
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
 ======================================================================
 Retraining All Tickers with Tuned Parameters
 ======================================================================
@@ -18,7 +44,7 @@ Retraining All Tickers with Tuned Parameters
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 09:01:53] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -40,12 +66,10 @@ Fetching NVDA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] NVDA: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for NVDA (20 features)
-  [ONLINE] Valid existing model found for NVDA
-  [SAVE] Checkpoint saved for NVDA at models/NVDA
-  [RESULT] NVDA | Acc: 0.5769 (+0.0000) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.5769 (+0.0000)
+
+  [HYBRID] Starting hybrid training for NVDA
+  [TRAIN ERROR] NVDA: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> AAPL
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -53,7 +77,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 09:01:53] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -75,12 +99,10 @@ Fetching AAPL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] AAPL: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for AAPL (20 features)
-  [ONLINE] Valid existing model found for AAPL
-  [SAVE] Checkpoint saved for AAPL at models/AAPL
-  [RESULT] AAPL | Acc: 0.6154 (+0.0385) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.6154 (+0.0385)
+
+  [HYBRID] Starting hybrid training for AAPL
+  [TRAIN ERROR] AAPL: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> MSFT
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -88,7 +110,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 09:01:54] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -110,12 +132,10 @@ Fetching MSFT...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] MSFT: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for MSFT (20 features)
-  [ONLINE] Valid existing model found for MSFT
-  [SAVE] Checkpoint saved for MSFT at models/MSFT
-  [RESULT] MSFT | Acc: 0.6923 (+0.0000) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.6923 (+0.0000)
+
+  [HYBRID] Starting hybrid training for MSFT
+  [TRAIN ERROR] MSFT: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> GOOGL
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -123,7 +143,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 09:01:54] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -145,12 +165,10 @@ Fetching GOOGL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] GOOGL: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for GOOGL (20 features)
-  [ONLINE] Valid existing model found for GOOGL
-  [SAVE] Checkpoint saved for GOOGL at models/GOOGL
-  [RESULT] GOOGL | Acc: 0.6538 (+0.0385) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.6538 (+0.0385)
+
+  [HYBRID] Starting hybrid training for GOOGL
+  [TRAIN ERROR] GOOGL: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> AMZN
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -158,7 +176,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 09:01:54] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -180,12 +198,10 @@ Fetching AMZN...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] AMZN: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for AMZN (20 features)
-  [ONLINE] Valid existing model found for AMZN
-  [SAVE] Checkpoint saved for AMZN at models/AMZN
-  [RESULT] AMZN | Acc: 0.4231 (+0.0000) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.4231 (+0.0000)
+
+  [HYBRID] Starting hybrid training for AMZN
+  [TRAIN ERROR] AMZN: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> META
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -193,7 +209,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 09:01:54] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -201,16 +217,6 @@ Fetching META...
   [Features] Adding advanced indicators...
     ✓ Bollinger Bands
     ✓ ADX
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
     ✓ RSI & Divergence
     ✓ MACD
     ✓ Volume Features
@@ -225,20 +231,42 @@ Fetching META...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] META: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for META (20 features)
-  [ONLINE] Valid existing model found for META
-  [SAVE] Checkpoint saved for META at models/META
-  [RESULT] META | Acc: 0.5769 (+0.0385) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.5769 (+0.0385)
+
+  [HYBRID] Starting hybrid training for META
+  [TRAIN ERROR] META: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> TSLA
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 299, in train_ticker
+    regime, volatility, trend_strength = detect_market_regime(features_df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 53, in detect_market_regime
+    vol_percentile = (volatility - returns.std().quantile(0.25)) / (returns.std().quantile(0.75) - returns.std().quantile(0.25) + 1e-6)
+AttributeError: 'numpy.float64' object has no attribute 'quantile'
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 09:01:54] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -260,12 +288,10 @@ Fetching TSLA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] TSLA: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for TSLA (20 features)
-  [ONLINE] Valid existing model found for TSLA
-  [SAVE] Checkpoint saved for TSLA at models/TSLA
-  [RESULT] TSLA | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+  [HYBRID] Starting hybrid training for TSLA
+  [TRAIN ERROR] TSLA: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> AMD
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -273,7 +299,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 09:01:54] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:46] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -295,12 +321,10 @@ Fetching AMD...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] AMD: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for AMD (20 features)
-  [ONLINE] Valid existing model found for AMD
-  [SAVE] Checkpoint saved for AMD at models/AMD
-  [RESULT] AMD | Acc: 0.5769 (+0.0769) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.5769 (+0.0769)
+
+  [HYBRID] Starting hybrid training for AMD
+  [TRAIN ERROR] AMD: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> NFLX
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -308,7 +332,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 09:01:54] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:47] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -330,12 +354,10 @@ Fetching NFLX...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] NFLX: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for NFLX (20 features)
-  [ONLINE] Valid existing model found for NFLX
-  [SAVE] Checkpoint saved for NFLX at models/NFLX
-  [RESULT] NFLX | Acc: 0.5385 (-0.0385) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.5385 (-0.0385)
+
+  [HYBRID] Starting hybrid training for NFLX
+  [TRAIN ERROR] NFLX: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 >>> QQQ
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -343,7 +365,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 09:01:54] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:38:47] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -365,33 +387,25 @@ Fetching QQQ...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [TRAIN] QQQ: 20 features, 126 samples
-  [ONLINE] Valid checkpoint loaded for QQQ (20 features)
-  [ONLINE] Valid existing model found for QQQ
-  [SAVE] Checkpoint saved for QQQ at models/QQQ
-  [RESULT] QQQ | Acc: 0.6923 (+0.0385) | ONLINE_UPDATE
-  ✓ Retrained: Accuracy=0.6923 (+0.0385)
+
+  [HYBRID] Starting hybrid training for QQQ
+  [TRAIN ERROR] QQQ: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 ======================================================================
 RETRAINING SUMMARY
 ======================================================================
-  ticker  accuracy  improvement  learning_type   status
-0   NVDA  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
-1   AAPL  0.615385     0.038462  ONLINE_UPDATE  SUCCESS
-2   MSFT  0.692308     0.000000  ONLINE_UPDATE  SUCCESS
-3  GOOGL  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
-4   AMZN  0.423077     0.000000  ONLINE_UPDATE  SUCCESS
-5   META  0.576923     0.038462  ONLINE_UPDATE  SUCCESS
-6   TSLA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-7    AMD  0.576923     0.076923  ONLINE_UPDATE  SUCCESS
-8   NFLX  0.538462    -0.038462  ONLINE_UPDATE  SUCCESS
-9    QQQ  0.692308     0.038462  ONLINE_UPDATE  SUCCESS
-
-📊 Statistics:
-  - Successful: 10/10
-  - Average Accuracy: 0.6000
-  - Average Improvement: +0.0192
-  - Target Achieved: ⚠️ NO (70%+ target)
+  ticker  status           reason
+0   NVDA  FAILED  Training failed
+1   AAPL  FAILED  Training failed
+2   MSFT  FAILED  Training failed
+3  GOOGL  FAILED  Training failed
+4   AMZN  FAILED  Training failed
+5   META  FAILED  Training failed
+6   TSLA  FAILED  Training failed
+7    AMD  FAILED  Training failed
+8   NFLX  FAILED  Training failed
+9    QQQ  FAILED  Training failed
 
 ✅ Results saved to:
    - retraining_results.csv

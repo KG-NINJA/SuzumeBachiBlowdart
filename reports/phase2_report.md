@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 09:01:55 UTC 2025
+**Execution Date:** Thu Nov 27 11:38:47 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,28 +80,28 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-  ✓ Retrained: Accuracy=0.6923 (+0.0385)
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [HYBRID] Starting hybrid training for QQQ
+  [TRAIN ERROR] QQQ: 'numpy.float64' object has no attribute 'quantile'
+  ✗ Training failed
 
 ======================================================================
 RETRAINING SUMMARY
 ======================================================================
-  ticker  accuracy  improvement  learning_type   status
-0   NVDA  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
-1   AAPL  0.615385     0.038462  ONLINE_UPDATE  SUCCESS
-2   MSFT  0.692308     0.000000  ONLINE_UPDATE  SUCCESS
-3  GOOGL  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
-4   AMZN  0.423077     0.000000  ONLINE_UPDATE  SUCCESS
-5   META  0.576923     0.038462  ONLINE_UPDATE  SUCCESS
-6   TSLA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
-7    AMD  0.576923     0.076923  ONLINE_UPDATE  SUCCESS
-8   NFLX  0.538462    -0.038462  ONLINE_UPDATE  SUCCESS
-9    QQQ  0.692308     0.038462  ONLINE_UPDATE  SUCCESS
-
-📊 Statistics:
-  - Successful: 10/10
-  - Average Accuracy: 0.6000
-  - Average Improvement: +0.0192
-  - Target Achieved: ⚠️ NO (70%+ target)
+  ticker  status           reason
+0   NVDA  FAILED  Training failed
+1   AAPL  FAILED  Training failed
+2   MSFT  FAILED  Training failed
+3  GOOGL  FAILED  Training failed
+4   AMZN  FAILED  Training failed
+5   META  FAILED  Training failed
+6   TSLA  FAILED  Training failed
+7    AMD  FAILED  Training failed
+8   NFLX  FAILED  Training failed
+9    QQQ  FAILED  Training failed
 
 ✅ Results saved to:
    - retraining_results.csv
@@ -125,8 +125,8 @@ Phase 3: Backtest & Validation
   ✓ Simulated 10 trades
 
 [3/4] Calculating metrics...
-  ✓ Best trades: 3
-  ✓ Good trades: 3
+  ✓ Best trades: 5
+  ✓ Good trades: 1
   ✓ Fair trades: 4
   ✓ Poor trades: 0
 
@@ -140,8 +140,8 @@ Phase 3 Backtest Complete
 ======================================================================
 
 Trade Quality:
-  Best:  3
-  Good:  3
+  Best:  5
+  Good:  1
   Fair:  4
   Poor:  0
 ```
