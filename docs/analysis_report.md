@@ -1,6 +1,6 @@
 # 📊 Model Accuracy Analysis Report
 
-**Generated:** 2025-11-26 01:29:05
+**Generated:** 2025-11-27 01:28:11
 
 ## Summary
 
@@ -62,8 +62,8 @@
 - **Total Predictions:** 10
 - **Bullish:** 3
 - **Bearish:** 7
-- **Average Confidence:** 0.3060
-- **Average Model Accuracy:** 0.5962
+- **Average Confidence:** 0.2949
+- **Average Model Accuracy:** 0.6077
 
 
 ## 🔧 Next Steps
