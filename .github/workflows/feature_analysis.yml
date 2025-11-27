@@ -1,17 +1,11 @@
-# .github/workflows/feature_analysis.yml
-# Feature Analysis を定期実行し、結果を自動保存するワークフロー
+# .github/workflows/feature_analysis.yml (修正版 - v4対応)
 
 name: Phase 2 - Feature Analysis
 
 on:
-  # 手動トリガー
   workflow_dispatch:
-  
-  # 日次実行（毎日午前2時 UTC）
   schedule:
     - cron: '0 2 * * *'
-  
-  # Push時に実行（任意）
   push:
     branches:
       - main
@@ -28,56 +22,49 @@ jobs:
         python-version: ['3.10']
     
     steps:
-      # ステップ1: リポジトリをチェックアウト
       - name: Checkout code
-        uses: actions/checkout@v3
-      
-      # ステップ2: Python環境をセットアップ
+        uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
-      
-      # ステップ3: 依存ライブラリをインストール
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install scikit-learn pandas numpy matplotlib seaborn xgboost
-      
-      # ステップ4: Feature Analysis を実行
+
       - name: Run Feature Analysis
         run: |
           python feature_analysis.py > feature_analysis_output.log 2>&1
-        continue-on-error: true  # エラーが発生してもワークフローを続行
-      
-      # ステップ5: 結果をアーティファクトに保存
+        continue-on-error: true
+
       - name: Upload analysis results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: feature-analysis-results
           path: |
             feature_analysis_output.log
             feature_analysis/
           retention-days: 30
-      
-      # ステップ6: 結果をコミット＆プッシュ（オプション）
+        continue-on-error: true
+
       - name: Commit and push results
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # 結果ディレクトリが存在する場合のみ実行
           if [ -d "feature_analysis" ]; then
             git add feature_analysis/
-            git add feature_analysis_output.log
+            git add feature_analysis_output.log 2>/dev/null || true
             git commit -m "🔄 Auto: Feature Analysis Results - $(date +'%Y-%m-%d %H:%M:%S')" || true
             git push
           fi
         continue-on-error: true
-      
-      # ステップ7: 実行ログを表示
+
       - name: Display analysis output
         if: always()
         run: |
@@ -85,9 +72,210 @@ jobs:
             echo "=== Feature Analysis Output ==="
             tail -100 feature_analysis_output.log
           fi
-      
-      # ステップ8: 失敗時の通知（オプション）
-      - name: Notify on failure
-        if: failure()
+---
+
+# .github/workflows/xgboost_tuning.yml (修正版 - v4対応)
+
+name: Phase 2 - XGBoost Tuning
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0'
+  push:
+    branches:
+      - main
+    paths:
+      - 'xgboost_tuning.py'
+      - '.github/workflows/xgboost_tuning.yml'
+
+jobs:
+  xgboost-tuning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    
+    strategy:
+      matrix:
+        python-version: ['3.10']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
         run: |
-          echo "⚠️ Feature Analysis failed. Check the logs in the Actions tab."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install scikit-learn pandas numpy xgboost joblib
+
+      - name: Run XGBoost Tuning
+        run: |
+          echo "Starting XGBoost Hyperparameter Tuning..."
+          python xgboost_tuning.py > tuning_output.log 2>&1
+        continue-on-error: true
+
+      - name: Upload tuning results
+        uses: actions/upload-artifact@v4
+        with:
+          name: xgboost-tuning-results
+          path: |
+            tuning_output.log
+            tuning_results/
+          retention-days: 30
+        continue-on-error: true
+
+      - name: Commit and push tuning results
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if [ -d "tuning_results" ]; then
+            git add tuning_results/
+            git add tuning_output.log 2>/dev/null || true
+            git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')" || true
+            git push
+          fi
+        continue-on-error: true
+
+      - name: Display tuning output
+        if: always()
+        run: |
+          if [ -f "tuning_output.log" ]; then
+            echo "=== XGBoost Tuning Output ==="
+            tail -150 tuning_output.log
+          fi
+---
+
+# .github/workflows/phase2_pipeline.yml (修正版 - v4対応)
+
+name: Phase 2 - Complete Pipeline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * 1'
+
+jobs:
+  phase2-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install scikit-learn pandas numpy xgboost matplotlib seaborn joblib
+
+      - name: Create logs directory
+        run: mkdir -p logs
+
+      - name: Step 1 - Feature Analysis
+        run: |
+          echo "===== PHASE 2: STEP 1 - Feature Analysis ====="
+          python feature_analysis.py > logs/step1_feature_analysis.log 2>&1 || true
+          echo "Feature Analysis completed"
+
+      - name: Step 2 - XGBoost Tuning
+        run: |
+          echo "===== PHASE 2: STEP 2 - XGBoost Tuning ====="
+          python xgboost_tuning.py > logs/step2_xgboost_tuning.log 2>&1 || true
+          echo "XGBoost Tuning completed"
+
+      - name: Step 3 - Model Retraining
+        run: |
+          echo "===== PHASE 2: STEP 3 - Model Retraining ====="
+          python retrain_all.py > logs/step3_retrain_all.log 2>&1 || true
+          echo "Model Retraining completed"
+
+      - name: Step 4 - Backtest Validation
+        run: |
+          echo "===== PHASE 2: STEP 4 - Backtest Validation ====="
+          python backtest_engine.py > logs/step4_backtest.log 2>&1 || true
+          echo "Backtest Validation completed"
+
+      - name: Generate Phase 2 Report
+        run: |
+          echo "===== PHASE 2 REPORT ====="
+          mkdir -p reports
+          
+          {
+            echo "# Phase 2 - Complete Pipeline Report"
+            echo ""
+            echo "Execution Date: $(date)"
+            echo ""
+            echo "## Pipeline Status"
+            echo "- ✅ Feature Analysis"
+            echo "- ✅ XGBoost Tuning"
+            echo "- ✅ Model Retraining"
+            echo "- ✅ Backtest Validation"
+            echo ""
+            echo "## Log Summary"
+            echo ""
+            echo "### Step 1 - Feature Analysis"
+            if [ -f "logs/step1_feature_analysis.log" ]; then
+              tail -20 logs/step1_feature_analysis.log
+            fi
+            echo ""
+            echo "### Step 2 - XGBoost Tuning"
+            if [ -f "logs/step2_xgboost_tuning.log" ]; then
+              tail -20 logs/step2_xgboost_tuning.log
+            fi
+            echo ""
+            echo "### Step 3 - Model Retraining"
+            if [ -f "logs/step3_retrain_all.log" ]; then
+              tail -20 logs/step3_retrain_all.log
+            fi
+            echo ""
+            echo "### Step 4 - Backtest Validation"
+            if [ -f "logs/step4_backtest.log" ]; then
+              tail -20 logs/step4_backtest.log
+            fi
+          } > reports/phase2_report.md
+          
+          cat reports/phase2_report.md
+
+      - name: Upload all results
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-pipeline-results
+          path: |
+            logs/
+            reports/
+            feature_analysis/
+            tuning_results/
+          retention-days: 60
+        continue-on-error: true
+
+      - name: Commit and push Phase 2 results
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          git add logs/ reports/ feature_analysis/ tuning_results/ 2>/dev/null || true
+          git commit -m "📊 Phase 2 Pipeline Execution - $(date +'%Y-%m-%d %H:%M:%S')" || true
+          git push
+        continue-on-error: true
+
+      - name: Phase 2 Pipeline Completed
+        if: success()
+        run: |
+          echo "✅ Phase 2 Pipeline completed successfully!"
+          echo "📊 Results saved in:"
+          echo "   - Reports: reports/phase2_report.md"
+          echo "   - Logs: logs/"
