@@ -1,4 +1,326 @@
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py", line 8, in <module>
-    from blowdart_ml_engine import train_ticker
-ImportError: cannot import name 'train_ticker' from 'blowdart_ml_engine' (/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py)
+======================================================================
+Retraining All Tickers with Tuned Parameters
+======================================================================
+
+>>> NVDA
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching NVDA...
+============================================================
+[2025-11-27 11:50:19] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NVDA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NVDA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> AAPL
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AAPL...
+============================================================
+[2025-11-27 11:50:19] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AAPL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AAPL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> MSFT
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching MSFT...
+============================================================
+[2025-11-27 11:50:19] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for MSFT...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for MSFT
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> GOOGL
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching GOOGL...
+============================================================
+[2025-11-27 11:50:19] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for GOOGL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for GOOGL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> AMZN
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AMZN...
+============================================================
+[2025-11-27 11:50:19] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMZN...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMZN
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> META
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching META...
+============================================================
+[2025-11-27 11:50:19] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for META...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for META
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> TSLA
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching TSLA...
+============================================================
+[2025-11-27 11:50:19] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for TSLA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for TSLA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> AMD
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AMD...
+============================================================
+[2025-11-27 11:50:19] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMD...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMD
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> NFLX
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching NFLX...
+============================================================
+[2025-11-27 11:50:19] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NFLX...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NFLX
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+>>> QQQ
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching QQQ...
+============================================================
+[2025-11-27 11:50:19] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for QQQ...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for QQQ
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+======================================================================
+RETRAINING SUMMARY
+======================================================================
+  ticker status                                                         error
+0   NVDA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+1   AAPL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+2   MSFT  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+3  GOOGL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+4   AMZN  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+5   META  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+6   TSLA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+7    AMD  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+8   NFLX  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+9    QQQ  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+
+✅ Results saved to:
+   - retraining_results.csv
+   - retraining_results.json
+
+======================================================================
+Retraining Complete
+======================================================================

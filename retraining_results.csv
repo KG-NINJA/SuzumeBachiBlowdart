@@ -1,11 +1,11 @@
-ticker,status,reason
-NVDA,FAILED,Training failed
-AAPL,FAILED,Training failed
-MSFT,FAILED,Training failed
-GOOGL,FAILED,Training failed
-AMZN,FAILED,Training failed
-META,FAILED,Training failed
-TSLA,FAILED,Training failed
-AMD,FAILED,Training failed
-NFLX,FAILED,Training failed
-QQQ,FAILED,Training failed
+ticker,status,error
+NVDA,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+AAPL,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+MSFT,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+GOOGL,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+AMZN,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+META,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+TSLA,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+AMD,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+NFLX,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+QQQ,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin

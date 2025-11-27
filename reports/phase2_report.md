@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 11:45:29 UTC 2025
+**Execution Date:** Thu Nov 27 11:50:20 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,10 +80,36 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py", line 8, in <module>
-    from blowdart_ml_engine import train_ticker
-ImportError: cannot import name 'train_ticker' from 'blowdart_ml_engine' (/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py)
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for QQQ
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+======================================================================
+RETRAINING SUMMARY
+======================================================================
+  ticker status                                                         error
+0   NVDA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+1   AAPL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+2   MSFT  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+3  GOOGL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+4   AMZN  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+5   META  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+6   TSLA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+7    AMD  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+8   NFLX  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+9    QQQ  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+
+✅ Results saved to:
+   - retraining_results.csv
+   - retraining_results.json
+
+======================================================================
+Retraining Complete
+======================================================================
 ```
 
 ### Step 4 - Backtest Validation
