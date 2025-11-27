@@ -23,14 +23,16 @@
     "Low"
   ],
   "feature_count": 20,
-  "saved_at": "2025-11-27T08:52:00.764001",
+  "saved_at": "2025-11-27T09:01:54.493623",
   "metrics": {
-    "accuracy": 0.5,
-    "previous_accuracy": 0.0,
-    "accuracy_improvement": 0.5,
+    "accuracy": 0.5769230769230769,
+    "previous_accuracy": 0.5,
+    "accuracy_improvement": 0.07692307692307687,
     "train_samples": 100,
-    "total_train_samples": 100,
-    "learning_type": "FRESH_TRAIN"
+    "total_train_samples": 200,
+    "learning_type": "ONLINE_UPDATE",
+    "feature_count": 20
   },
-  "model_type": "XGBoost_Booster"
+  "model_type": "XGBoost_Booster",
+  "feature_reduction_applied": true
 }

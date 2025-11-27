@@ -4,6 +4,10 @@
   if is_sparse(data):
 /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
   if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
 ======================================================================
 Retraining All Tickers with Tuned Parameters
 ======================================================================
@@ -14,7 +18,7 @@ Retraining All Tickers with Tuned Parameters
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 08:52:00] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:53] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -36,15 +40,12 @@ Fetching NVDA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for NVDA
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] NVDA: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for NVDA (20 features)
+  [ONLINE] Valid existing model found for NVDA
   [SAVE] Checkpoint saved for NVDA at models/NVDA
-  [RESULT] NVDA | Acc: 0.5769 (+0.5769) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.5769 (+0.5769)
+  [RESULT] NVDA | Acc: 0.5769 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5769 (+0.0000)
 
 >>> AAPL
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -52,7 +53,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 08:52:00] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:53] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -74,15 +75,12 @@ Fetching AAPL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for AAPL
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] AAPL: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for AAPL (20 features)
+  [ONLINE] Valid existing model found for AAPL
   [SAVE] Checkpoint saved for AAPL at models/AAPL
-  [RESULT] AAPL | Acc: 0.5769 (+0.5769) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.5769 (+0.5769)
+  [RESULT] AAPL | Acc: 0.6154 (+0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6154 (+0.0385)
 
 >>> MSFT
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -90,7 +88,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 08:52:00] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -112,15 +110,12 @@ Fetching MSFT...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for MSFT
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] MSFT: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for MSFT (20 features)
+  [ONLINE] Valid existing model found for MSFT
   [SAVE] Checkpoint saved for MSFT at models/MSFT
-  [RESULT] MSFT | Acc: 0.6923 (+0.6923) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.6923 (+0.6923)
+  [RESULT] MSFT | Acc: 0.6923 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6923 (+0.0000)
 
 >>> GOOGL
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -128,7 +123,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 08:52:00] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -150,23 +145,12 @@ Fetching GOOGL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for GOOGL
-    Expected: 71 features
-    Got:      20 features
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] GOOGL: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for GOOGL (20 features)
+  [ONLINE] Valid existing model found for GOOGL
   [SAVE] Checkpoint saved for GOOGL at models/GOOGL
-  [RESULT] GOOGL | Acc: 0.6154 (+0.6154) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.6154 (+0.6154)
+  [RESULT] GOOGL | Acc: 0.6538 (+0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0385)
 
 >>> AMZN
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -174,7 +158,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 08:52:00] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -196,15 +180,12 @@ Fetching AMZN...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for AMZN
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] AMZN: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for AMZN (20 features)
+  [ONLINE] Valid existing model found for AMZN
   [SAVE] Checkpoint saved for AMZN at models/AMZN
-  [RESULT] AMZN | Acc: 0.4231 (+0.4231) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.4231 (+0.4231)
+  [RESULT] AMZN | Acc: 0.4231 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.4231 (+0.0000)
 
 >>> META
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -212,7 +193,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 08:52:00] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -220,6 +201,16 @@ Fetching META...
   [Features] Adding advanced indicators...
     ✓ Bollinger Bands
     ✓ ADX
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
     ✓ RSI & Divergence
     ✓ MACD
     ✓ Volume Features
@@ -234,15 +225,12 @@ Fetching META...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for META
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] META: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for META (20 features)
+  [ONLINE] Valid existing model found for META
   [SAVE] Checkpoint saved for META at models/META
-  [RESULT] META | Acc: 0.5385 (+0.5385) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.5385 (+0.5385)
+  [RESULT] META | Acc: 0.5769 (+0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5769 (+0.0385)
 
 >>> TSLA
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -250,7 +238,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 08:52:00] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -272,15 +260,12 @@ Fetching TSLA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for TSLA
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] TSLA: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for TSLA (20 features)
+  [ONLINE] Valid existing model found for TSLA
   [SAVE] Checkpoint saved for TSLA at models/TSLA
-  [RESULT] TSLA | Acc: 0.6538 (+0.6538) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.6538 (+0.6538)
+  [RESULT] TSLA | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
 
 >>> AMD
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -288,7 +273,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 08:52:00] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -301,12 +286,6 @@ Fetching AMD...
     ✓ Volume Features
     ✓ Volatility Features
     ✓ Momentum Features
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
-/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
-  if is_sparse(data):
     ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
@@ -316,15 +295,12 @@ Fetching AMD...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for AMD
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] AMD: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for AMD (20 features)
+  [ONLINE] Valid existing model found for AMD
   [SAVE] Checkpoint saved for AMD at models/AMD
-  [RESULT] AMD | Acc: 0.5000 (+0.5000) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.5000 (+0.5000)
+  [RESULT] AMD | Acc: 0.5769 (+0.0769) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5769 (+0.0769)
 
 >>> NFLX
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -332,7 +308,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 08:52:00] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -354,15 +330,12 @@ Fetching NFLX...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for NFLX
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] NFLX: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for NFLX (20 features)
+  [ONLINE] Valid existing model found for NFLX
   [SAVE] Checkpoint saved for NFLX at models/NFLX
-  [RESULT] NFLX | Acc: 0.5769 (+0.5769) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.5769 (+0.5769)
+  [RESULT] NFLX | Acc: 0.5385 (-0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5385 (-0.0385)
 
 >>> QQQ
   ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
@@ -370,7 +343,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 08:52:00] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 09:01:54] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -392,35 +365,32 @@ Fetching QQQ...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  [VALIDATION FAIL] Feature mismatch for QQQ
-    Expected: 71 features
-    Got:      20 features
-    Missing: {'MACD_Bearish_Cross', 'EMA_20_50', 'BB_Lower', 'MA5', 'ROC20', 'BB_Width', 'RSI_Divergence_Bullish', 'ROC_20', 'Support', 'EMA_Distance_5_20', 'HV', 'MA10', 'ROC_5', 'EMA_5_20', 'RSI14', 'BB_Upper', 'ROC_10', 'MACD_Histogram', 'Momentum_20', 'Stoch_K', 'Distance_to_Resistance', 'Vol_of_Vol', 'BB_Squeeze', 'RSI_Overbought', 'BB_Middle', 'RSI_Divergence_Bearish', 'RSI_Zone_Code', 'BB_Width_Vol', 'MACD_Bullish_Cross', 'Resistance', 'MACD_Hist', 'BB_Position', 'ROC10', 'EMA12', 'MACD_Signal', 'Volatility', 'MA50', 'Plus_DI', 'RSI_Oversold', 'OBV_SMA', 'Volume_SMA', 'EMA_Distance_20_50', 'Trend_Strength', 'RSI', 'EMA_10_50', 'MA20', 'Volume_MA20', 'Open', 'Stoch_D', 'High', 'ADX'}
-    Extra:   set()
-    -> Triggering fresh training.
+  [TRAIN] QQQ: 20 features, 126 samples
+  [ONLINE] Valid checkpoint loaded for QQQ (20 features)
+  [ONLINE] Valid existing model found for QQQ
   [SAVE] Checkpoint saved for QQQ at models/QQQ
-  [RESULT] QQQ | Acc: 0.6538 (+0.6538) | FRESH_TRAIN
-  ✓ Retrained: Accuracy=0.6538 (+0.6538)
+  [RESULT] QQQ | Acc: 0.6923 (+0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6923 (+0.0385)
 
 ======================================================================
 RETRAINING SUMMARY
 ======================================================================
-  ticker  accuracy  improvement learning_type   status
-0   NVDA  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-1   AAPL  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-2   MSFT  0.692308     0.692308   FRESH_TRAIN  SUCCESS
-3  GOOGL  0.615385     0.615385   FRESH_TRAIN  SUCCESS
-4   AMZN  0.423077     0.423077   FRESH_TRAIN  SUCCESS
-5   META  0.538462     0.538462   FRESH_TRAIN  SUCCESS
-6   TSLA  0.653846     0.653846   FRESH_TRAIN  SUCCESS
-7    AMD  0.500000     0.500000   FRESH_TRAIN  SUCCESS
-8   NFLX  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-9    QQQ  0.653846     0.653846   FRESH_TRAIN  SUCCESS
+  ticker  accuracy  improvement  learning_type   status
+0   NVDA  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
+1   AAPL  0.615385     0.038462  ONLINE_UPDATE  SUCCESS
+2   MSFT  0.692308     0.000000  ONLINE_UPDATE  SUCCESS
+3  GOOGL  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
+4   AMZN  0.423077     0.000000  ONLINE_UPDATE  SUCCESS
+5   META  0.576923     0.038462  ONLINE_UPDATE  SUCCESS
+6   TSLA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+7    AMD  0.576923     0.076923  ONLINE_UPDATE  SUCCESS
+8   NFLX  0.538462    -0.038462  ONLINE_UPDATE  SUCCESS
+9    QQQ  0.692308     0.038462  ONLINE_UPDATE  SUCCESS
 
 📊 Statistics:
   - Successful: 10/10
-  - Average Accuracy: 0.5808
-  - Average Improvement: +0.5808
+  - Average Accuracy: 0.6000
+  - Average Improvement: +0.0192
   - Target Achieved: ⚠️ NO (70%+ target)
 
 ✅ Results saved to:

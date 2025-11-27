@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 08:52:01 UTC 2025
+**Execution Date:** Thu Nov 27 09:01:55 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,27 +80,27 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-  ✓ Retrained: Accuracy=0.6538 (+0.6538)
+  ✓ Retrained: Accuracy=0.6923 (+0.0385)
 
 ======================================================================
 RETRAINING SUMMARY
 ======================================================================
-  ticker  accuracy  improvement learning_type   status
-0   NVDA  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-1   AAPL  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-2   MSFT  0.692308     0.692308   FRESH_TRAIN  SUCCESS
-3  GOOGL  0.615385     0.615385   FRESH_TRAIN  SUCCESS
-4   AMZN  0.423077     0.423077   FRESH_TRAIN  SUCCESS
-5   META  0.538462     0.538462   FRESH_TRAIN  SUCCESS
-6   TSLA  0.653846     0.653846   FRESH_TRAIN  SUCCESS
-7    AMD  0.500000     0.500000   FRESH_TRAIN  SUCCESS
-8   NFLX  0.576923     0.576923   FRESH_TRAIN  SUCCESS
-9    QQQ  0.653846     0.653846   FRESH_TRAIN  SUCCESS
+  ticker  accuracy  improvement  learning_type   status
+0   NVDA  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
+1   AAPL  0.615385     0.038462  ONLINE_UPDATE  SUCCESS
+2   MSFT  0.692308     0.000000  ONLINE_UPDATE  SUCCESS
+3  GOOGL  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
+4   AMZN  0.423077     0.000000  ONLINE_UPDATE  SUCCESS
+5   META  0.576923     0.038462  ONLINE_UPDATE  SUCCESS
+6   TSLA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+7    AMD  0.576923     0.076923  ONLINE_UPDATE  SUCCESS
+8   NFLX  0.538462    -0.038462  ONLINE_UPDATE  SUCCESS
+9    QQQ  0.692308     0.038462  ONLINE_UPDATE  SUCCESS
 
 📊 Statistics:
   - Successful: 10/10
-  - Average Accuracy: 0.5808
-  - Average Improvement: +0.5808
+  - Average Accuracy: 0.6000
+  - Average Improvement: +0.0192
   - Target Achieved: ⚠️ NO (70%+ target)
 
 ✅ Results saved to:
