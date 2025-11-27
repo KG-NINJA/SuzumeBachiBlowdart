@@ -1,38 +1,27 @@
 {
   "ticker": "NFLX",
-  "feature_names": [
-    "DailyReturn",
+  "regime": "CHOPPY",
+  "weights": {
+    "simple": 0.15,
+    "aggressive": 0.85
+  },
+  "features": [
     "Momentum_10",
     "OBV",
     "Volume",
-    "HighLowRatio",
     "MACD",
     "ATR_Percent",
     "Minus_DI",
-    "EMA_Distance_10_50",
     "Momentum",
     "VROC",
     "RSI7",
     "EMA26",
     "Momentum_5",
-    "CloseOpenRatio",
     "ATR",
     "Volume_Ratio",
-    "Distance_to_Support",
     "PVT",
     "Low"
   ],
-  "feature_count": 20,
-  "saved_at": "2025-11-27T09:21:04.833434",
-  "metrics": {
-    "accuracy": 0.5769230769230769,
-    "previous_accuracy": 0.5384615384615384,
-    "accuracy_improvement": 0.038461538461538436,
-    "train_samples": 100,
-    "total_train_samples": 300,
-    "learning_type": "ONLINE_UPDATE",
-    "feature_count": 20
-  },
-  "model_type": "XGBoost_Booster",
-  "feature_reduction_applied": true
+  "soei_version": "2025-11-27-final",
+  "saved_at": "2025-11-27T11:54:48.018622"
 }

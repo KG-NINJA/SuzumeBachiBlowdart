@@ -1,11 +1,11 @@
-ticker,status,error
-NVDA,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-AAPL,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-MSFT,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-GOOGL,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-AMZN,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-META,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-TSLA,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-AMD,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-NFLX,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
-QQQ,ERROR,train_ticker() got an unexpected keyword argument 'use_onlin
+ticker,status,regime,accuracy
+NVDA,SUCCESS,CHOPPY,0
+AAPL,SUCCESS,CHOPPY,0
+MSFT,SUCCESS,CHOPPY,0
+GOOGL,SUCCESS,CHOPPY,0
+AMZN,SUCCESS,CHOPPY,0
+META,SUCCESS,CHOPPY,0
+TSLA,SUCCESS,CHOPPY,0
+AMD,SUCCESS,CHOPPY,0
+NFLX,SUCCESS,CHOPPY,0
+QQQ,SUCCESS,CHOPPY,0

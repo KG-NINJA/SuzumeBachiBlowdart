@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 11:50:20 UTC 2025
+**Execution Date:** Thu Nov 27 11:54:48 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,36 +80,36 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
   [FEATURES] Total features before reduction: 74
   [REDUCTION] Applying feature reduction for QQQ
   [REDUCTION] Selecting 20 features from 74
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+[SOEI] 宗叡最終版起動 → QQQ
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
-RETRAINING SUMMARY
+宗叡最終版 訓練結果
 ======================================================================
-  ticker status                                                         error
-0   NVDA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-1   AAPL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-2   MSFT  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-3  GOOGL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-4   AMZN  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-5   META  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-6   TSLA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-7    AMD  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-8   NFLX  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-9    QQQ  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY         0
+  AAPL SUCCESS CHOPPY         0
+  MSFT SUCCESS CHOPPY         0
+ GOOGL SUCCESS CHOPPY         0
+  AMZN SUCCESS CHOPPY         0
+  META SUCCESS CHOPPY         0
+  TSLA SUCCESS CHOPPY         0
+   AMD SUCCESS CHOPPY         0
+  NFLX SUCCESS CHOPPY         0
+   QQQ SUCCESS CHOPPY         0
 
-✅ Results saved to:
-   - retraining_results.csv
-   - retraining_results.json
-
-======================================================================
-Retraining Complete
-======================================================================
+結果保存完了 → retraining_results.csv / json
+次は本物の性能が見える。
 ```
 
 ### Step 4 - Backtest Validation

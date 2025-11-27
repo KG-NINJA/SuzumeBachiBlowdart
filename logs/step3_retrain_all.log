@@ -1,14 +1,13 @@
 ======================================================================
-Retraining All Tickers with Tuned Parameters
+宗叡最終版による全ティッカー再訓練開始
 ======================================================================
 
->>> NVDA
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+>>> NVDA 訓練中...
 
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 11:50:19] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:44] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -30,15 +29,17 @@ Fetching NVDA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> AAPL
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → NVDA
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AAPL 訓練中...
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 11:50:19] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:44] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -60,15 +61,17 @@ Fetching AAPL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> MSFT
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → AAPL
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> MSFT 訓練中...
 
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 11:50:19] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:45] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -90,15 +93,17 @@ Fetching MSFT...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> GOOGL
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → MSFT
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> GOOGL 訓練中...
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 11:50:19] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:45] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -120,15 +125,17 @@ Fetching GOOGL...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> AMZN
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → GOOGL
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AMZN 訓練中...
 
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 11:50:19] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:45] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -150,15 +157,17 @@ Fetching AMZN...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> META
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → AMZN
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> META 訓練中...
 
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 11:50:19] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:46] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -180,15 +189,17 @@ Fetching META...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> TSLA
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → META
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> TSLA 訓練中...
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 11:50:19] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:46] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -210,15 +221,17 @@ Fetching TSLA...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> AMD
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → TSLA
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AMD 訓練中...
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 11:50:19] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:47] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -240,15 +253,17 @@ Fetching AMD...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> NFLX
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → AMD
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> NFLX 訓練中...
 
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 11:50:19] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:47] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -270,15 +285,17 @@ Fetching NFLX...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
 
->>> QQQ
-  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+[SOEI] 宗叡最終版起動 → NFLX
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> QQQ 訓練中...
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 11:50:19] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-27 11:54:48] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -300,27 +317,25 @@ Fetching QQQ...
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
-  ✗ Exception: train_ticker() got an unexpected keyword argument 'use_onlin
+
+[SOEI] 宗叡最終版起動 → QQQ
+  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
-RETRAINING SUMMARY
+宗叡最終版 訓練結果
 ======================================================================
-  ticker status                                                         error
-0   NVDA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-1   AAPL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-2   MSFT  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-3  GOOGL  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-4   AMZN  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-5   META  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-6   TSLA  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-7    AMD  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-8   NFLX  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
-9    QQQ  ERROR  train_ticker() got an unexpected keyword argument 'use_onlin
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY         0
+  AAPL SUCCESS CHOPPY         0
+  MSFT SUCCESS CHOPPY         0
+ GOOGL SUCCESS CHOPPY         0
+  AMZN SUCCESS CHOPPY         0
+  META SUCCESS CHOPPY         0
+  TSLA SUCCESS CHOPPY         0
+   AMD SUCCESS CHOPPY         0
+  NFLX SUCCESS CHOPPY         0
+   QQQ SUCCESS CHOPPY         0
 
-✅ Results saved to:
-   - retraining_results.csv
-   - retraining_results.json
-
-======================================================================
-Retraining Complete
-======================================================================
+結果保存完了 → retraining_results.csv / json
+次は本物の性能が見える。

@@ -1,52 +1,62 @@
 [
   {
     "ticker": "NVDA",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "AAPL",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "MSFT",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "GOOGL",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "AMZN",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "META",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "TSLA",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "AMD",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "NFLX",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   },
   {
     "ticker": "QQQ",
-    "status": "ERROR",
-    "error": "train_ticker() got an unexpected keyword argument 'use_onlin"
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
   }
 ]
