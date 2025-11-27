@@ -1,1 +1,342 @@
-python: can't open file '/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py': [Errno 2] No such file or directory
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+======================================================================
+Retraining All Tickers with Tuned Parameters
+======================================================================
+
+>>> NVDA
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching NVDA...
+============================================================
+[2025-11-27 06:43:59] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NVDA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for NVDA
+  [SAVE] Checkpoint saved for NVDA at models/NVDA
+  [RESULT] NVDA | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+>>> AAPL
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AAPL...
+============================================================
+[2025-11-27 06:43:59] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AAPL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for AAPL
+  [SAVE] Checkpoint saved for AAPL at models/AAPL
+  [RESULT] AAPL | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+>>> MSFT
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching MSFT...
+============================================================
+[2025-11-27 06:43:59] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for MSFT...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for MSFT
+  [SAVE] Checkpoint saved for MSFT at models/MSFT
+  [RESULT] MSFT | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+>>> GOOGL
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching GOOGL...
+============================================================
+[2025-11-27 06:43:59] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for GOOGL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for GOOGL
+  [SAVE] Checkpoint saved for GOOGL at models/GOOGL
+  [RESULT] GOOGL | Acc: 0.5769 (-0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5769 (-0.0385)
+
+>>> AMZN
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AMZN...
+============================================================
+[2025-11-27 06:44:00] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMZN...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for AMZN
+  [SAVE] Checkpoint saved for AMZN at models/AMZN
+  [RESULT] AMZN | Acc: 0.4615 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.4615 (+0.0000)
+
+>>> META
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching META...
+============================================================
+[2025-11-27 06:44:00] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for META...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for META
+  [SAVE] Checkpoint saved for META at models/META
+  [RESULT] META | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+>>> TSLA
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching TSLA...
+============================================================
+[2025-11-27 06:44:00] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for TSLA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/xgboost/data.py:440: FutureWarning: is_sparse is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.SparseDtype)` instead.
+  if is_sparse(data):
+  [ONLINE] Valid existing model found for TSLA
+  [SAVE] Checkpoint saved for TSLA at models/TSLA
+  [RESULT] TSLA | Acc: 0.6538 (+0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0385)
+
+>>> AMD
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching AMD...
+============================================================
+[2025-11-27 06:44:00] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMD...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for AMD
+  [SAVE] Checkpoint saved for AMD at models/AMD
+  [RESULT] AMD | Acc: 0.6538 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.6538 (+0.0000)
+
+>>> NFLX
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching NFLX...
+============================================================
+[2025-11-27 06:44:00] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NFLX...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for NFLX
+  [SAVE] Checkpoint saved for NFLX at models/NFLX
+  [RESULT] NFLX | Acc: 0.5000 (-0.0385) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5000 (-0.0385)
+
+>>> QQQ
+  ✓ Using tuned params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+
+============================================================
+Fetching QQQ...
+============================================================
+[2025-11-27 06:44:00] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for QQQ...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  [ONLINE] Valid existing model found for QQQ
+  [SAVE] Checkpoint saved for QQQ at models/QQQ
+  [RESULT] QQQ | Acc: 0.5769 (+0.0000) | ONLINE_UPDATE
+  ✓ Retrained: Accuracy=0.5769 (+0.0000)
+
+======================================================================
+RETRAINING SUMMARY
+======================================================================
+  ticker  accuracy  improvement  learning_type   status
+0   NVDA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+1   AAPL  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+2   MSFT  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+3  GOOGL  0.576923    -0.038462  ONLINE_UPDATE  SUCCESS
+4   AMZN  0.461538     0.000000  ONLINE_UPDATE  SUCCESS
+5   META  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+6   TSLA  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
+7    AMD  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+8   NFLX  0.500000    -0.038462  ONLINE_UPDATE  SUCCESS
+9    QQQ  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
+
+📊 Statistics:
+  - Successful: 10/10
+  - Average Accuracy: 0.6038
+  - Average Improvement: -0.0038
+  - Target Achieved: ⚠️ NO (70%+ target)
+
+✅ Results saved to:
+   - retraining_results.csv
+   - retraining_results.json
+
+======================================================================
+Retraining Complete
+======================================================================

@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 06:37:38 UTC 2025
+**Execution Date:** Thu Nov 27 06:44:01 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -46,12 +46,70 @@ Name: importance, dtype: float64
 
 ### Step 2 - XGBoost Tuning
 ```
-python: can't open file '/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/xgboost_tuning.py': [Errno 2] No such file or directory
+    Training set: (100, 72)
+    Starting grid search...
+    ✓ Best params: {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}
+    ✓ CV Score: 1.0000
+    ✓ Test Accuracy: 1.0000
+    ✓ Improvement: +0.4000
+
+======================================================================
+TUNING RESULTS SUMMARY
+======================================================================
+  ticker                                                                         best_params  best_cv_score  train_accuracy  test_accuracy  improvement
+0   NVDA  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+1   AAPL  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+2   MSFT  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+3  GOOGL  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+4   AMZN  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+5   META  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+6   TSLA  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+7    AMD  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+8   NFLX  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+9    QQQ  {'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}            1.0             1.0            1.0          0.4
+
+Average Improvement: +0.4000
+Expected Accuracy: 1.0000 (target: 70%)
+
+✅ Results saved to tuning_results/
+
+======================================================================
+XGBoost Tuning Complete
+======================================================================
 ```
 
 ### Step 3 - Model Retraining
 ```
-python: can't open file '/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py': [Errno 2] No such file or directory
+  ✓ Retrained: Accuracy=0.5769 (+0.0000)
+
+======================================================================
+RETRAINING SUMMARY
+======================================================================
+  ticker  accuracy  improvement  learning_type   status
+0   NVDA  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+1   AAPL  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+2   MSFT  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+3  GOOGL  0.576923    -0.038462  ONLINE_UPDATE  SUCCESS
+4   AMZN  0.461538     0.000000  ONLINE_UPDATE  SUCCESS
+5   META  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+6   TSLA  0.653846     0.038462  ONLINE_UPDATE  SUCCESS
+7    AMD  0.653846     0.000000  ONLINE_UPDATE  SUCCESS
+8   NFLX  0.500000    -0.038462  ONLINE_UPDATE  SUCCESS
+9    QQQ  0.576923     0.000000  ONLINE_UPDATE  SUCCESS
+
+📊 Statistics:
+  - Successful: 10/10
+  - Average Accuracy: 0.6038
+  - Average Improvement: -0.0038
+  - Target Achieved: ⚠️ NO (70%+ target)
+
+✅ Results saved to:
+   - retraining_results.csv
+   - retraining_results.json
+
+======================================================================
+Retraining Complete
+======================================================================
 ```
 
 ### Step 4 - Backtest Validation

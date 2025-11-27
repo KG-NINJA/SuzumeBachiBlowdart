@@ -1,0 +1,72 @@
+[
+  {
+    "ticker": "NVDA",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "AAPL",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "MSFT",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "GOOGL",
+    "accuracy": 0.5769230769230769,
+    "improvement": -0.03846153846153855,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "AMZN",
+    "accuracy": 0.46153846153846156,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "META",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "TSLA",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.038461538461538436,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "AMD",
+    "accuracy": 0.6538461538461539,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "NFLX",
+    "accuracy": 0.5,
+    "improvement": -0.038461538461538436,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  },
+  {
+    "ticker": "QQQ",
+    "accuracy": 0.5769230769230769,
+    "improvement": 0.0,
+    "learning_type": "ONLINE_UPDATE",
+    "status": "SUCCESS"
+  }
+]
