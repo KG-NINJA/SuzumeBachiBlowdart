@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-27T01:28:09.634529",
+  "timestamp": "2025-11-27T08:28:18.523166",
   "run_date": "2025-11-27",
   "results": [
     {
@@ -32,8 +32,8 @@
     {
       "ticker": "GOOGL",
       "status": "OK",
-      "accuracy": 0.6153846153846154,
-      "previous_accuracy": 0.6153846153846154,
+      "accuracy": 0.5769230769230769,
+      "previous_accuracy": 0.5769230769230769,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -59,8 +59,8 @@
     {
       "ticker": "TSLA",
       "status": "OK",
-      "accuracy": 0.6153846153846154,
-      "previous_accuracy": 0.6153846153846154,
+      "accuracy": 0.6538461538461539,
+      "previous_accuracy": 0.6538461538461539,
       "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
@@ -78,17 +78,17 @@
       "ticker": "NFLX",
       "status": "OK",
       "accuracy": 0.5,
-      "previous_accuracy": 0.5384615384615384,
-      "improvement": -0.038461538461538436,
+      "previous_accuracy": 0.5,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     },
     {
       "ticker": "QQQ",
       "status": "OK",
-      "accuracy": 0.6153846153846154,
+      "accuracy": 0.5769230769230769,
       "previous_accuracy": 0.5769230769230769,
-      "improvement": 0.03846153846153855,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "ONLINE_UPDATE"
     }
@@ -102,8 +102,8 @@
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.2949361575767398,
-    "average_confidence_pct": "29.5%",
+    "average_confidence": 0.28011560793966056,
+    "average_confidence_pct": "28.0%",
     "execute_count": 1,
     "hold_count": 2,
     "skip_count": 7,
