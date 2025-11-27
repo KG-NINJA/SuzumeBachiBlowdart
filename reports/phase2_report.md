@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 11:38:47 UTC 2025
+**Execution Date:** Thu Nov 27 11:45:29 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,36 +80,10 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-  [REDUCTION] ✓ Reduced from 74 → 21 features
-  [REDUCTION] Final features: 21
-  [FEATURES] Final dataset: 126 rows × 21 columns
-
-  [HYBRID] Starting hybrid training for QQQ
-  [TRAIN ERROR] QQQ: 'numpy.float64' object has no attribute 'quantile'
-  ✗ Training failed
-
-======================================================================
-RETRAINING SUMMARY
-======================================================================
-  ticker  status           reason
-0   NVDA  FAILED  Training failed
-1   AAPL  FAILED  Training failed
-2   MSFT  FAILED  Training failed
-3  GOOGL  FAILED  Training failed
-4   AMZN  FAILED  Training failed
-5   META  FAILED  Training failed
-6   TSLA  FAILED  Training failed
-7    AMD  FAILED  Training failed
-8   NFLX  FAILED  Training failed
-9    QQQ  FAILED  Training failed
-
-✅ Results saved to:
-   - retraining_results.csv
-   - retraining_results.json
-
-======================================================================
-Retraining Complete
-======================================================================
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py", line 8, in <module>
+    from blowdart_ml_engine import train_ticker
+ImportError: cannot import name 'train_ticker' from 'blowdart_ml_engine' (/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py)
 ```
 
 ### Step 4 - Backtest Validation
