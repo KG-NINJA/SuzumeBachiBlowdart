@@ -148,7 +148,7 @@ class BlowdartMLEngine:
 
     def _train_single(self, ticker: str) -> Optional[Dict]:
         try:
-            dataset, feature_cols = build_feature_set(ticker)
+            dataset, feature_cols = build_feature_set(ticker, use_feature_reduction=True)
         except Exception as exc:
             self._log_fetch_error(ticker, "train", str(exc))
             return None
@@ -267,7 +267,7 @@ class BlowdartMLEngine:
         meta = self._load_meta(ticker)
         feature_cols = meta.get("features") or []
         try:
-            dataset, built_feature_cols = build_feature_set(ticker)
+            dataset, built_feature_cols = build_feature_set(ticker, use_feature_reduction=True)
         except Exception as exc:
             self._log_fetch_error(ticker, "predict", str(exc))
             return None

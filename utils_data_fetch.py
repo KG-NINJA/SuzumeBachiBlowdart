@@ -236,8 +236,28 @@ def _attempt_fetchers(
     return None
 
 
-def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -> pd.DataFrame:
+def safe_price_download(
+    ticker: str,
+    range: str | None = "2y",
+    *,
+    days: Optional[int] = None,
+    max_attempts: int = 6,
+) -> pd.DataFrame:
+    """Download price data with caching and flexible lookback arguments.
+
+    Supports the historical ``range`` string used elsewhere in the repo and the
+    ``days`` keyword expected by some ad-hoc runners (e.g., the provided
+    training harness). ``days`` takes precedence when supplied.
+    """
+
     ticker = ticker.upper()
+
+    if days is not None:
+        try:
+            range = f"{int(days)}d"
+        except Exception:
+            range = "2y"
+
     cached = _load_cache(ticker)
     if cached is not None:
         print(f"[cache] hit for {ticker}")
@@ -247,8 +267,8 @@ def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -
     # then AlphaVantage, then Polygon, and finally yfinance as a network-only fallback.
     fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch, yfinance_fetch]
     for attempt in range(max_attempts):
-        print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker}")
-        df = _attempt_fetchers(fetchers, ticker, range)
+        print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker} (range={range})")
+        df = _attempt_fetchers(fetchers, ticker, range or "2y")
         if df is not None:
             df = _validate_df(df)
             _save_cache(ticker, df)

@@ -66,10 +66,10 @@ def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
     }
 
 
-def download_price_history(ticker: str, period: str = "3y") -> pd.DataFrame:
+def download_price_history(ticker: str, period: str = "3y", *, days: Optional[int] = None) -> pd.DataFrame:
     """Download price history and standardize columns."""
     ensure_directories()
-    price_df = safe_price_download(ticker, range=period)
+    price_df = safe_price_download(ticker, range=period, days=days)
     # ensure standard columns and ordering
     price_df = price_df.reset_index(drop=True)
     price_df.sort_values("DATE", inplace=True)
@@ -200,9 +200,50 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
     return df
 
 
-def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, List[str]]:
-    """Download data, engineer features, and return dataframe with feature columns."""
-    price_df = download_price_history(ticker, period=period)
+def _reduce_features(df: pd.DataFrame, feature_cols: List[str]) -> List[str]:
+    """Optionally prune low-variance or duplicate-like features.
+
+    Keeps the routine light-weight for CI while removing columns that carry no
+    signal (all NaN/constant) or that mirror each other perfectly, which helps
+    stabilize smaller tickers such as AAPL/NFLX.
+    """
+
+    usable = []
+    seen_signatures = set()
+    for col in feature_cols:
+        series = df[col]
+        if series.nunique(dropna=True) <= 1:
+            continue
+        signature = tuple(np.sign(series.fillna(0)).astype(int).values)
+        if signature in seen_signatures:
+            continue
+        seen_signatures.add(signature)
+        usable.append(col)
+    return usable
+
+
+def build_feature_set(
+    price_source: pd.DataFrame | str,
+    ticker: Optional[str] = None,
+    period: str = "3y",
+    *,
+    days: Optional[int] = None,
+    use_feature_reduction: bool = False,
+) -> Tuple[pd.DataFrame, List[str]]:
+    """Engineer a feature set from a DataFrame or ticker string.
+
+    The first argument accepts either an already-downloaded price dataframe or a
+    ticker symbol. This keeps compatibility with the provided training harness
+    that supplies data explicitly while preserving the engine's ticker-based
+    convenience path.
+    """
+
+    if isinstance(price_source, pd.DataFrame):
+        price_df = price_source.copy()
+    else:
+        ticker = ticker or str(price_source)
+        price_df = download_price_history(ticker, period=period, days=days)
+
     enriched = engineer_features(price_df)
     if enriched.empty:
         return enriched, []
@@ -220,6 +261,10 @@ def build_feature_set(ticker: str, period: str = "3y") -> Tuple[pd.DataFrame, Li
             "LOW",
         }
     ]
+
+    if use_feature_reduction:
+        feature_cols = _reduce_features(enriched, feature_cols)
+
     return enriched, feature_cols
 
 

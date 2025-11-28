@@ -1,0 +1,19 @@
+{
+  "summary": "Expanded feature coverage, ticker-aware hyperparameters, and cache-stable downloads are in place. Run the training harness to populate fresh accuracies.",
+  "baseline": {
+    "GOOGL": 0.75,
+    "TSLA": 0.6875,
+    "AAPL": 0.375,
+    "NFLX": 0.5769
+  },
+  "expectations": {
+    "mean_accuracy_target": 0.6,
+    "aapl_target_range": [0.45, 0.55],
+    "nflx_target_range": [0.6, 0.65]
+  },
+  "next_steps": [
+    "Run the training harness to regenerate model metadata and metrics.",
+    "Review models/*_xgb_meta.json for per-ticker accuracy and best_iteration.",
+    "Push updated analytics/training_metrics.json and docs/data/latest_predictions.json."
+  ]
+}
