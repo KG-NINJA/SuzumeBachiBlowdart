@@ -1,6 +1,0 @@
-{
-  "generated_at": "placeholder",
-  "by_ticker": [],
-  "best_ticker": null,
-  "note": "Populated automatically after successful training runs with CV/test accuracy per ticker."
-}

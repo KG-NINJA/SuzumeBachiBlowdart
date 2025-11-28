@@ -8,11 +8,10 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import numpy as np
 from xgboost import XGBClassifier
-from sklearn.model_selection import TimeSeriesSplit
 
 from blowdart_features import build_feature_set, ensure_directories
 
@@ -52,66 +51,6 @@ class BlowdartMLEngine:
 
         ensure_directories()
 
-    def _model_param_sets(self, ticker: str, scale_pos_weight: float) -> List[Dict]:
-        """Ticker-aware hyperparameter search space.
-
-        GOOGL historically scores best with shallower trees and slower learning rates.
-        AAPL/NFLX tend to need more trees and slightly deeper interaction depth to
-        capture choppier structure. We also test a high-regularization variant to
-        stabilize overfit-prone tickers (e.g., TSLA, AMD).
-        """
-
-        base_params = {
-            "n_estimators": 420,
-            "max_depth": 5,
-            "learning_rate": 0.06,
-            "subsample": 0.9,
-            "colsample_bytree": 0.82,
-            "min_child_weight": 1.2,
-            "gamma": 0.05,
-            "objective": "binary:logistic",
-            "eval_metric": "logloss",
-            "tree_method": "hist",
-            "random_state": 42,
-            "scale_pos_weight": scale_pos_weight,
-        }
-
-        ticker_specific: Dict[str, List[Dict]] = {
-            "GOOGL": [
-                {"max_depth": 4, "learning_rate": 0.035, "n_estimators": 520},
-                {"max_depth": 4, "learning_rate": 0.05, "subsample": 0.95},
-            ],
-            "AAPL": [
-                {"max_depth": 6, "learning_rate": 0.07, "subsample": 0.86, "colsample_bytree": 0.9},
-                {"max_depth": 5, "learning_rate": 0.08, "gamma": 0.1, "min_child_weight": 2.0},
-            ],
-            "NFLX": [
-                {"max_depth": 6, "learning_rate": 0.06, "colsample_bytree": 0.92},
-                {"max_depth": 4, "learning_rate": 0.12, "n_estimators": 360, "subsample": 0.88},
-            ],
-            "NVDA": [{"max_depth": 5, "learning_rate": 0.045, "n_estimators": 520}],
-            "TSLA": [{"max_depth": 5, "learning_rate": 0.07, "gamma": 0.15, "min_child_weight": 2.5}],
-            "AMD": [{"max_depth": 4, "learning_rate": 0.055, "subsample": 0.93}],
-        }
-
-        exploration_space = [
-            {},
-            {"n_estimators": 560, "learning_rate": 0.045},
-            {"max_depth": 3, "learning_rate": 0.12, "subsample": 0.85},
-            {"max_depth": 6, "min_child_weight": 2.0, "gamma": 0.1},
-        ]
-
-        overrides = ticker_specific.get(ticker.upper(), [])
-        variants = exploration_space + overrides
-
-        param_sets: List[Dict] = []
-        for override in variants:
-            params = {**base_params, **override}
-            params["scale_pos_weight"] = scale_pos_weight
-            param_sets.append(params)
-
-        return param_sets
-
     def _model_path(self, ticker: str) -> Path:
         return self.model_dir / f"{ticker}_xgb.json"
 
@@ -129,30 +68,13 @@ class BlowdartMLEngine:
     def _save_model(self, ticker: str, model: XGBClassifier) -> None:
         model.save_model(self._model_path(ticker))
 
-    def _save_meta(
-        self,
-        ticker: str,
-        feature_cols: List[str],
-        accuracy: float,
-        cv_mean: Optional[float] = None,
-        cv_std: Optional[float] = None,
-        test_accuracy: Optional[float] = None,
-        params: Optional[Dict] = None,
-    ) -> None:
+    def _save_meta(self, ticker: str, feature_cols: List[str], accuracy: float) -> None:
         meta = {
             "ticker": ticker,
             "features": feature_cols,
             "trained_at": datetime.utcnow().isoformat(),
             "accuracy": accuracy,
         }
-        if cv_mean is not None:
-            meta["cv_mean_accuracy"] = cv_mean
-        if cv_std is not None:
-            meta["cv_std_accuracy"] = cv_std
-        if test_accuracy is not None:
-            meta["test_accuracy"] = test_accuracy
-        if params is not None:
-            meta["best_params"] = params
         with self._model_meta_path(ticker).open("w", encoding="utf-8") as handle:
             json.dump(meta, handle, ensure_ascii=False, indent=2)
 
@@ -182,43 +104,6 @@ class BlowdartMLEngine:
         existing.append(entry)
         target.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    def _cv_split_count(self, n_samples: int) -> int:
-        """Adaptive CV split count to preserve chronology without over-fragmentation."""
-
-        if n_samples < 120:
-            return 2
-        if n_samples < 240:
-            return 3
-        return 4
-
-    def _cross_validate_params(
-        self, X: np.ndarray, y: np.ndarray, params: Dict
-    ) -> Tuple[float, float]:
-        """Time-series cross-validation returning mean/std accuracy."""
-
-        n_splits = self._cv_split_count(len(y))
-        tscv = TimeSeriesSplit(n_splits=n_splits)
-
-        scores: List[float] = []
-        for train_idx, val_idx in tscv.split(X):
-            if len(val_idx) == 0:
-                continue
-            model = XGBClassifier(**params)
-            model.fit(
-                X[train_idx],
-                y[train_idx],
-                eval_set=[(X[val_idx], y[val_idx])],
-                verbose=False,
-                early_stopping_rounds=20,
-            )
-            preds = model.predict(X[val_idx])
-            scores.append(float(np.mean(preds == y[val_idx])))
-
-        if not scores:
-            return 0.0, 0.0
-
-        return float(np.mean(scores)), float(np.std(scores))
-
     def _train_single(self, ticker: str) -> Optional[Dict]:
         try:
             dataset, feature_cols = build_feature_set(ticker)
@@ -232,100 +117,44 @@ class BlowdartMLEngine:
 
         # chronological split: last 20% for validation
         split_idx = int(len(dataset) * 0.8)
-        if split_idx >= len(dataset):
-            split_idx = max(1, len(dataset) - 1)
         train_df = dataset.iloc[:split_idx]
         test_df = dataset.iloc[split_idx:]
-
-        if train_df.empty or test_df.empty:
-            self._log_fetch_error(ticker, "train", "insufficient samples after split")
-            return None
 
         X_train = train_df[feature_cols]
         y_train = train_df["TARGET"]
         X_test = test_df[feature_cols]
         y_test = test_df["TARGET"]
 
-        scale_pos_weight = 1.0
-        positives = int(y_train.sum())
-        negatives = int(len(y_train) - positives)
-        if positives > 0:
-            scale_pos_weight = max(1.0, negatives / positives)
+        model = XGBClassifier(
+            n_estimators=300,
+            max_depth=5,
+            learning_rate=0.05,
+            subsample=0.9,
+            colsample_bytree=0.8,
+            objective="binary:logistic",
+            eval_metric="logloss",
+            tree_method="hist",
+            random_state=42,
+        )
+        model.fit(X_train, y_train)
 
-        best_model: Optional[XGBClassifier] = None
-        best_importance: List[Dict] = []
-        best_metrics: Dict[str, float] = {"selector": -1.0}
-        for params in self._model_param_sets(ticker, scale_pos_weight):
-            cv_mean, cv_std = (0.0, 0.0)
-            if len(train_df) > 30:
-                cv_mean, cv_std = self._cross_validate_params(
-                    X_train.values, y_train.values, params
-                )
+        preds = model.predict(X_test)
+        accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
+        self._save_model(ticker, model)
+        self._save_meta(ticker, feature_cols, accuracy)
 
-            eval_split = min(len(train_df) - 1, max(1, int(len(train_df) * 0.85)))
-            if eval_split <= 0:
-                eval_split = len(train_df)
-            eval_X = train_df.iloc[:eval_split][feature_cols]
-            eval_y = train_df.iloc[:eval_split]["TARGET"]
-            holdout_X = train_df.iloc[eval_split:][feature_cols]
-            holdout_y = train_df.iloc[eval_split:]["TARGET"]
-
-            candidate = XGBClassifier(**params)
-            if len(holdout_y) > 0:
-                candidate.fit(
-                    eval_X,
-                    eval_y,
-                    eval_set=[(holdout_X, holdout_y)],
-                    verbose=False,
-                    early_stopping_rounds=30,
-                )
-            else:
-                candidate.fit(eval_X, eval_y, verbose=False)
-
-            preds = candidate.predict(X_test)
-            test_accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
-            selector_score = cv_mean if cv_mean > 0 else test_accuracy
-            if selector_score > best_metrics.get("selector", -1) or (
-                abs(selector_score - best_metrics.get("selector", -1)) < 1e-6
-                and test_accuracy > best_metrics.get("test_accuracy", -1)
-            ):
-                best_model = candidate
-                best_metrics = {
-                    "selector": selector_score,
-                    "cv_mean": cv_mean,
-                    "cv_std": cv_std,
-                    "test_accuracy": test_accuracy,
-                    "params": params,
-                }
-                importance = candidate.get_booster().get_score(importance_type="gain")
-                best_importance = sorted(
-                    [{"feature": k, "importance": float(v)} for k, v in importance.items()],
-                    key=lambda x: x["importance"],
-                    reverse=True,
-                )
-
-        if best_model is None:
-            return None
-
-        self._save_model(ticker, best_model)
-        self._save_meta(
-            ticker,
-            feature_cols,
-            best_metrics.get("selector", 0.0),
-            cv_mean=best_metrics.get("cv_mean"),
-            cv_std=best_metrics.get("cv_std"),
-            test_accuracy=best_metrics.get("test_accuracy"),
-            params=best_metrics.get("params"),
+        importance = model.get_booster().get_score(importance_type="gain")
+        importance_sorted = sorted(
+            [{"feature": k, "importance": float(v)} for k, v in importance.items()],
+            key=lambda x: x["importance"],
+            reverse=True,
         )
 
         return {
             "ticker": ticker,
-            "accuracy": best_metrics.get("selector", 0.0),
-            "cv_mean_accuracy": best_metrics.get("cv_mean", 0.0),
-            "cv_std_accuracy": best_metrics.get("cv_std", 0.0),
-            "test_accuracy": best_metrics.get("test_accuracy", 0.0),
+            "accuracy": accuracy,
             "feature_cols": feature_cols,
-            "feature_importance": best_importance,
+            "feature_importance": importance_sorted,
             "latest_date": dataset["DATE"].max().isoformat(),
         }
 
@@ -338,7 +167,6 @@ class BlowdartMLEngine:
         if summary:
             self._append_training_metrics(summary)
             self._write_feature_importance(summary)
-            self._write_accuracy_analysis(summary)
         return summary
 
     def _append_training_metrics(self, metrics: List[Dict]) -> None:
@@ -364,33 +192,6 @@ class BlowdartMLEngine:
         target_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
         docs_path = self.docs_data_dir / "feature_importance.json"
         docs_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    def _write_accuracy_analysis(self, metrics: List[Dict]) -> None:
-        analysis_dir = Path("accuracy_analysis")
-        analysis_dir.mkdir(exist_ok=True)
-        ranked = sorted(metrics, key=lambda m: m.get("accuracy", 0), reverse=True)
-        analysis = {
-            "generated_at": datetime.utcnow().isoformat(),
-            "by_ticker": metrics,
-            "best_ticker": ranked[0]["ticker"] if ranked else None,
-        }
-        (analysis_dir / "analysis_results.json").write_text(
-            json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-
-        lines = ["# Accuracy Analysis", "", f"Generated at: {analysis['generated_at']}", ""]
-        lines.append("| Ticker | CV Mean | Test Accuracy | Latest Date |")
-        lines.append("| --- | --- | --- | --- |")
-        for entry in ranked:
-            lines.append(
-                "| {ticker} | {cv:.3f} | {test:.3f} | {date} |".format(
-                    ticker=entry.get("ticker"),
-                    cv=entry.get("cv_mean_accuracy", entry.get("accuracy", 0.0)),
-                    test=entry.get("test_accuracy", entry.get("accuracy", 0.0)),
-                    date=entry.get("latest_date"),
-                )
-            )
-        (analysis_dir / "REPORT.md").write_text("\n".join(lines), encoding="utf-8")
 
     def _build_prediction_entry(
         self, ticker: str, prob_up: float, latest_row: Dict[str, float], method: str
@@ -429,9 +230,6 @@ class BlowdartMLEngine:
 
         if not feature_cols:
             feature_cols = built_feature_cols
-        missing_cols = [col for col in feature_cols if col not in dataset.columns]
-        for col in missing_cols:
-            dataset[col] = 0
         if dataset.empty or not feature_cols:
             self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
             return None
