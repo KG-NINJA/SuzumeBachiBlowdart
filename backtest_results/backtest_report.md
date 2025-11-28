@@ -1,25 +1,25 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-28T01:02:37.207032
+**Generated:** 2025-11-28T09:19:36.037928
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 2 🟢 |
-| **Skip** | 6 🔴 |
-| **Avg Expected Move** | 1.48% |
-| **Avg Confidence** | 0.3554 |
-| **Avg Model Accuracy** | 0.6115 |
+| **Execute** | 5 🟢 |
+| **Skip** | 1 🔴 |
+| **Avg Expected Move** | 2.96% |
+| **Avg Confidence** | 0.5919 |
+| **Avg Model Accuracy** | 0.9904 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
-| 🟢 **BEST** | 2 | 50.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 1 | 10.0% | Above average on both metrics |
-| 🟠 **FAIR** | 4 | 40.0% | Decent on at least one metric |
+| 🟢 **BEST** | 4 | 100.0% | High accuracy (>65%) + High confidence (>15%) |
+| 🟡 **GOOD** | 0 | 0.0% | Above average on both metrics |
+| 🟠 **FAIR** | 0 | 0.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
 ## 🏆 BEST Trades (Execute Priority)
@@ -28,36 +28,36 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| MSFT | 73.08% | 19.53% | 1.83% | SELL |
-| QQQ | 69.23% | 36.64% | 0.80% | SELL |
-| AAPL | 65.38% | 52.07% | 0.12% | BUY_CAUTION |
-| GOOGL | 65.38% | 47.56% | 0.15% | SELL |
-| TSLA | 65.38% | 71.48% | 1.29% | BUY_CAUTION |
+| AMZN | 100.00% | 50.74% | 2.54% | SELL |
+| META | 100.00% | 57.99% | 2.90% | SELL |
+| GOOGL | 99.59% | 63.91% | 3.20% | SELL |
+| AAPL | 99.05% | 71.24% | 3.56% | SELL |
+| TSLA | 99.05% | 59.71% | 2.99% | SELL |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- NVDA - Acc: 57.69%, Conf: 35.96%
+No good-quality trades.
 
 
 ## 🔍 Analysis by Accuracy
 
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
-| > 70% | 1 | 1.83% |
-| 60-70% | 4 | 0.59% |
-| 50-60% | 4 | 2.24% |
-| < 50% | 1 | 1.64% |
+| > 70% | 10 | 2.96% |
+| 60-70% | 0 | 0.00% |
+| 50-60% | 0 | 0.00% |
+| < 50% | 0 | 0.00% |
 
 ---
 
 ## 📊 High Quality Indicators
 
-- **High Accuracy (>60%):** 5/10
-- **High Confidence (>15%):** 7/10
-- **Both (High Quality):** 5/10
+- **High Accuracy (>60%):** 10/10
+- **High Confidence (>15%):** 10/10
+- **Both (High Quality):** 10/10
 
 ---
 
