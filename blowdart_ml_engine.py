@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -146,16 +146,55 @@ class BlowdartMLEngine:
             params["min_child_weight"] = 2
         return params
 
-    def _train_single(self, ticker: str) -> Optional[Dict]:
+    def _resolve_feature_cols(
+        self, dataset: "pd.DataFrame", feature_cols: Optional[List[str]] = None
+    ) -> List[str]:
+        """Determine feature columns from explicit input or DataFrame metadata."""
+
+        if feature_cols:
+            return feature_cols
+
+        from_attrs = dataset.attrs.get("feature_cols") if hasattr(dataset, "attrs") else None
+        if from_attrs:
+            return list(from_attrs)
+
+        return [
+            col
+            for col in dataset.columns
+            if col
+            not in {
+                "DATE",
+                "TARGET",
+                "CLOSE",
+                "OPEN",
+                "HIGH",
+                "LOW",
+            }
+        ]
+
+    def _train_single(
+        self,
+        ticker: str,
+        dataset: Optional["pd.DataFrame"] = None,
+        feature_cols: Optional[List[str]] = None,
+    ) -> Optional[Dict]:
         try:
-            dataset, feature_cols = build_feature_set(
-                ticker, use_feature_reduction=True, return_feature_cols=True
-            )
+            if dataset is None:
+                dataset, feature_cols = build_feature_set(
+                    ticker, use_feature_reduction=True, return_feature_cols=True
+                )
+            elif isinstance(dataset, tuple) and len(dataset) == 2:
+                dataset, feature_cols = dataset
         except Exception as exc:
             self._log_fetch_error(ticker, "train", str(exc))
             return None
 
-        if dataset.empty or not feature_cols or len(dataset) < 60:
+        if dataset is None or dataset.empty:
+            self._log_fetch_error(ticker, "train", "empty dataset or missing features")
+            return None
+
+        feature_cols = self._resolve_feature_cols(dataset, feature_cols)
+        if not feature_cols or len(dataset) < 60:
             self._log_fetch_error(ticker, "train", "empty dataset or missing features")
             return None
 
@@ -265,19 +304,29 @@ class BlowdartMLEngine:
             self._write_predictions(predictions)
         return predictions
 
-    def _predict_single(self, ticker: str) -> Optional[Dict]:
+    def _predict_single(
+        self,
+        ticker: str,
+        dataset: Optional["pd.DataFrame"] = None,
+        feature_cols: Optional[List[str]] = None,
+    ) -> Optional[Dict]:
         meta = self._load_meta(ticker)
-        feature_cols = meta.get("features") or []
+        feature_cols = feature_cols or meta.get("features") or []
         try:
-            dataset, built_feature_cols = build_feature_set(
-                ticker, use_feature_reduction=True, return_feature_cols=True
-            )
+            if dataset is None:
+                dataset, built_feature_cols = build_feature_set(
+                    ticker, use_feature_reduction=True, return_feature_cols=True
+                )
+            elif isinstance(dataset, tuple) and len(dataset) == 2:
+                dataset, built_feature_cols = dataset
+            else:
+                built_feature_cols = dataset.attrs.get("feature_cols") if hasattr(dataset, "attrs") else None
         except Exception as exc:
             self._log_fetch_error(ticker, "predict", str(exc))
             return None
 
         if not feature_cols:
-            feature_cols = built_feature_cols
+            feature_cols = built_feature_cols or []
         available_cols = [col for col in feature_cols if col in dataset.columns]
         if dataset.empty or not available_cols:
             self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
@@ -327,4 +376,49 @@ class BlowdartMLEngine:
         docs_history.write_text(json.dumps(existing + predictions, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-__all__ = ["BlowdartMLEngine", "TICKERS"]
+def _unwrap_dataset(arg: "pd.DataFrame | Tuple[pd.DataFrame, List[str]] | None") -> Tuple[Optional["pd.DataFrame"], Optional[List[str]]]:
+    if isinstance(arg, tuple) and len(arg) == 2:
+        ds, cols = arg
+        return ds, cols
+    return arg, None
+
+
+def train_ticker(
+    ticker: str,
+    dataset: Optional["pd.DataFrame | Tuple[pd.DataFrame, List[str]]"] = None,
+    feature_cols: Optional[List[str]] = None,
+    engine: Optional[BlowdartMLEngine] = None,
+) -> Optional[Dict]:
+    """Convenience wrapper to train a single ticker.
+
+    Accepts either a prepared feature dataframe (optionally paired with a feature
+    list) or will download/engineer features on the fly. This keeps harnesses
+    that call ``train_ticker(ticker, df)`` working while leveraging the
+    ``BlowdartMLEngine`` internals for persistence and metadata.
+    """
+
+    engine = engine or BlowdartMLEngine(tickers=[ticker])
+    dataset, inferred_cols = _unwrap_dataset(dataset)
+    feature_cols = feature_cols or inferred_cols
+    return engine._train_single(ticker, dataset=dataset, feature_cols=feature_cols)
+
+
+def predict_ticker(
+    ticker: str,
+    dataset: Optional["pd.DataFrame | Tuple[pd.DataFrame, List[str]]"] = None,
+    feature_cols: Optional[List[str]] = None,
+    engine: Optional[BlowdartMLEngine] = None,
+) -> Optional[Dict]:
+    """Predict a single ticker using optional pre-built features.
+
+    Mirrors the ``train_ticker`` wrapper to keep external harness calls working
+    with DataFrame-only or tuple-style inputs.
+    """
+
+    engine = engine or BlowdartMLEngine(tickers=[ticker])
+    dataset, inferred_cols = _unwrap_dataset(dataset)
+    feature_cols = feature_cols or inferred_cols
+    return engine._predict_single(ticker, dataset=dataset, feature_cols=feature_cols)
+
+
+__all__ = ["BlowdartMLEngine", "TICKERS", "train_ticker", "predict_ticker"]

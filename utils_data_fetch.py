@@ -238,7 +238,7 @@ def _attempt_fetchers(
 
 def safe_price_download(
     ticker: str,
-    range: str | None = "2y",
+    range_: str | None = "2y",
     *,
     days: Optional[int] = None,
     max_attempts: int = 6,
@@ -252,11 +252,14 @@ def safe_price_download(
 
     ticker = ticker.upper()
 
+    lookback_range = range_
     if days is not None:
         try:
-            range = f"{int(days)}d"
+            lookback_range = f"{int(days)}d"
         except Exception:
-            range = "2y"
+            lookback_range = "2y"
+    if not lookback_range:
+        lookback_range = "2y"
 
     cached = _load_cache(ticker)
     if cached is not None:
@@ -267,8 +270,10 @@ def safe_price_download(
     # then AlphaVantage, then Polygon, and finally yfinance as a network-only fallback.
     fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch, yfinance_fetch]
     for attempt in range(max_attempts):
-        print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker} (range={range})")
-        df = _attempt_fetchers(fetchers, ticker, range or "2y")
+        print(
+            f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker} (range={lookback_range})"
+        )
+        df = _attempt_fetchers(fetchers, ticker, lookback_range)
         if df is not None:
             df = _validate_df(df)
             _save_cache(ticker, df)
