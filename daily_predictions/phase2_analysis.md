@@ -1,19 +1,19 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-27T09:21:05.716871
+**Generated:** 2025-11-28T01:26:59.045837
 
 ## 🎯 Market Regime
 
 | Metric | Value |
 |--------|-------|
-| **Regime** | DOWNTREND 🔴 SELL |
-| **Bullish** | 3/10 (30.0%) |
-| **Bearish** | 7/10 (70.0%) |
-| **Hold** | 0/10 (0.0%) |
+| **Regime** | STRONG_DOWNTREND 🔴 SELL |
+| **Bullish** | 0/10 (0.0%) |
+| **Bearish** | 9/10 (90.0%) |
+| **Hold** | 0/10 (10.0%) |
 
 ## 📊 Interpretation
 
-Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
+Market is strongly bearish (90.0%). Focus on SELL signals. BUY signals should be avoided.
 
 ---
 
@@ -21,11 +21,11 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | TSLA | 65.38% | 🟢 STRONG | +0.54 |
-| 2 | AMZN | 42.31% | 🟢 STRONG | +0.43 |
-| 3 | AAPL | 65.38% | 🟢 STRONG | +0.27 |
-| 4 | GOOGL | 65.38% | 🟢 STRONG | +0.20 |
-| 5 | QQQ | 69.23% | 🟡 NEUTRAL | +0.08 |
+| 1 | AMD | 97.87% | 🟡 NEUTRAL | +0.16 |
+| 2 | NVDA | 97.90% | 🟡 NEUTRAL | +0.11 |
+| 3 | AAPL | 98.54% | 🟡 NEUTRAL | +0.09 |
+| 4 | GOOGL | 100.00% | 🟡 NEUTRAL | +0.08 |
+| 5 | MSFT | 98.29% | 🟡 NEUTRAL | +0.02 |
 
 
 ---
@@ -33,26 +33,28 @@ Market shows downtrend bias (70.0% bearish). Prefer SELL signals.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **NVDA** 📉 SELL | Conf: 35.96% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **MSFT** 📉 SELL | Conf: 19.53% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
-- **GOOGL** 📉 SELL | Conf: 47.56% | Strength: STRONG
-  → ✅ EXECUTE - SELL (DOWNTREND environment, STRONG strength)
-- **META** 📉 SELL | Conf: 4.34% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **AMD** 📉 SELL | Conf: 4.24% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **NFLX** 📉 SELL | Conf: 6.15% | Strength: WEAK
-  → ✅ EXECUTE - SELL (DOWNTREND environment, WEAK strength)
-- **QQQ** 📉 SELL | Conf: 36.64% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (DOWNTREND environment, NEUTRAL strength)
+- **NVDA** 📉 SELL | Conf: 67.89% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **AAPL** 📉 SELL | Conf: 65.02% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **MSFT** 📉 SELL | Conf: 56.92% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **GOOGL** 📉 SELL | Conf: 62.69% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **AMZN** 📉 SELL | Conf: 40.79% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **META** 📉 SELL | Conf: 50.99% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **TSLA** 📉 SELL | Conf: 54.95% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **AMD** 📉 SELL | Conf: 73.03% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+- **NFLX** 📉 SELL | Conf: 47.79% | Strength: NEUTRAL
+  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
 
 
 ### ⚠️ CAUTION
-- **AAPL** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
-- **AMZN** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
-- **TSLA** - ⚠️ CAUTION - BUY signal but DOWNTREND environment - wait for confirmation
+- **QQQ** - ⚠️ CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation
 
 
 ### ⏸️ SKIP
@@ -63,13 +65,13 @@ All predictions are actionable.
 
 ## 🎯 Trading Strategy by Market Regime
 
-### Current: DOWNTREND
+### Current: STRONG_DOWNTREND
 
 **Strategy:**
-• Prefer SELL over BUY
-• Look for bounce exits
-• Scale out of losers
-• Tight risk management
+• Focus on SELL signals
+• Avoid BUY signals
+• Use tight stops
+• Scale into shorts
 
 ---
 

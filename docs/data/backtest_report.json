@@ -1,154 +1,151 @@
 {
-  "timestamp": "2025-11-27T01:28:10.289549",
-  "backtest_date": "2025-11-27",
+  "timestamp": "2025-11-28T01:26:59.388534",
+  "backtest_date": "2025-11-28",
   "total_predictions": 10,
-  "execute_count": 1,
-  "skip_count": 7,
+  "execute_count": 4,
+  "skip_count": 1,
   "metrics": {
     "total_trades": 10,
-    "execute_trades": 1,
-    "skip_trades": 7,
-    "avg_expected_move": 1.71940565109253,
-    "avg_confidence": 0.2949361575767398,
-    "avg_model_accuracy": 0.6076923076923076,
-    "high_accuracy_trades": 8,
-    "high_confidence_trades": 6,
-    "high_quality_trades": 5
+    "execute_trades": 4,
+    "skip_trades": 1,
+    "avg_expected_move": 2.7447508577740214,
+    "avg_confidence": 0.548950171554804,
+    "avg_model_accuracy": 0.9878095238095239,
+    "high_accuracy_trades": 10,
+    "high_confidence_trades": 10,
+    "high_quality_trades": 10
   },
   "trade_categories": {
-    "best_count": 2,
-    "good_count": 4,
-    "fair_count": 3,
-    "poor_count": 1
+    "best_count": 10,
+    "good_count": 0,
+    "fair_count": 0,
+    "poor_count": 0
   },
   "category_details": {
     "BEST": [
       {
         "ticker": "NVDA",
         "entry_price": 178.88,
-        "target_price": 176.26210779190063,
+        "target_price": 172.80786593091076,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 1.4634907245635975,
-        "confidence": 0.25608453154563904,
-        "model_accuracy": 0.6538461538461539,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 3.394529332004266,
+        "confidence": 0.6789058664008549,
+        "model_accuracy": 0.9790476190476189,
+        "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.047918"
+        "timestamp": "2025-11-28T01:26:57.907067"
       },
       {
         "ticker": "AAPL",
         "entry_price": 271.49,
-        "target_price": 272.63310107231143,
-        "predicted_direction": "UP",
-        "expected_move_pct": 0.4210472106933677,
-        "confidence": 0.5701749920845032,
-        "model_accuracy": 0.6538461538461539,
-        "phase1_action": "HOLD",
-        "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-27T01:28:09.145625"
-      }
-    ],
-    "GOOD": [
+        "target_price": 262.66429023534056,
+        "predicted_direction": "DOWN",
+        "expected_move_pct": 3.250841564941416,
+        "confidence": 0.6501683129882813,
+        "model_accuracy": 0.9853968253968255,
+        "phase1_action": "EXECUTE",
+        "phase2_action": "SELL",
+        "timestamp": "2025-11-28T01:26:58.042738"
+      },
       {
         "ticker": "MSFT",
         "entry_price": 472.12,
-        "target_price": 461.6492972135544,
+        "target_price": 458.68351308139216,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 2.2178053855895956,
-        "confidence": 0.13036589324474335,
-        "model_accuracy": 0.6538461538461539,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 2.8459897734914517,
+        "confidence": 0.56919795469829,
+        "model_accuracy": 0.9828571428571428,
+        "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.206186"
+        "timestamp": "2025-11-28T01:26:58.130573"
       },
       {
         "ticker": "GOOGL",
         "entry_price": 299.66,
-        "target_price": 293.6310655987263,
+        "target_price": 290.2671889609925,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 2.011924982070919,
-        "confidence": 0.16467896103858948,
-        "model_accuracy": 0.6153846153846154,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 3.134489434361456,
+        "confidence": 0.6268978868722916,
+        "model_accuracy": 1.0,
+        "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.266782"
+        "timestamp": "2025-11-28T01:26:58.217283"
       },
-      {
-        "ticker": "TSLA",
-        "entry_price": 391.09,
-        "target_price": 391.4725765299797,
-        "predicted_direction": "UP",
-        "expected_move_pct": 0.09782314300536994,
-        "confidence": 0.5163042545318604,
-        "model_accuracy": 0.6153846153846154,
-        "phase1_action": "HOLD",
-        "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-27T01:28:09.451028"
-      },
-      {
-        "ticker": "QQQ",
-        "entry_price": 590.07,
-        "target_price": 586.4039247393608,
-        "predicted_direction": "DOWN",
-        "expected_move_pct": 0.6212949752807663,
-        "confidence": 0.39645034074783325,
-        "model_accuracy": 0.6153846153846154,
-        "phase1_action": "SKIP",
-        "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.633025"
-      }
-    ],
-    "FAIR": [
       {
         "ticker": "AMZN",
         "entry_price": 220.69,
-        "target_price": 224.9410263502598,
-        "predicted_direction": "UP",
-        "expected_move_pct": 1.926243305206304,
-        "confidence": 0.8210404515266418,
-        "model_accuracy": 0.46153846153846156,
-        "phase1_action": "EXECUTE",
-        "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-27T01:28:09.327986"
+        "target_price": 216.18954181826902,
+        "predicted_direction": "DOWN",
+        "expected_move_pct": 2.0392669272422754,
+        "confidence": 0.40785338544845573,
+        "model_accuracy": 1.0,
+        "phase1_action": "HOLD",
+        "phase2_action": "SELL",
+        "timestamp": "2025-11-28T01:26:58.304591"
       },
       {
         "ticker": "META",
         "entry_price": 594.25,
-        "target_price": 577.3306519240141,
+        "target_price": 579.1010787892043,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 2.8471767902374268,
-        "confidence": 0.025470439344644547,
-        "model_accuracy": 0.6538461538461539,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 2.5492505192756787,
+        "confidence": 0.509850103855133,
+        "model_accuracy": 1.0,
+        "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.389296"
+        "timestamp": "2025-11-28T01:26:58.389371"
+      },
+      {
+        "ticker": "TSLA",
+        "entry_price": 391.09,
+        "target_price": 380.3449017786409,
+        "predicted_direction": "DOWN",
+        "expected_move_pct": 2.747474550962453,
+        "confidence": 0.5494949101924896,
+        "model_accuracy": 0.9866666666666667,
+        "phase1_action": "HOLD",
+        "phase2_action": "SELL",
+        "timestamp": "2025-11-28T01:26:58.473858"
       },
       {
         "ticker": "AMD",
         "entry_price": 203.78,
-        "target_price": 197.90707698106766,
+        "target_price": 196.338811301197,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 2.8819918632507315,
-        "confidence": 0.019668294116854668,
-        "model_accuracy": 0.6538461538461539,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 3.651579496909897,
+        "confidence": 0.7303158993819782,
+        "model_accuracy": 0.9787301587301587,
+        "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.511413"
-      }
-    ],
-    "POOR": [
+        "timestamp": "2025-11-28T01:26:58.558789"
+      },
       {
         "ticker": "NFLX",
         "entry_price": 104.31,
-        "target_price": 101.48814524352551,
+        "target_price": 101.81725933128152,
         "predicted_direction": "DOWN",
-        "expected_move_pct": 2.705258131027221,
-        "confidence": 0.04912341758608818,
-        "model_accuracy": 0.5,
-        "phase1_action": "SKIP",
+        "expected_move_pct": 2.389742755937573,
+        "confidence": 0.4779485511875154,
+        "model_accuracy": 0.9895238095238097,
+        "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-27T01:28:09.571869"
+        "timestamp": "2025-11-28T01:26:58.650163"
+      },
+      {
+        "ticker": "QQQ",
+        "entry_price": 590.07,
+        "target_price": 581.5473580456231,
+        "predicted_direction": "DOWN",
+        "expected_move_pct": 1.4443442226137444,
+        "confidence": 0.2888688445227487,
+        "model_accuracy": 0.975873015873016,
+        "phase1_action": "SKIP",
+        "phase2_action": "BUY_CAUTION",
+        "timestamp": "2025-11-28T01:26:58.737114"
       }
-    ]
+    ],
+    "GOOD": [],
+    "FAIR": [],
+    "POOR": []
   }
 }
