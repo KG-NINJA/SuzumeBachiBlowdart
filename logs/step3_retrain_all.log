@@ -7,7 +7,7 @@
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 11:54:44] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:32] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -30,8 +30,13 @@ Fetching NVDA...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → NVDA
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] NVDA - 改善版モード起動
+  [FEATURES] NVDA: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] NVDA: CHOPPY          | Vol=1.00 | Trend=0.16
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9762 | Agg=0.9857 | Hybrid=0.9838
+  [RESULT] NVDA | Hybrid Acc: 0.9838
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AAPL 訓練中...
@@ -39,7 +44,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 11:54:44] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:33] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -62,8 +67,13 @@ Fetching AAPL...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → AAPL
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] AAPL - 改善版モード起動
+  [FEATURES] AAPL: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AAPL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] AAPL | Hybrid Acc: 0.9905
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> MSFT 訓練中...
@@ -71,7 +81,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 11:54:45] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:33] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -94,8 +104,13 @@ Fetching MSFT...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → MSFT
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] MSFT - 改善版モード起動
+  [FEATURES] MSFT: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] MSFT: CHOPPY          | Vol=1.00 | Trend=0.47
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9873 | Hybrid=0.9867
+  [RESULT] MSFT | Hybrid Acc: 0.9867
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> GOOGL 訓練中...
@@ -103,7 +118,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 11:54:45] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:34] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -126,8 +141,13 @@ Fetching GOOGL...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → GOOGL
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] GOOGL - 改善版モード起動
+  [FEATURES] GOOGL: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] GOOGL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9921 | Agg=0.9968 | Hybrid=0.9959
+  [RESULT] GOOGL | Hybrid Acc: 0.9959
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMZN 訓練中...
@@ -135,7 +155,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 11:54:45] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:34] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -158,8 +178,13 @@ Fetching AMZN...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → AMZN
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] AMZN - 改善版モード起動
+  [FEATURES] AMZN: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AMZN: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=1.0000 | Agg=1.0000 | Hybrid=1.0000
+  [RESULT] AMZN | Hybrid Acc: 1.0000
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> META 訓練中...
@@ -167,7 +192,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 11:54:46] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:34] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -190,8 +215,13 @@ Fetching META...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → META
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] META - 改善版モード起動
+  [FEATURES] META: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] META: CHOPPY          | Vol=1.00 | Trend=0.26
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=1.0000 | Agg=1.0000 | Hybrid=1.0000
+  [RESULT] META | Hybrid Acc: 1.0000
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> TSLA 訓練中...
@@ -199,7 +229,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 11:54:46] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:35] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -222,8 +252,13 @@ Fetching TSLA...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → TSLA
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] TSLA - 改善版モード起動
+  [FEATURES] TSLA: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] TSLA: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] TSLA | Hybrid Acc: 0.9905
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMD 訓練中...
@@ -231,7 +266,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 11:54:47] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:35] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -254,8 +289,13 @@ Fetching AMD...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → AMD
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] AMD - 改善版モード起動
+  [FEATURES] AMD: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AMD: CHOPPY          | Vol=1.00 | Trend=0.37
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9762 | Agg=0.9841 | Hybrid=0.9825
+  [RESULT] AMD | Hybrid Acc: 0.9825
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> NFLX 訓練中...
@@ -263,7 +303,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 11:54:47] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:35] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -286,8 +326,13 @@ Fetching NFLX...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → NFLX
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] NFLX - 改善版モード起動
+  [FEATURES] NFLX: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] NFLX: CHOPPY          | Vol=1.00 | Trend=0.16
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] NFLX | Hybrid Acc: 0.9905
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> QQQ 訓練中...
@@ -295,7 +340,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 11:54:48] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 01:02:36] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -318,8 +363,13 @@ Fetching QQQ...
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → QQQ
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] QQQ - 改善版モード起動
+  [FEATURES] QQQ: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9683 | Agg=0.9873 | Hybrid=0.9835
+  [RESULT] QQQ | Hybrid Acc: 0.9835
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================

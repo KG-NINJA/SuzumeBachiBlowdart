@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Nov 27 11:54:48 UTC 2025
+**Execution Date:** Fri Nov 28 01:02:37 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,17 +80,17 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-  [Features] Total features: 74
-  [FEATURES] Advanced features added successfully
-  [FEATURES] Total features before reduction: 74
-  [REDUCTION] Applying feature reduction for QQQ
-  [REDUCTION] Selecting 20 features from 74
   [REDUCTION] ✓ Reduced from 74 → 21 features
   [REDUCTION] Final features: 21
   [FEATURES] Final dataset: 126 rows × 21 columns
 
-[SOEI] 宗叡最終版起動 → QQQ
-  [SOEI] 完成 | Regime: CHOPPY | Hybrid Weight: Simple=15% Agg=85%
+  [TRAIN] QQQ - 改善版モード起動
+  [FEATURES] QQQ: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9683 | Agg=0.9873 | Hybrid=0.9835
+  [RESULT] QQQ | Hybrid Acc: 0.9835
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
