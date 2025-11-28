@@ -229,13 +229,17 @@ def build_feature_set(
     *,
     days: Optional[int] = None,
     use_feature_reduction: bool = False,
-) -> Tuple[pd.DataFrame, List[str]]:
+    return_feature_cols: bool = False,
+) -> Tuple[pd.DataFrame, List[str]] | pd.DataFrame:
     """Engineer a feature set from a DataFrame or ticker string.
 
     The first argument accepts either an already-downloaded price dataframe or a
     ticker symbol. This keeps compatibility with the provided training harness
     that supplies data explicitly while preserving the engine's ticker-based
-    convenience path.
+    convenience path. The optional ``return_feature_cols`` flag controls whether
+    callers receive ``(dataset, feature_cols)`` or only the engineered dataset
+    (with the feature list stashed in ``DataFrame.attrs['feature_cols']`` for
+    downstream access).
     """
 
     if isinstance(price_source, pd.DataFrame):
@@ -246,7 +250,7 @@ def build_feature_set(
 
     enriched = engineer_features(price_df)
     if enriched.empty:
-        return enriched, []
+        return (enriched, []) if return_feature_cols else enriched
 
     feature_cols = [
         col
@@ -265,7 +269,8 @@ def build_feature_set(
     if use_feature_reduction:
         feature_cols = _reduce_features(enriched, feature_cols)
 
-    return enriched, feature_cols
+    enriched.attrs["feature_cols"] = feature_cols
+    return (enriched, feature_cols) if return_feature_cols else enriched
 
 
 __all__ = [
