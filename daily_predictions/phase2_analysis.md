@@ -1,6 +1,6 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-28T09:19:35.726457
+**Generated:** 2025-11-28T23:19:44.844253
 
 ## 🎯 Market Regime
 
