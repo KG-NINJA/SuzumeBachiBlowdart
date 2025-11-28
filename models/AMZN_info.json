@@ -10,5 +10,8 @@
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/AMZN_model.json",
   "scaler_path": "models/AMZN_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:13.822682"
+  "timestamp": "2025-11-24T23:20:13.822682",
+  "regime": "MODERATE",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
 }

@@ -10,5 +10,8 @@
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/GOOGL_model.json",
   "scaler_path": "models/GOOGL_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:13.714842"
+  "timestamp": "2025-11-24T23:20:13.714842",
+  "regime": "HIGH_ACCURACY",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
 }

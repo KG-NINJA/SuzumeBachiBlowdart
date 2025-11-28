@@ -10,5 +10,8 @@
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/NVDA_model.json",
   "scaler_path": "models/NVDA_scaler.pkl",
-  "timestamp": "2025-11-24T23:20:13.503056"
+  "timestamp": "2025-11-24T23:20:13.503056",
+  "regime": "MODERATE",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
 }

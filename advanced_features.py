@@ -93,8 +93,10 @@ def add_rsi_divergence(df: pd.DataFrame, period: int = 14) -> pd.DataFrame:
     df['RSI_Divergence_Bearish'] = (price_high & ~rsi_high).astype(int)
     df['RSI_Divergence_Bullish'] = (~price_high & rsi_high).astype(int)
     
-    # RSI Zones
-    df['RSI_Zone'] = pd.cut(df['RSI'], bins=[0, 30, 70, 100], labels=['Oversold', 'Neutral', 'Overbought'])
+    # RSI Zones (avoid categorical fill errors by using object dtype)
+    rsi_zone = pd.cut(df['RSI'], bins=[0, 30, 70, 100], labels=['Oversold', 'Neutral', 'Overbought'])
+    df['RSI_Zone'] = rsi_zone.astype(object).fillna('Neutral')
+    df['RSI_Zone_Code'] = df['RSI_Zone'].map({'Oversold': -1, 'Neutral': 0, 'Overbought': 1}).fillna(0).astype(int)
     df['RSI_Oversold'] = (df['RSI'] < 30).astype(int)
     df['RSI_Overbought'] = (df['RSI'] > 70).astype(int)
     
