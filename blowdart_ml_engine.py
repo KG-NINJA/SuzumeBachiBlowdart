@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import numpy as np
+import pandas as pd
 from xgboost import XGBClassifier
 
 from blowdart_features import build_feature_set, ensure_directories
@@ -68,13 +69,23 @@ class BlowdartMLEngine:
     def _save_model(self, ticker: str, model: XGBClassifier) -> None:
         model.save_model(self._model_path(ticker))
 
-    def _save_meta(self, ticker: str, feature_cols: List[str], accuracy: float) -> None:
+    def _save_meta(
+        self,
+        ticker: str,
+        feature_cols: List[str],
+        accuracy: float,
+        params: Dict,
+        best_iteration: Optional[int] = None,
+    ) -> None:
         meta = {
             "ticker": ticker,
             "features": feature_cols,
             "trained_at": datetime.utcnow().isoformat(),
             "accuracy": accuracy,
+            "params": params,
         }
+        if best_iteration is not None:
+            meta["best_iteration"] = best_iteration
         with self._model_meta_path(ticker).open("w", encoding="utf-8") as handle:
             json.dump(meta, handle, ensure_ascii=False, indent=2)
 
@@ -104,6 +115,37 @@ class BlowdartMLEngine:
         existing.append(entry)
         target.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    def _xgb_params(self, ticker: str, train_df: "pd.DataFrame", feature_cols: List[str]) -> Dict:
+        """Provide ticker-aware defaults to improve weaker performers while avoiding overfit."""
+        base = {
+            "n_estimators": 400,
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "subsample": 0.85,
+            "colsample_bytree": 0.9,
+            "min_child_weight": 1,
+            "objective": "binary:logistic",
+            "eval_metric": "logloss",
+            "tree_method": "hist",
+            "random_state": 42,
+        }
+        overrides = {
+            "AAPL": {"max_depth": 6, "subsample": 0.9, "colsample_bytree": 0.95},
+            "NFLX": {"n_estimators": 500, "learning_rate": 0.04},
+            "GOOGL": {"n_estimators": 450, "max_depth": 4},
+        }
+        params = {**base, **overrides.get(ticker, {})}
+
+        pos = float(train_df["TARGET"].sum())
+        neg = float(len(train_df) - pos)
+        if pos > 0 and neg > 0:
+            params["scale_pos_weight"] = max(0.5, neg / pos)
+
+        if len(feature_cols) > 60:
+            params["max_depth"] = min(params.get("max_depth", 5), 5)
+            params["min_child_weight"] = 2
+        return params
+
     def _train_single(self, ticker: str) -> Optional[Dict]:
         try:
             dataset, feature_cols = build_feature_set(ticker)
@@ -111,7 +153,7 @@ class BlowdartMLEngine:
             self._log_fetch_error(ticker, "train", str(exc))
             return None
 
-        if dataset.empty or not feature_cols:
+        if dataset.empty or not feature_cols or len(dataset) < 60:
             self._log_fetch_error(ticker, "train", "empty dataset or missing features")
             return None
 
@@ -125,23 +167,21 @@ class BlowdartMLEngine:
         X_test = test_df[feature_cols]
         y_test = test_df["TARGET"]
 
-        model = XGBClassifier(
-            n_estimators=300,
-            max_depth=5,
-            learning_rate=0.05,
-            subsample=0.9,
-            colsample_bytree=0.8,
-            objective="binary:logistic",
-            eval_metric="logloss",
-            tree_method="hist",
-            random_state=42,
+        params = self._xgb_params(ticker, train_df, feature_cols)
+        model = XGBClassifier(**params)
+        model.fit(
+            X_train,
+            y_train,
+            eval_set=[(X_train, y_train), (X_test, y_test)],
+            early_stopping_rounds=40,
+            verbose=False,
         )
-        model.fit(X_train, y_train)
 
+        best_iter = getattr(model, "best_iteration", None)
         preds = model.predict(X_test)
         accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
         self._save_model(ticker, model)
-        self._save_meta(ticker, feature_cols, accuracy)
+        self._save_meta(ticker, feature_cols, accuracy, params, best_iter)
 
         importance = model.get_booster().get_score(importance_type="gain")
         importance_sorted = sorted(
@@ -155,6 +195,10 @@ class BlowdartMLEngine:
             "accuracy": accuracy,
             "feature_cols": feature_cols,
             "feature_importance": importance_sorted,
+            "train_size": len(train_df),
+            "test_size": len(test_df),
+            "scale_pos_weight": params.get("scale_pos_weight"),
+            "best_iteration": best_iter,
             "latest_date": dataset["DATE"].max().isoformat(),
         }
 
@@ -230,7 +274,8 @@ class BlowdartMLEngine:
 
         if not feature_cols:
             feature_cols = built_feature_cols
-        if dataset.empty or not feature_cols:
+        available_cols = [col for col in feature_cols if col in dataset.columns]
+        if dataset.empty or not available_cols:
             self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
             return None
 
@@ -240,10 +285,10 @@ class BlowdartMLEngine:
             if not train_result:
                 return None
             model = self._load_model(ticker)
-            feature_cols = train_result.get("feature_cols", feature_cols)
+            available_cols = [col for col in train_result.get("feature_cols", []) if col in dataset.columns]
 
         latest_row = dataset.iloc[-1]
-        X_latest = latest_row[feature_cols].values.reshape(1, -1)
+        X_latest = latest_row[available_cols].values.reshape(1, -1)
         prob_up = float(model.predict_proba(X_latest)[0][1])
 
         return self._build_prediction_entry(ticker, prob_up, latest_row.to_dict(), "xgboost")

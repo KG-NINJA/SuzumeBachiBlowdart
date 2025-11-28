@@ -20,7 +20,7 @@ LOG_DIR = Path("logs")
 def ensure_directories() -> None:
     """Create required data directories."""
     DATA_DIR.mkdir(exist_ok=True)
-    (DATA_DIR / "cache").mkdir(exist_ok=True)
+    (DATA_DIR / "cache").mkdir(parents=True, exist_ok=True)
 
 
 def _latest_file(pattern: str, directory: Path) -> Optional[Path]:
@@ -81,20 +81,27 @@ def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:
     for window in windows:
         df[f"{column}_MA_{window}"] = df[column].rolling(window).mean()
         df[f"{column}_STD_{window}"] = df[column].rolling(window).std()
+        df[f"{column}_EMA_{window}"] = df[column].ewm(span=window, adjust=False).mean()
 
 
 def _momentum_features(df: pd.DataFrame) -> None:
     df["RETURN_1D"] = df["CLOSE"].pct_change()
     df["RETURN_3D"] = df["CLOSE"].pct_change(3)
     df["RETURN_7D"] = df["CLOSE"].pct_change(7)
+    df["RETURN_14D"] = df["CLOSE"].pct_change(14)
+    df["RETURN_21D"] = df["CLOSE"].pct_change(21)
+    df["RETURN_30D"] = df["CLOSE"].pct_change(30)
     df["LOG_RETURN"] = np.log(df["CLOSE"] / df["CLOSE"].shift(1))
+    df["MOMENTUM_ACCEL"] = df["RETURN_1D"].diff()
 
 
 def _volatility_features(df: pd.DataFrame) -> None:
     df["VOLATILITY_5"] = df["RETURN_1D"].rolling(5).std()
     df["VOLATILITY_10"] = df["RETURN_1D"].rolling(10).std()
+    df["VOLATILITY_20"] = df["RETURN_1D"].rolling(20).std()
     df["HIGH_LOW_SPREAD"] = (df["HIGH"] - df["LOW"]) / df["CLOSE"]
     df["INTRADAY_RANGE"] = (df["CLOSE"] - df["OPEN"]) / df["OPEN"]
+    df["TRUE_RANGE"] = (df[["HIGH", "LOW", "CLOSE"]].max(axis=1) - df[["HIGH", "LOW", "CLOSE"]].min(axis=1)) / df["CLOSE"]
 
 
 def _momentum_indicators(df: pd.DataFrame) -> None:
@@ -121,6 +128,38 @@ def _momentum_indicators(df: pd.DataFrame) -> None:
     df["BB_WIDTH"] = df["BB_UPPER"] - df["BB_LOWER"]
 
 
+def _trend_features(df: pd.DataFrame) -> None:
+    for window in [5, 10, 20, 50]:
+        rolling = df["CLOSE"].rolling(window)
+        df[f"TREND_SLOPE_{window}"] = rolling.apply(
+            lambda x: np.polyfit(np.arange(len(x)), x, 1)[0] if len(x) == window else np.nan,
+            raw=False,
+        )
+        high_roll = df["HIGH"].rolling(window).max()
+        low_roll = df["LOW"].rolling(window).min()
+        df[f"RANGE_POS_{window}"] = (df["CLOSE"] - low_roll) / ((high_roll - low_roll) + 1e-9)
+    df["MA_GAP_5_20"] = df["CLOSE_MA_5"] - df["CLOSE_MA_20"]
+    df["MA_GAP_20_50"] = df["CLOSE_MA_20"] - df["CLOSE_MA_50"]
+
+
+def _volume_pressure(df: pd.DataFrame) -> None:
+    df["VOLUME_PRESSURE"] = (df["CLOSE"] - df["OPEN"]) * df["VOLUME"]
+    df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
+    df["VOLUME_CHANGE"] = df["VOLUME"].pct_change()
+
+
+def _lagged_targets(df: pd.DataFrame) -> None:
+    for lag in [1, 2, 3, 5]:
+        df[f"LAG_CLOSE_{lag}"] = df["CLOSE"].shift(lag)
+        df[f"LAG_RETURN_{lag}"] = df["RETURN_1D"].shift(lag)
+
+
+def _seasonality_features(df: pd.DataFrame) -> None:
+    df["DAY_OF_WEEK"] = df["DATE"].dt.weekday
+    df["MONTH"] = df["DATE"].dt.month
+    df["QUARTER"] = df["DATE"].dt.quarter
+
+
 def add_cv_runner_columns(df: pd.DataFrame, cv_features: Dict[str, float]) -> None:
     df["CV_CONFIDENCE"] = cv_features.get("cv_confidence", 0.5)
     df["CV_SIGNAL_STRENGTH"] = cv_features.get("signal_strength", 0.5)
@@ -135,16 +174,27 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
 
     df = df.copy()
     _rolling_feature(df, "CLOSE", [5, 10, 20, 50])
-    _rolling_feature(df, "VOLUME", [5, 20])
+    _rolling_feature(df, "VOLUME", [5, 20, 50])
     _momentum_features(df)
     _volatility_features(df)
     _momentum_indicators(df)
+    _trend_features(df)
+    _volume_pressure(df)
+    _lagged_targets(df)
+    _seasonality_features(df)
     add_cv_runner_columns(df, cv_features)
 
     df["PRICE_TO_MA5"] = df["CLOSE"] / df["CLOSE_MA_5"]
     df["PRICE_TO_MA20"] = df["CLOSE"] / df["CLOSE_MA_20"]
-    df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
+    df["PRICE_TO_MA50"] = df["CLOSE"] / df["CLOSE_MA_50"]
+    df["VOLUME_TO_STD20"] = df["VOLUME"] / (df["VOLUME_STD_20"] + 1e-6)
     df["TARGET"] = (df["CLOSE"].shift(-1) > df["CLOSE"]).astype(int)
+
+    # Robust filling to keep smaller tickers usable while avoiding leakage
+    df.sort_values("DATE", inplace=True)
+    df.fillna(method="ffill", inplace=True)
+    df.fillna(method="bfill", inplace=True)
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.dropna(inplace=True)
 
     return df

@@ -13,10 +13,11 @@ from typing import Callable, Dict, Iterable, Optional
 
 import pandas as pd
 import requests
+import yfinance as yf
 
 REQUEST_UA = os.getenv("REQUEST_UA", "Mozilla/5.0 (Codex GitHub Runner)")
-DATA_CACHE_DIR = Path("data_cache")
-DATA_CACHE_DIR.mkdir(exist_ok=True)
+DATA_CACHE_DIR = Path("data") / "cache"
+DATA_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 REQUIRED_COLUMNS = ["DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME"]
 
@@ -200,12 +201,35 @@ def tiingo_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
     return _validate_df(df)
 
 
+def yfinance_fetch(ticker: str, range: str = "2y") -> pd.DataFrame:
+    start = _range_to_start_date(range)
+    df = yf.download(ticker, start=start, progress=False, auto_adjust=False)
+    if df is None or df.empty:
+        raise ValueError("yfinance returned no data")
+    df = df.reset_index()
+    df.rename(
+        columns={
+            "Date": "DATE",
+            "Open": "OPEN",
+            "High": "HIGH",
+            "Low": "LOW",
+            "Close": "CLOSE",
+            "Volume": "VOLUME",
+        },
+        inplace=True,
+    )
+    df = df[REQUIRED_COLUMNS]
+    return _validate_df(df)
+
+
 def _attempt_fetchers(
     fetchers: Iterable[Callable[[str, str], pd.DataFrame]], ticker: str, range: str
 ) -> Optional[pd.DataFrame]:
     for fetcher in fetchers:
         try:
+            print(f"[fetch:{fetcher.__name__}] starting for {ticker}")
             df = fetcher(ticker, range)
+            print(f"[fetch:{fetcher.__name__}] success for {ticker} -> {len(df)} rows")
             return df
         except Exception as exc:
             print(f"[fetch:{fetcher.__name__}] {ticker} failed: {exc}")
@@ -216,9 +240,12 @@ def safe_price_download(ticker: str, range: str = "2y", max_attempts: int = 6) -
     ticker = ticker.upper()
     cached = _load_cache(ticker)
     if cached is not None:
+        print(f"[cache] hit for {ticker}")
         return cached
 
-    fetchers = [polygon_fetch, alpha_fetch, tiingo_fetch]
+    # Prefer Tiingo first because it is the most reliable with a free tier,
+    # then AlphaVantage, then Polygon, and finally yfinance as a network-only fallback.
+    fetchers = [tiingo_fetch, alpha_fetch, polygon_fetch, yfinance_fetch]
     for attempt in range(max_attempts):
         print(f"[download] Attempt {attempt + 1}/{max_attempts} for {ticker}")
         df = _attempt_fetchers(fetchers, ticker, range)
@@ -238,4 +265,5 @@ __all__ = [
     "polygon_fetch",
     "alpha_fetch",
     "tiingo_fetch",
+    "yfinance_fetch",
 ]
