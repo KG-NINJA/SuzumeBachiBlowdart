@@ -7,7 +7,7 @@ Feature Analysis for All Tickers
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-27 08:46:58] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:41] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -39,7 +39,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-27 08:46:59] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:42] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -71,7 +71,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-27 08:46:59] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:42] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -103,7 +103,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-27 08:46:59] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:42] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -135,7 +135,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-27 08:46:59] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:42] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -167,7 +167,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-27 08:47:00] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:42] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -199,7 +199,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-27 08:47:00] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:43] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -231,7 +231,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-27 08:47:00] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:43] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -263,7 +263,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-11-27 08:47:00] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:43] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -295,7 +295,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-27 08:47:00] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-28 03:11:43] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
