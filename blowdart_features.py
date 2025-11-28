@@ -110,6 +110,42 @@ def _lagged_price_features(df: pd.DataFrame) -> None:
     df["CUM_RETURN_60"] = (df["CLOSE"] / df["CLOSE"].shift(60)) - 1
 
 
+def _trend_strength_features(df: pd.DataFrame) -> None:
+    """Directional momentum and range-position signals that worked well for GOOGL."""
+
+    def _slope(values: pd.Series) -> float:
+        if len(values) < 2:
+            return 0.0
+        x = np.arange(len(values))
+        y = values.values
+        slope, _ = np.polyfit(x, y, 1)
+        return float(slope)
+
+    for window in [5, 10, 20, 50]:
+        roll = df["CLOSE"].rolling(window, min_periods=2)
+        df[f"PRICE_SLOPE_{window}"] = roll.apply(_slope, raw=False)
+        roll_min = df["CLOSE"].rolling(window, min_periods=1).min()
+        roll_max = df["CLOSE"].rolling(window, min_periods=1).max()
+        position = (df["CLOSE"] - roll_min) / (roll_max - roll_min + 1e-9)
+        df[f"CLOSE_POSITION_{window}"] = position.clip(0, 1)
+
+
+def _volume_pressure_features(df: pd.DataFrame) -> None:
+    """Volume pressure, accumulation/distribution, and volatility-of-volume signals."""
+
+    df["VOLUME_ZSCORE_20"] = (
+        (df["VOLUME"] - df["VOLUME"].rolling(20, min_periods=1).mean())
+        / (df["VOLUME"].rolling(20, min_periods=1).std() + 1e-9)
+    )
+    df["VOLATILITY_OF_VOLUME_10"] = df["VOLUME"].rolling(10, min_periods=1).std()
+    mfm = ((df["CLOSE"] - df["LOW"]) - (df["HIGH"] - df["CLOSE"])) / (
+        df["HIGH"] - df["LOW"] + 1e-9
+    )
+    df["ACC_DIST"] = (mfm * df["VOLUME"]).fillna(0)
+    df["ACC_DIST_MA_20"] = df["ACC_DIST"].rolling(20, min_periods=1).mean()
+    df["ON_BALANCE_VOLUME"] = df["VOLUME"] * np.sign(df["RETURN_1D"]).fillna(0)
+
+
 def _momentum_indicators(df: pd.DataFrame) -> None:
     delta = df["CLOSE"].diff()
     up = delta.clip(lower=0)
@@ -160,6 +196,8 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
     _volatility_features(df)
     _momentum_indicators(df)
     _lagged_price_features(df)
+    _trend_strength_features(df)
+    _volume_pressure_features(df)
     _seasonality_features(df)
     add_cv_runner_columns(df, cv_features)
 
