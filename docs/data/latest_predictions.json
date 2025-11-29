@@ -1,1 +1,65 @@
-{"generated_at_utc": null, "tickers": []}
+{
+  "generated_at_utc": "2025年11月22日 10:11:58",
+  "tickers": [
+    {
+      "ticker": "AAPL",
+      "predicted_direction": "UP",
+      "predicted_change_pct": 2.090421434859155,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "GOOGL",
+      "predicted_direction": "UP",
+      "predicted_change_pct": 2.558212923595459,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "MSFT",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -1.8956690208719749,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "NVDA",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -1.7922931542486698,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "TSLA",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -1.814248503404822,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "7203.T",
+      "predicted_direction": "UP",
+      "predicted_change_pct": 0.8705650459921156,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "6758.T",
+      "predicted_direction": "UP",
+      "predicted_change_pct": 1.8093476798924009,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "9984.T",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -4.769030239833159,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "6861.T",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -1.1541465228709558,
+      "prediction_method": "technical_analysis"
+    },
+    {
+      "ticker": "8035.T",
+      "predicted_direction": "DOWN",
+      "predicted_change_pct": -3.569230769230769,
+      "prediction_method": "technical_analysis"
+    }
+  ]
+}

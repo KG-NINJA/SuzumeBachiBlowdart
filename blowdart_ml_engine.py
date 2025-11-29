@@ -51,6 +51,133 @@ class BlowdartMLEngine:
             path.mkdir(exist_ok=True)
 
         ensure_directories()
+        self._bootstrap_prediction_artifacts()
+
+    def _payload_has_predictions(self, payload: Dict) -> bool:
+        return isinstance(payload.get("tickers"), list) and bool(payload["tickers"])
+
+    def _normalize_prediction_payload(self, payload: Dict) -> Optional[Dict]:
+        """Normalize legacy market payloads into the tickers list structure."""
+
+        if self._payload_has_predictions(payload):
+            return payload
+
+        markets = payload.get("markets")
+        if not isinstance(markets, dict):
+            return None
+
+        tickers: List[Dict] = []
+        for region_entries in markets.values():
+            if not isinstance(region_entries, list):
+                continue
+            for entry in region_entries:
+                if not isinstance(entry, dict):
+                    continue
+                ticker = entry.get("ticker")
+                if not ticker:
+                    continue
+                change = float(entry.get("predicted_change_pct", 0) or 0)
+                trend = entry.get("trend", "")
+                direction = "UP" if trend == "強気" or change >= 0 else "DOWN"
+                tickers.append(
+                    {
+                        "ticker": ticker,
+                        "predicted_direction": direction,
+                        "predicted_change_pct": change,
+                        "prediction_method": entry.get("prediction_method", "legacy"),
+                    }
+                )
+
+        if not tickers:
+            return None
+
+        generated_at = payload.get("generated_at_utc") or payload.get("timestamp") or payload.get("date")
+        return {"generated_at_utc": generated_at, "tickers": tickers}
+
+    def _load_cached_prediction_payload(self) -> Optional[Dict]:
+        """Find the freshest cached prediction payload across known locations.
+
+        This lets offline runs rehydrate docs/compatibility outputs from
+        previously generated artifacts (either the new daily_predictions folder
+        or the legacy data/daily_predictions directory bundled in the repo).
+        """
+
+        candidates: List[Path] = []
+        legacy_dir = Path("data/daily_predictions")
+
+        candidates.append(self.predictions_dir / "latest_predictions.json")
+        if legacy_dir.exists():
+            candidates.append(legacy_dir / "latest_predictions.json")
+            candidates.extend(sorted(legacy_dir.glob("predictions_*.json")))
+
+        # Include dated prediction files in the current predictions directory
+        candidates.extend(sorted(self.predictions_dir.glob("predictions_*.json")))
+
+        existing = [p for p in candidates if p.exists()]
+        if not existing:
+            return None
+
+        latest_path = max(existing, key=lambda p: p.stat().st_mtime)
+        try:
+            raw_payload = json.loads(latest_path.read_text(encoding="utf-8"))
+        except Exception:
+            return None
+
+        normalized = self._normalize_prediction_payload(raw_payload) or raw_payload
+        if self._payload_has_predictions(normalized):
+            return normalized
+        return None
+
+    def _bootstrap_prediction_artifacts(self) -> None:
+        """Hydrate docs/compat files from cached predictions when available.
+
+        GH Actions and local runs expect ``docs/data/latest_predictions.json``
+        and ``predictions.json`` to exist. If a previous artifact with populated
+        tickers exists, reuse it to avoid empty placeholders on new branches.
+        """
+
+        docs_latest = self.docs_data_dir / "latest_predictions.json"
+        compat_root = Path("predictions.json")
+        current_payload: Optional[Dict] = None
+
+        # Prefer already-populated docs payloads if present
+        if docs_latest.exists():
+            try:
+                parsed = json.loads(docs_latest.read_text(encoding="utf-8"))
+                if self._payload_has_predictions(parsed):
+                    current_payload = parsed
+            except Exception:
+                current_payload = None
+
+        if current_payload is None:
+            current_payload = self._load_cached_prediction_payload()
+
+        if current_payload is None:
+            return
+
+        targets = [
+            docs_latest,
+            self.predictions_dir / "latest_predictions.json",
+            compat_root,
+        ]
+
+        for target in targets:
+            try:
+                should_write = True
+                if target.exists():
+                    try:
+                        existing_payload = json.loads(target.read_text(encoding="utf-8"))
+                        if self._payload_has_predictions(existing_payload):
+                            should_write = False
+                    except Exception:
+                        should_write = True
+
+                if should_write:
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_text(json.dumps(current_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            except Exception:
+                # Bootstrap best-effort only; do not fail initialization
+                continue
 
     def _model_path(self, ticker: str) -> Path:
         return self.model_dir / f"{ticker}_xgb.json"
@@ -360,6 +487,10 @@ class BlowdartMLEngine:
 
         docs_predictions = self.docs_data_dir / "latest_predictions.json"
         docs_predictions.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        # Compatibility for consumers expecting repo-root predictions.json
+        compat_root = Path("predictions.json")
+        compat_root.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
         history_path = self.analytics_dir / "prediction_history.json"
         existing: List[Dict] = []
