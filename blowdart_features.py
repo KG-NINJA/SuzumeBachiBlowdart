@@ -1,282 +1,192 @@
 """
-Feature engineering utilities for the Blowdart ML engine.
-Relies on a resilient, API-based price fetcher and integrates CV runner signals.
+blowdart_features.py - Feature engineering for SuzumeBachiBlowdart
+Calculates: RSI, MACD, Bollinger Bands, Moving Averages, Advanced Technical Indicators
+Integrated with advanced_features.py for enhanced prediction
 """
-from __future__ import annotations
-
-import json
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 
-from utils_data_fetch import safe_price_download
-
-DATA_DIR = Path("data")
-LOG_DIR = Path("logs")
+from advanced_features import build_advanced_features
 
 
-def ensure_directories() -> None:
-    """Create required data directories."""
-    DATA_DIR.mkdir(exist_ok=True)
-    (DATA_DIR / "cache").mkdir(parents=True, exist_ok=True)
+def calculate_rsi(prices, period=14):
+    """Calculate Relative Strength Index"""
+    delta = prices.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
 
 
-def _latest_file(pattern: str, directory: Path) -> Optional[Path]:
-    files = sorted(directory.glob(pattern), key=lambda p: p.stat().st_mtime, reverse=True)
-    return files[0] if files else None
-
-
-def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
-    """Load confidence and signal_strength from the latest CV runner output.
-
-    Returns defaults when files are unavailable to keep the pipeline robust.
-    """
-    defaults = {"cv_confidence": 0.5, "signal_strength": 0.5}
-    if not log_dir.exists():
-        return defaults
-
-    latest = _latest_file("cv_run_*.json", log_dir)
-    if not latest:
-        return defaults
-
-    try:
-        with latest.open("r", encoding="utf-8") as handle:
-            payload = json.load(handle)
-    except Exception:
-        return defaults
-
-    confidence = payload.get("cv_average") or payload.get("confidence")
-    signal_strength = payload.get("signal_strength") or payload.get("signal_strength_pct")
-
-    def _normalize(value: Optional[float]) -> float:
-        if value is None:
-            return 0.5
-        try:
-            val = float(value)
-        except Exception:
-            return 0.5
-        # most cv values are 0-100; scale to 0-1
-        return max(0.0, min(1.0, val / 100.0)) if val > 1 else max(0.0, min(1.0, val))
-
-    return {
-        "cv_confidence": _normalize(confidence),
-        "signal_strength": _normalize(signal_strength),
-    }
-
-
-def download_price_history(ticker: str, period: str = "3y", *, days: Optional[int] = None) -> pd.DataFrame:
-    """Download price history and standardize columns."""
-    ensure_directories()
-    price_df = safe_price_download(ticker, range_=period, days=days)
-    # ensure standard columns and ordering
-    price_df = price_df.reset_index(drop=True)
-    price_df.sort_values("DATE", inplace=True)
-    price_df.reset_index(drop=True, inplace=True)
-    return price_df
-
-
-def _rolling_feature(df: pd.DataFrame, column: str, windows: List[int]) -> None:
-    for window in windows:
-        df[f"{column}_MA_{window}"] = df[column].rolling(window).mean()
-        df[f"{column}_STD_{window}"] = df[column].rolling(window).std()
-        df[f"{column}_EMA_{window}"] = df[column].ewm(span=window, adjust=False).mean()
-
-
-def _momentum_features(df: pd.DataFrame) -> None:
-    df["RETURN_1D"] = df["CLOSE"].pct_change()
-    df["RETURN_3D"] = df["CLOSE"].pct_change(3)
-    df["RETURN_7D"] = df["CLOSE"].pct_change(7)
-    df["RETURN_14D"] = df["CLOSE"].pct_change(14)
-    df["RETURN_21D"] = df["CLOSE"].pct_change(21)
-    df["RETURN_30D"] = df["CLOSE"].pct_change(30)
-    df["LOG_RETURN"] = np.log(df["CLOSE"] / df["CLOSE"].shift(1))
-    df["MOMENTUM_ACCEL"] = df["RETURN_1D"].diff()
-
-
-def _volatility_features(df: pd.DataFrame) -> None:
-    df["VOLATILITY_5"] = df["RETURN_1D"].rolling(5).std()
-    df["VOLATILITY_10"] = df["RETURN_1D"].rolling(10).std()
-    df["VOLATILITY_20"] = df["RETURN_1D"].rolling(20).std()
-    df["HIGH_LOW_SPREAD"] = (df["HIGH"] - df["LOW"]) / df["CLOSE"]
-    df["INTRADAY_RANGE"] = (df["CLOSE"] - df["OPEN"]) / df["OPEN"]
-    df["TRUE_RANGE"] = (df[["HIGH", "LOW", "CLOSE"]].max(axis=1) - df[["HIGH", "LOW", "CLOSE"]].min(axis=1)) / df["CLOSE"]
-
-
-def _momentum_indicators(df: pd.DataFrame) -> None:
-    delta = df["CLOSE"].diff()
-    up = delta.clip(lower=0)
-    down = -1 * delta.clip(upper=0)
-    roll_up = up.rolling(14).mean()
-    roll_down = down.rolling(14).mean()
-    rs = roll_up / roll_down
-    df["RSI14"] = 100.0 - (100.0 / (1.0 + rs))
-
-    ema_fast = df["CLOSE"].ewm(span=12, adjust=False).mean()
-    ema_slow = df["CLOSE"].ewm(span=26, adjust=False).mean()
+def calculate_macd(prices, fast=12, slow=26, signal=9):
+    """Calculate MACD"""
+    ema_fast = prices.ewm(span=fast).mean()
+    ema_slow = prices.ewm(span=slow).mean()
     macd = ema_fast - ema_slow
-    signal = macd.ewm(span=9, adjust=False).mean()
-    df["MACD"] = macd
-    df["MACD_SIGNAL"] = signal
-    df["MACD_HIST"] = macd - signal
-
-    rolling_mean = df["CLOSE"].rolling(window=20).mean()
-    rolling_std = df["CLOSE"].rolling(window=20).std()
-    df["BB_UPPER"] = rolling_mean + (rolling_std * 2)
-    df["BB_LOWER"] = rolling_mean - (rolling_std * 2)
-    df["BB_WIDTH"] = df["BB_UPPER"] - df["BB_LOWER"]
+    macd_signal = macd.ewm(span=signal).mean()
+    macd_hist = macd - macd_signal
+    return macd, macd_signal, macd_hist
 
 
-def _trend_features(df: pd.DataFrame) -> None:
-    for window in [5, 10, 20, 50]:
-        rolling = df["CLOSE"].rolling(window)
-        df[f"TREND_SLOPE_{window}"] = rolling.apply(
-            lambda x: np.polyfit(np.arange(len(x)), x, 1)[0] if len(x) == window else np.nan,
-            raw=False,
-        )
-        high_roll = df["HIGH"].rolling(window).max()
-        low_roll = df["LOW"].rolling(window).min()
-        df[f"RANGE_POS_{window}"] = (df["CLOSE"] - low_roll) / ((high_roll - low_roll) + 1e-9)
-    df["MA_GAP_5_20"] = df["CLOSE_MA_5"] - df["CLOSE_MA_20"]
-    df["MA_GAP_20_50"] = df["CLOSE_MA_20"] - df["CLOSE_MA_50"]
+def calculate_bollinger_bands(prices, period=20, num_std=2):
+    """Calculate Bollinger Bands"""
+    sma = prices.rolling(period).mean()
+    std = prices.rolling(period).std()
+    upper = sma + (std * num_std)
+    lower = sma - (std * num_std)
+    return upper, sma, lower
 
 
-def _volume_pressure(df: pd.DataFrame) -> None:
-    df["VOLUME_PRESSURE"] = (df["CLOSE"] - df["OPEN"]) * df["VOLUME"]
-    df["VOLUME_RATIO"] = df["VOLUME"] / df["VOLUME_MA_20"]
-    df["VOLUME_CHANGE"] = df["VOLUME"].pct_change()
+def build_feature_set(price_data, ticker, use_feature_reduction=True):
+    """
+    Build comprehensive feature set from price data
 
+    Args:
+        price_data: DataFrame with OHLCV data
+        ticker: Stock symbol (for logging)
 
-def _lagged_targets(df: pd.DataFrame) -> None:
-    for lag in [1, 2, 3, 5]:
-        df[f"LAG_CLOSE_{lag}"] = df["CLOSE"].shift(lag)
-        df[f"LAG_RETURN_{lag}"] = df["RETURN_1D"].shift(lag)
+    Returns:
+        DataFrame: Features ready for ML, or None if failed
+    """
+    try:
+        if price_data is None or price_data.empty:
+            return None
 
+        df = price_data.copy()
 
-def _seasonality_features(df: pd.DataFrame) -> None:
-    df["DAY_OF_WEEK"] = df["DATE"].dt.weekday
-    df["MONTH"] = df["DATE"].dt.month
-    df["QUARTER"] = df["DATE"].dt.quarter
+        # Step 1: Normalize column names - convert ALL to proper Title Case (Close, Open, High, Low, Volume)
+        print(f"  [FEATURES] Original columns: {df.columns.tolist()}")
 
+        column_mapping = {}
+        lower_cols = {col.lower(): col for col in df.columns}
 
-def add_cv_runner_columns(df: pd.DataFrame, cv_features: Dict[str, float]) -> None:
-    df["CV_CONFIDENCE"] = cv_features.get("cv_confidence", 0.5)
-    df["CV_SIGNAL_STRENGTH"] = cv_features.get("signal_strength", 0.5)
+        standard_names = ['date', 'open', 'high', 'low', 'close', 'volume']
+        for std_name in standard_names:
+            if std_name in lower_cols:
+                actual_col = lower_cols[std_name]
+                column_mapping[actual_col] = std_name.capitalize()
 
+        df = df.rename(columns=column_mapping)
+        print(f"  [FEATURES] Renamed columns: {df.columns.tolist()}")
 
-def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] = None) -> pd.DataFrame:
-    """Compute a rich set of features plus the binary target."""
-    if df.empty:
+        # Step 2: Validate required columns
+        required = ['Open', 'High', 'Low', 'Close', 'Volume']
+        missing = [col for col in required if col not in df.columns]
+        if missing:
+            print(f"  [FEATURES] Missing required columns: {missing}")
+            print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
+            return None
+
+        # Convert to numeric
+        for col in required:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+        df = df.dropna()
+
+        if len(df) < 30:
+            print(f"  [FEATURES] Insufficient data: {len(df)} rows")
+            return None
+
+        # Sort by date if available
+        if 'Date' in df.columns:
+            df = df.sort_values('Date').reset_index(drop=True)
+        else:
+            df = df.reset_index(drop=True)
+
+        close = df['Close']
+        high = df['High']
+        low = df['Low']
+        volume = df['Volume']
+
+        # ===== Technical Indicators (Basic) =====
+
+        # Moving Averages
+        df['MA5'] = close.rolling(5).mean()
+        df['MA10'] = close.rolling(10).mean()
+        df['MA20'] = close.rolling(20).mean()
+        df['MA50'] = close.rolling(50).mean()
+
+        # Exponential Moving Average
+        df['EMA12'] = close.ewm(span=12).mean()
+        df['EMA26'] = close.ewm(span=26).mean()
+
+        # RSI
+        df['RSI14'] = calculate_rsi(close, 14)
+        df['RSI7'] = calculate_rsi(close, 7)
+
+        # MACD
+        df['MACD'], df['MACD_Signal'], df['MACD_Hist'] = calculate_macd(close)
+
+        # Bollinger Bands
+        df['BB_Upper'], df['BB_Middle'], df['BB_Lower'] = calculate_bollinger_bands(close)
+
+        # Rate of Change
+        df['ROC10'] = ((close - close.shift(10)) / close.shift(10)) * 100
+        df['ROC20'] = ((close - close.shift(20)) / close.shift(20)) * 100
+
+        # Momentum
+        df['Momentum'] = close - close.shift(10)
+
+        # ATR (Average True Range)
+        high_low = high - low
+        high_close = np.abs(high - close.shift())
+        low_close = np.abs(low - close.shift())
+        tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+        df['ATR'] = tr.rolling(14).mean()
+
+        # Volume indicators
+        df['Volume_MA20'] = volume.rolling(20).mean()
+        df['Volume_Ratio'] = volume / (df['Volume_MA20'] + 0.0001)
+
+        # Price patterns
+        df['HighLowRatio'] = (high - low) / close
+        df['CloseOpenRatio'] = (close - df['Open']) / df['Open']
+
+        # Returns
+        df['DailyReturn'] = close.pct_change() * 100
+
+        # Volatility
+        df['Volatility'] = df['DailyReturn'].rolling(20).std()
+
+        print(f"  [FEATURES] Basic features added: {df.shape[1]} columns")
+
+        # ===== Advanced Features (NEW) =====
+        print(f"  [FEATURES] Adding advanced indicators for {ticker}...")
+
+        try:
+            df = build_advanced_features(df)
+            print("  [FEATURES] Advanced features added successfully")
+        except KeyError as e:
+            print(f"  [FEATURES] KeyError: {e} | Available: {df.columns.tolist()}")
+            print("  [FEATURES] Continuing with basic features only")
+        except Exception as e:
+            print(f"  [FEATURES] Error: {str(e)[:100]}")
+            print("  [FEATURES] Continuing with basic features only")
+
+        print(f"  [FEATURES] Total features: {df.shape[1]}")
+
+        # ===== Data Cleaning =====
+
+        df = df.replace([np.inf, -np.inf], np.nan)
+        df = df.fillna(0)
+
+        df = df.dropna()
+
+        if len(df) < 30:
+            print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
+            return None
+
+        print(f"  [FEATURES] Final dataset: {len(df)} rows × {df.shape[1]} columns")
         return df
 
-    cv_features = cv_features or load_cv_runner_features()
-
-    df = df.copy()
-    _rolling_feature(df, "CLOSE", [5, 10, 20, 50])
-    _rolling_feature(df, "VOLUME", [5, 20, 50])
-    _momentum_features(df)
-    _volatility_features(df)
-    _momentum_indicators(df)
-    _trend_features(df)
-    _volume_pressure(df)
-    _lagged_targets(df)
-    _seasonality_features(df)
-    add_cv_runner_columns(df, cv_features)
-
-    df["PRICE_TO_MA5"] = df["CLOSE"] / df["CLOSE_MA_5"]
-    df["PRICE_TO_MA20"] = df["CLOSE"] / df["CLOSE_MA_20"]
-    df["PRICE_TO_MA50"] = df["CLOSE"] / df["CLOSE_MA_50"]
-    df["VOLUME_TO_STD20"] = df["VOLUME"] / (df["VOLUME_STD_20"] + 1e-6)
-    df["TARGET"] = (df["CLOSE"].shift(-1) > df["CLOSE"]).astype(int)
-
-    # Robust filling to keep smaller tickers usable while avoiding leakage
-    df.sort_values("DATE", inplace=True)
-    df.ffill(inplace=True)
-    df.bfill(inplace=True)
-    df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    df.dropna(inplace=True)
-
-    return df
-
-
-def _reduce_features(df: pd.DataFrame, feature_cols: List[str]) -> List[str]:
-    """Optionally prune low-variance or duplicate-like features.
-
-    Keeps the routine light-weight for CI while removing columns that carry no
-    signal (all NaN/constant) or that mirror each other perfectly, which helps
-    stabilize smaller tickers such as AAPL/NFLX.
-    """
-
-    usable = []
-    seen_signatures = set()
-    for col in feature_cols:
-        series = df[col]
-        if series.nunique(dropna=True) <= 1:
-            continue
-        signature = tuple(np.sign(series.fillna(0)).astype(int).values)
-        if signature in seen_signatures:
-            continue
-        seen_signatures.add(signature)
-        usable.append(col)
-    return usable
-
-
-def build_feature_set(
-    price_source: pd.DataFrame | str,
-    ticker: Optional[str] = None,
-    period: str = "3y",
-    *,
-    days: Optional[int] = None,
-    use_feature_reduction: bool = False,
-    return_feature_cols: bool = False,
-) -> Tuple[pd.DataFrame, List[str]] | pd.DataFrame:
-    """Engineer a feature set from a DataFrame or ticker string.
-
-    The first argument accepts either an already-downloaded price dataframe or a
-    ticker symbol. This keeps compatibility with the provided training harness
-    that supplies data explicitly while preserving the engine's ticker-based
-    convenience path. The optional ``return_feature_cols`` flag controls whether
-    callers receive ``(dataset, feature_cols)`` or only the engineered dataset
-    (with the feature list stashed in ``DataFrame.attrs['feature_cols']`` for
-    downstream access).
-    """
-
-    if isinstance(price_source, pd.DataFrame):
-        price_df = price_source.copy()
-    else:
-        ticker = ticker or str(price_source)
-        price_df = download_price_history(ticker, period=period, days=days)
-
-    enriched = engineer_features(price_df)
-    if enriched.empty:
-        return (enriched, []) if return_feature_cols else enriched
-
-    feature_cols = [
-        col
-        for col in enriched.columns
-        if col
-        not in {
-            "DATE",
-            "TARGET",
-            "CLOSE",
-            "OPEN",
-            "HIGH",
-            "LOW",
-        }
-    ]
-
-    if use_feature_reduction:
-        feature_cols = _reduce_features(enriched, feature_cols)
-
-    enriched.attrs["feature_cols"] = feature_cols
-    return (enriched, feature_cols) if return_feature_cols else enriched
-
-
-__all__ = [
-    "build_feature_set",
-    "engineer_features",
-    "download_price_history",
-    "load_cv_runner_features",
-    "ensure_directories",
-]
+    except KeyError as e:
+        print(f"  [FEATURES ERROR] {ticker}: KeyError - {str(e)}")
+        print(f"  [FEATURES ERROR] Available columns: {df.columns.tolist() if 'df' in locals() else 'N/A'}")
+        return None
+    except Exception as e:
+        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:100]}")
+        import traceback
+        traceback.print_exc()
+        return None

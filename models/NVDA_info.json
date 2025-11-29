@@ -1,0 +1,17 @@
+{
+  "ticker": "NVDA",
+  "accuracy": 0.6153846153846154,
+  "previous_accuracy": 0.6153846153846154,
+  "accuracy_improvement": 0.0,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/NVDA_model.json",
+  "scaler_path": "models/NVDA_scaler.pkl",
+  "timestamp": "2025-11-24T23:20:13.503056",
+  "regime": "MODERATE",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
+}

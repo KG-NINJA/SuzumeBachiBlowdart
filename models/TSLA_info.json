@@ -1,0 +1,17 @@
+{
+  "ticker": "TSLA",
+  "accuracy": 0.7692307692307693,
+  "previous_accuracy": 0.7307692307692307,
+  "accuracy_improvement": 0.03846153846153855,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/TSLA_model.json",
+  "scaler_path": "models/TSLA_scaler.pkl",
+  "timestamp": "2025-11-24T23:20:13.927191",
+  "regime": "HIGH_ACCURACY",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
+}

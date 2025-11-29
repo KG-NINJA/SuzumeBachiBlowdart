@@ -1,0 +1,35 @@
+{
+  "ticker": "AAPL",
+  "regime": "CHOPPY",
+  "regime_vol": 1.0,
+  "trend_strength": 0.05263157617728546,
+  "weights": {
+    "simple": 0.2,
+    "aggressive": 0.8
+  },
+  "accuracies": {
+    "simple": 0.9841269841269841,
+    "aggressive": 0.9920634920634921,
+    "hybrid": 0.9904761904761905
+  },
+  "feature_names": [
+    "OBV",
+    "PVT",
+    "VROC",
+    "RSI7",
+    "EMA26",
+    "Momentum_10",
+    "Momentum",
+    "Minus_DI",
+    "Momentum_5",
+    "MACD",
+    "ATR",
+    "Volume_Ratio",
+    "Distance_to_Support",
+    "EMA_Distance_10_50",
+    "ATR_Percent"
+  ],
+  "feature_count": 15,
+  "version": "2025-11-27-fixed",
+  "saved_at": "2025-11-28T23:19:40.715251"
+}

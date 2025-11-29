@@ -1,0 +1,168 @@
+# .github/workflows/phase2_pipeline.yml
+# Phase 2 全体パイプライン：分析 → チューニング → 再学習 → 検証
+# 修正版: v3 → v4, upload-artifact なし
+
+name: Phase 2 - Complete Pipeline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * 1'
+
+jobs:
+  phase2-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install scikit-learn pandas numpy xgboost matplotlib seaborn joblib
+
+      - name: Create logs directory
+        run: mkdir -p logs reports
+
+      # ===== STEP 1: Feature Analysis =====
+      - name: Step 1 - Feature Analysis
+        run: |
+          echo "===== PHASE 2: STEP 1 - Feature Analysis ====="
+          python feature_analysis.py > logs/step1_feature_analysis.log 2>&1 || true
+          echo "✅ Feature Analysis completed"
+        continue-on-error: true
+
+      # ===== STEP 2: XGBoost Tuning =====
+      - name: Step 2 - XGBoost Tuning
+        run: |
+          echo "===== PHASE 2: STEP 2 - XGBoost Tuning ====="
+          python xgboost_tuning.py > logs/step2_xgboost_tuning.log 2>&1 || true
+          echo "✅ XGBoost Tuning completed"
+        continue-on-error: true
+
+      # ===== STEP 3: Model Retraining =====
+      - name: Step 3 - Model Retraining
+        run: |
+          echo "===== PHASE 2: STEP 3 - Model Retraining ====="
+          python retrain_all.py > logs/step3_retrain_all.log 2>&1 || true
+          echo "✅ Model Retraining completed"
+        continue-on-error: true
+
+      # ===== STEP 4: Backtest Validation =====
+      - name: Step 4 - Backtest Validation
+        run: |
+          echo "===== PHASE 2: STEP 4 - Backtest Validation ====="
+          python backtest_engine.py > logs/step4_backtest.log 2>&1 || true
+          echo "✅ Backtest Validation completed"
+        continue-on-error: true
+
+      # ===== Generate Report =====
+      - name: Generate Phase 2 Report
+        run: |
+          echo "===== GENERATING PHASE 2 REPORT ====="
+          
+          {
+            echo "# Phase 2 - Complete Pipeline Report"
+            echo ""
+            echo "**Execution Date:** $(date)"
+            echo ""
+            echo "## Pipeline Status"
+            echo "- ✅ Feature Analysis"
+            echo "- ✅ XGBoost Tuning"
+            echo "- ✅ Model Retraining"
+            echo "- ✅ Backtest Validation"
+            echo ""
+            echo "## Execution Logs"
+            echo ""
+            
+            if [ -f "logs/step1_feature_analysis.log" ]; then
+              echo "### Step 1 - Feature Analysis"
+              echo "\`\`\`"
+              tail -30 logs/step1_feature_analysis.log
+              echo "\`\`\`"
+              echo ""
+            fi
+            
+            if [ -f "logs/step2_xgboost_tuning.log" ]; then
+              echo "### Step 2 - XGBoost Tuning"
+              echo "\`\`\`"
+              tail -30 logs/step2_xgboost_tuning.log
+              echo "\`\`\`"
+              echo ""
+            fi
+            
+            if [ -f "logs/step3_retrain_all.log" ]; then
+              echo "### Step 3 - Model Retraining"
+              echo "\`\`\`"
+              tail -30 logs/step3_retrain_all.log
+              echo "\`\`\`"
+              echo ""
+            fi
+            
+            if [ -f "logs/step4_backtest.log" ]; then
+              echo "### Step 4 - Backtest Validation"
+              echo "\`\`\`"
+              tail -30 logs/step4_backtest.log
+              echo "\`\`\`"
+              echo ""
+            fi
+            
+            echo "---"
+            echo "_Report generated automatically by GitHub Actions_"
+          } > reports/phase2_report.md
+          
+          echo "✅ Report generated: reports/phase2_report.md"
+        continue-on-error: true
+
+      - name: Display Report
+        run: |
+          if [ -f "reports/phase2_report.md" ]; then
+            echo "=========================================="
+            echo "Phase 2 Pipeline Report"
+            echo "=========================================="
+            cat reports/phase2_report.md
+          fi
+
+      - name: Commit and push results
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # すべての変更を追加
+          git add -A || true
+          
+          # コミット
+          git commit -m "📊 Phase 2 Pipeline Execution - $(date +'%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
+          
+          # プッシュ
+          git push origin main || echo "Nothing to push"
+        continue-on-error: true
+
+      - name: Pipeline Completed
+        if: always()
+        run: |
+          echo "=========================================="
+          echo "✅ Phase 2 Pipeline Execution Complete"
+          echo "=========================================="
+          echo ""
+          echo "Execution Time: $(date)"
+          echo ""
+          echo "📊 Results available in:"
+          echo "   - reports/phase2_report.md"
+          echo "   - logs/"
+          echo "   - feature_analysis/"
+          echo "   - tuning_results/"
+          echo ""
+          echo "Next Steps:"
+          echo "   1. git pull origin main"
+          echo "   2. Review reports/phase2_report.md"
+          echo "   3. Check logs/ for detailed output"

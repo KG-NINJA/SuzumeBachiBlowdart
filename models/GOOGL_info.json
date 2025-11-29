@@ -1,0 +1,17 @@
+{
+  "ticker": "GOOGL",
+  "accuracy": 0.5769230769230769,
+  "previous_accuracy": 0.5769230769230769,
+  "accuracy_improvement": 0.0,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/GOOGL_model.json",
+  "scaler_path": "models/GOOGL_scaler.pkl",
+  "timestamp": "2025-11-24T23:20:13.714842",
+  "regime": "HIGH_ACCURACY",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
+}

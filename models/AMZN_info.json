@@ -1,0 +1,17 @@
+{
+  "ticker": "AMZN",
+  "accuracy": 0.46153846153846156,
+  "previous_accuracy": 0.46153846153846156,
+  "accuracy_improvement": 0.0,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/AMZN_model.json",
+  "scaler_path": "models/AMZN_scaler.pkl",
+  "timestamp": "2025-11-24T23:20:13.822682",
+  "regime": "MODERATE",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
+}

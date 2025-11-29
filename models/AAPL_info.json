@@ -1,0 +1,17 @@
+{
+  "ticker": "AAPL",
+  "accuracy": 0.6153846153846154,
+  "previous_accuracy": 0.6153846153846154,
+  "accuracy_improvement": 0.0,
+  "train_samples": 100,
+  "test_samples": 26,
+  "total_train_samples": 544,
+  "features": 71,
+  "learning_type": "ONLINE_UPDATE",
+  "model_path": "models/AAPL_model.json",
+  "scaler_path": "models/AAPL_scaler.pkl",
+  "timestamp": "2025-11-24T23:20:13.613623",
+  "regime": "LOW_ACCURACY",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
+}

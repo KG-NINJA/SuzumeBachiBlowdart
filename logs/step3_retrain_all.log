@@ -1,0 +1,361 @@
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+======================================================================
+宗叡最終版による全ティッカー再訓練開始
+======================================================================
+
+>>> NVDA 訓練中...
+
+============================================================
+Fetching NVDA...
+============================================================
+[2025-11-29 07:52:13] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NVDA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] NVDA - 改善版モード起動
+  [ERROR] NVDA: name 'model_path' is not defined
+  訓練失敗
+
+>>> AAPL 訓練中...
+
+============================================================
+Fetching AAPL...
+============================================================
+[2025-11-29 07:52:14] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AAPL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] AAPL - 改善版モード起動
+  [ERROR] AAPL: name 'model_path' is not defined
+  訓練失敗
+
+>>> MSFT 訓練中...
+
+============================================================
+Fetching MSFT...
+============================================================
+[2025-11-29 07:52:14] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for MSFT...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] MSFT - 改善版モード起動
+  [ERROR] MSFT: name 'model_path' is not defined
+  訓練失敗
+
+>>> GOOGL 訓練中...
+
+============================================================
+Fetching GOOGL...
+============================================================
+[2025-11-29 07:52:14] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for GOOGL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] GOOGL - 改善版モード起動
+  [ERROR] GOOGL: name 'model_path' is not defined
+  訓練失敗
+
+>>> AMZN 訓練中...
+
+============================================================
+Fetching AMZN...
+============================================================
+[2025-11-29 07:52:14] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMZN...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] AMZN - 改善版モード起動
+  [ERROR] AMZN: name 'model_path' is not defined
+  訓練失敗
+
+>>> META 訓練中...
+
+============================================================
+Fetching META...
+============================================================
+[2025-11-29 07:52:14] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for META...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] META - 改善版モード起動
+  [ERROR] META: name 'model_path' is not defined
+  訓練失敗
+
+>>> TSLA 訓練中...
+
+============================================================
+Fetching TSLA...
+============================================================
+[2025-11-29 07:52:14] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for TSLA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] TSLA - 改善版モード起動
+  [ERROR] TSLA: name 'model_path' is not defined
+  訓練失敗
+
+>>> AMD 訓練中...
+
+============================================================
+Fetching AMD...
+============================================================
+[2025-11-29 07:52:14] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMD...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] AMD - 改善版モード起動
+  [ERROR] AMD: name 'model_path' is not defined
+  訓練失敗
+
+>>> NFLX 訓練中...
+
+============================================================
+Fetching NFLX...
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
+    feature_cols = get_ticker_specific_features(df, ticker)
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+NameError: name 'model_path' is not defined
+============================================================
+[2025-11-29 07:52:14] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NFLX...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] NFLX - 改善版モード起動
+  [ERROR] NFLX: name 'model_path' is not defined
+  訓練失敗
+
+>>> QQQ 訓練中...
+
+============================================================
+Fetching QQQ...
+============================================================
+[2025-11-29 07:52:14] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for QQQ...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+
+  [TRAIN] QQQ - 改善版モード起動
+  [ERROR] QQQ: name 'model_path' is not defined
+  訓練失敗
+
+======================================================================
+宗叡最終版 訓練結果
+======================================================================
+ticker status          reason
+  NVDA FAILED Training failed
+  AAPL FAILED Training failed
+  MSFT FAILED Training failed
+ GOOGL FAILED Training failed
+  AMZN FAILED Training failed
+  META FAILED Training failed
+  TSLA FAILED Training failed
+   AMD FAILED Training failed
+  NFLX FAILED Training failed
+   QQQ FAILED Training failed
+
+結果保存完了 → retraining_results.csv / json
+次は本物の性能が見える。

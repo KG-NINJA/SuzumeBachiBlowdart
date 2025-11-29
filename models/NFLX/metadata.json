@@ -1,0 +1,35 @@
+{
+  "ticker": "NFLX",
+  "regime": "CHOPPY",
+  "regime_vol": 1.0,
+  "trend_strength": 0.15789472853185638,
+  "weights": {
+    "simple": 0.2,
+    "aggressive": 0.8
+  },
+  "accuracies": {
+    "simple": 0.9841269841269841,
+    "aggressive": 0.9920634920634921,
+    "hybrid": 0.9904761904761905
+  },
+  "feature_names": [
+    "OBV",
+    "PVT",
+    "Momentum_5",
+    "Momentum_10",
+    "Momentum",
+    "VROC",
+    "EMA26",
+    "MACD",
+    "RSI7",
+    "ATR",
+    "Minus_DI",
+    "Volume_Ratio",
+    "ATR_Percent",
+    "EMA_Distance_10_50",
+    "Distance_to_Support"
+  ],
+  "feature_count": 15,
+  "version": "2025-11-27-fixed",
+  "saved_at": "2025-11-28T23:19:43.236079"
+}

@@ -1,19 +1,107 @@
 {
-  "summary": "Expanded feature coverage, ticker-aware hyperparameters, and cache-stable downloads are in place. Run the training harness to populate fresh accuracies.",
-  "baseline": {
-    "GOOGL": 0.75,
-    "TSLA": 0.6875,
-    "AAPL": 0.375,
-    "NFLX": 0.5769
+  "timestamp": "2025-11-23T14:41:59.201261",
+  "accuracy_by_ticker": [
+    {
+      "ticker": "GOOGL",
+      "accuracy": 0.75,
+      "previous_accuracy": 0.75,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "META",
+      "accuracy": 0.6875,
+      "previous_accuracy": 0.6875,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "AMD",
+      "accuracy": 0.625,
+      "previous_accuracy": 0.5625,
+      "improvement": 0.0625,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "TSLA",
+      "accuracy": 0.625,
+      "previous_accuracy": 0.625,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "AMZN",
+      "accuracy": 0.5625,
+      "previous_accuracy": 0.5625,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "NVDA",
+      "accuracy": 0.5625,
+      "previous_accuracy": 0.5,
+      "improvement": 0.0625,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "MSFT",
+      "accuracy": 0.5625,
+      "previous_accuracy": 0.5625,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "NFLX",
+      "accuracy": 0.5,
+      "previous_accuracy": 0.4375,
+      "improvement": 0.0625,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "QQQ",
+      "accuracy": 0.5,
+      "previous_accuracy": 0.5,
+      "improvement": 0.0,
+      "samples": 61,
+      "features": 31
+    },
+    {
+      "ticker": "AAPL",
+      "accuracy": 0.375,
+      "previous_accuracy": 0.4375,
+      "improvement": -0.0625,
+      "samples": 61,
+      "features": 31
+    }
+  ],
+  "top_performer": {
+    "ticker": "GOOGL",
+    "accuracy": 0.75,
+    "improvement": 0.0
   },
-  "expectations": {
-    "mean_accuracy_target": 0.6,
-    "aapl_target_range": [0.45, 0.55],
-    "nflx_target_range": [0.6, 0.65]
+  "needs_work": {
+    "ticker": "AAPL",
+    "accuracy": 0.375,
+    "improvement": -0.0625
   },
-  "next_steps": [
-    "Run the training harness to regenerate model metadata and metrics.",
-    "Review models/*_xgb_meta.json for per-ticker accuracy and best_iteration.",
-    "Push updated analytics/training_metrics.json and docs/data/latest_predictions.json."
-  ]
+  "statistics": {
+    "average_accuracy": 0.575,
+    "total_models": 10,
+    "improvement_count": 3
+  },
+  "predictions": {
+    "total": 10,
+    "bullish": "1",
+    "bearish": "9",
+    "avg_confidence": 0.19477046951651572,
+    "avg_model_accuracy": 0.575
+  }
 }

@@ -1,0 +1,52 @@
+[
+  {
+    "ticker": "NVDA",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "AAPL",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "MSFT",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "GOOGL",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "AMZN",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "META",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "TSLA",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "AMD",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "NFLX",
+    "status": "FAILED",
+    "reason": "Training failed"
+  },
+  {
+    "ticker": "QQQ",
+    "status": "FAILED",
+    "reason": "Training failed"
+  }
+]

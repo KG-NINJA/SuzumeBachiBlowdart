@@ -1,625 +1,438 @@
 """
-Blowdart machine learning engine powered by XGBoost.
-Handles training and prediction for multiple tickers with automatic
-feature engineering and JSON outputs.
+blowdart_ml_engine.py - Fixed Version
+完全な相関性問題を排除した修正版
+- リーク特徴の除外を調整
+- ティッカー固有の特徴選択
+- 精度ベースの信頼度計算
 """
-from __future__ import annotations
 
+import os
 import json
-from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-
 import numpy as np
 import pandas as pd
-from xgboost import XGBClassifier
+import xgboost as xgb
+from sklearn.preprocessing import StandardScaler, RobustScaler
+from sklearn.model_selection import StratifiedKFold
+from pathlib import Path
+import pickle
+from datetime import datetime
+import warnings
+warnings.filterwarnings('ignore')
 
-from blowdart_features import build_feature_set, ensure_directories
+MODELS_ROOT = Path("models")
+MODELS_ROOT.mkdir(parents=True, exist_ok=True)
+REGIME_LOG = Path("regime_detection")
+REGIME_LOG.mkdir(parents=True, exist_ok=True)
 
-TICKERS = [
-    "NVDA",
-    "AAPL",
-    "MSFT",
-    "GOOGL",
-    "AMZN",
-    "META",
-    "TSLA",
-    "AMD",
-    "NFLX",
-    "QQQ",
-]
+# ===== IMPROVED LEAK FEATURES (過度な除外を避ける) =====
+# 本当に当日の情報のみ
+LEAK_FEATURES = {
+    'CloseOpenRatio',           # 当日の Open/Close
+    'DailyReturn',              # 当日のリターン
+    'HighLowRatio',             # 当日の High/Low
+}
+
+# ===== これらは除外しない（前営業日情報として有効） =====
+KEEP_FEATURES = {
+    'ATR', 'OBV', 'MACD', 'RSI7', 'RSI14',
+    'Momentum', 'Momentum_5', 'Momentum_10',
+    'Volume', 'Volume_Ratio',
+    'EMA12', 'EMA26', 'MA5', 'MA10', 'MA20', 'MA50',
+    'Plus_DI', 'Minus_DI', 'ADX',
+    'VROC', 'PVT',
+    'Low', 'High', 'Open'
+}
 
 
-class BlowdartMLEngine:
-    def __init__(
-        self,
-        data_dir: Path | str = "data",
-        model_dir: Path | str = "models",
-        analytics_dir: Path | str = "analytics",
-        predictions_dir: Path | str = "daily_predictions",
-        tickers: Optional[List[str]] = None,
-    ) -> None:
-        self.data_dir = Path(data_dir)
-        self.model_dir = Path(model_dir)
-        self.analytics_dir = Path(analytics_dir)
-        self.predictions_dir = Path(predictions_dir)
-        self.docs_data_dir = Path("docs/data")
-        self.log_dir = Path("logs")
-        self.tickers = tickers or TICKERS
-
-        for path in [self.data_dir, self.model_dir, self.analytics_dir, self.predictions_dir, self.docs_data_dir, self.log_dir]:
-            path.mkdir(exist_ok=True)
-
-        ensure_directories()
-        self._bootstrap_prediction_artifacts()
-
-    def _payload_has_predictions(self, payload: Dict) -> bool:
-        return isinstance(payload.get("tickers"), list) and bool(payload["tickers"])
-
-    def _normalize_prediction_payload(self, payload: Dict) -> Optional[Dict]:
-        """Normalize legacy market payloads into the tickers list structure."""
-
-        if isinstance(payload, list):
-            return {"generated_at_utc": None, "tickers": payload}
-
-        if self._payload_has_predictions(payload):
-            return payload
-
-        markets = payload.get("markets")
-        if not isinstance(markets, dict):
-            return None
-
-        tickers: List[Dict] = []
-        for region_entries in markets.values():
-            if not isinstance(region_entries, list):
-                continue
-            for entry in region_entries:
-                if not isinstance(entry, dict):
-                    continue
-                ticker = entry.get("ticker")
-                if not ticker:
-                    continue
-                change = float(entry.get("predicted_change_pct", 0) or 0)
-                trend = entry.get("trend", "")
-                direction = "UP" if trend == "強気" or change >= 0 else "DOWN"
-                tickers.append(
-                    {
-                        "ticker": ticker,
-                        "predicted_direction": direction,
-                        "predicted_change_pct": change,
-                        "prediction_method": entry.get("prediction_method", "legacy"),
-                    }
-                )
-
-        if not tickers:
-            return None
-
-        generated_at = payload.get("generated_at_utc") or payload.get("timestamp") or payload.get("date")
-        return {"generated_at_utc": generated_at, "tickers": tickers}
-
-    def _as_prediction_entries(
-        self, payload: Dict | List[Dict], fallback_timestamp: Optional[str] = None
-    ) -> Tuple[List[Dict], Optional[str]]:
-        """Flatten payloads into a list of ticker entries with timestamps.
-
-        The compatibility ``predictions.json`` file historically contained a
-        list, so we synthesize a flat list with timestamps even when the
-        canonical payload is nested under ``{"tickers": [...]}``.
-        """
-
-        entries: List[Dict] = []
-        timestamp = fallback_timestamp
-
-        if isinstance(payload, list):
-            entries = payload
-        elif self._payload_has_predictions(payload):
-            entries = payload.get("tickers", []) or []
-            timestamp = payload.get("generated_at_utc") or fallback_timestamp
-        else:
-            return [], fallback_timestamp
-
-        timestamp = timestamp or datetime.utcnow().isoformat()
-        normalized: List[Dict] = []
-        for entry in entries:
-            if not isinstance(entry, dict) or "ticker" not in entry:
-                continue
-            normalized_entry = dict(entry)
-            normalized_entry.setdefault("timestamp", timestamp)
-            confidence = normalized_entry.get("confidence")
-            if not isinstance(confidence, (int, float)):
-                prob_up = normalized_entry.get("prob_up")
-                if isinstance(prob_up, (int, float)):
-                    confidence = max(float(prob_up), 1 - float(prob_up))
-            normalized_entry.setdefault("action", self._decide_action(confidence))
-            normalized.append(normalized_entry)
-
-        return normalized, timestamp
-
-    def _load_cached_prediction_payload(self) -> Optional[Dict]:
-        """Find the freshest cached prediction payload across known locations.
-
-        This lets offline runs rehydrate docs/compatibility outputs from
-        previously generated artifacts (either the new daily_predictions folder
-        or the legacy data/daily_predictions directory bundled in the repo).
-        """
-
-        candidates: List[Path] = []
-        legacy_dir = Path("data/daily_predictions")
-
-        candidates.append(self.predictions_dir / "latest_predictions.json")
-        if legacy_dir.exists():
-            candidates.append(legacy_dir / "latest_predictions.json")
-            candidates.extend(sorted(legacy_dir.glob("predictions_*.json")))
-
-        # Include dated prediction files in the current predictions directory
-        candidates.extend(sorted(self.predictions_dir.glob("predictions_*.json")))
-
-        existing = [p for p in candidates if p.exists()]
-        if not existing:
-            return None
-
-        latest_path = max(existing, key=lambda p: p.stat().st_mtime)
+def detect_market_regime_fixed(df, ticker, lookback=20):
+    """改善版：ティッカーごとに異なるレジーム判定"""
+    
+    if len(df) < lookback:
+        return 'NEUTRAL', 0.5, 0.5
+    
+    recent = df.iloc[-lookback:].copy()
+    returns = recent['Close'].pct_change().dropna()
+    
+    if len(returns) == 0:
+        return 'NEUTRAL', 0.5, 0.5
+    
+    volatility_raw = returns.std()
+    
+    # 過去全期間での正規化（より安定的）
+    all_returns = df['Close'].pct_change().dropna()
+    if len(all_returns) > 50:
         try:
-            raw_payload = json.loads(latest_path.read_text(encoding="utf-8"))
+            q25 = float(all_returns.quantile(0.25))
+            q75 = float(all_returns.quantile(0.75))
+            vol_percentile = np.clip((volatility_raw - q25) / (q75 - q25 + 1e-8), 0, 1)
         except Exception:
-            return None
+            vol_percentile = 0.5
+    else:
+        vol_percentile = 0.5
+    
+    # トレンド強度
+    close_diff = recent['Close'].diff().fillna(0)
+    up_days = (close_diff > 0).sum()
+    down_days = (close_diff < 0).sum()
+    total = up_days + down_days + 1e-6
+    trend_strength = abs(up_days - down_days) / total
+    
+    # レジーム判定：より厳密に
+    if trend_strength > 0.65 and vol_percentile < 0.55:
+        regime = 'TRENDING'
+    elif vol_percentile > 0.75:  # 高めに設定
+        regime = 'CHOPPY'
+    else:
+        regime = 'MEAN_REVERSION'
+    
+    print(f"  [REGIME] {ticker}: {regime:15s} | Vol={vol_percentile:.2f} | Trend={trend_strength:.2f}")
+    
+    return regime, float(vol_percentile), float(trend_strength)
 
-        normalized = self._normalize_prediction_payload(raw_payload) or raw_payload
-        if self._payload_has_predictions(normalized):
-            return normalized
-        return None
 
-    def _bootstrap_prediction_artifacts(self) -> None:
-        """Hydrate docs/compat files from cached predictions when available.
-
-        GH Actions and local runs expect ``docs/data/latest_predictions.json``
-        and ``predictions.json`` to exist. If a previous artifact with populated
-        tickers exists, reuse it to avoid empty placeholders on new branches.
-        """
-
-        docs_latest = self.docs_data_dir / "latest_predictions.json"
-        compat_root = Path("predictions.json")
-        current_payload: Optional[Dict] = None
-
-        # Prefer already-populated docs payloads if present
-        if docs_latest.exists():
-            try:
-                parsed = json.loads(docs_latest.read_text(encoding="utf-8"))
-                if self._payload_has_predictions(parsed):
-                    current_payload = parsed
-            except Exception:
-                current_payload = None
-
-        if current_payload is None:
-            current_payload = self._load_cached_prediction_payload()
-
-        if current_payload is None:
-            return
-
-        targets = [
-            docs_latest,
-            self.predictions_dir / "latest_predictions.json",
-            compat_root,
-        ]
-
-        compat_entries, compat_timestamp = self._as_prediction_entries(current_payload)
-
-        for target in targets:
-            try:
-                target.parent.mkdir(parents=True, exist_ok=True)
-
-                if target == compat_root and compat_entries:
-                    target.write_text(
-                        json.dumps(compat_entries, ensure_ascii=False, indent=2),
-                        encoding="utf-8",
-                    )
-                    continue
-
-                target.write_text(
-                    json.dumps(current_payload, ensure_ascii=False, indent=2),
-                    encoding="utf-8",
-                )
-            except Exception:
-                # Bootstrap best-effort only; do not fail initialization
-                continue
-
-    def _model_path(self, ticker: str) -> Path:
-        """Return the on-disk location for a ticker's trained XGBoost model."""
-
-        return self.model_dir / f"{ticker}_xgb.json"
-
-    def _model_meta_path(self, ticker: str) -> Path:
-        return self.model_dir / f"{ticker}_xgb_meta.json"
-
-    def _load_model(self, ticker: str) -> Optional[XGBClassifier]:
-        path = self._model_path(ticker)
-        if not path.exists():
-            return None
-        model = XGBClassifier()
-        model.load_model(path)
-        return model
-
-    def _save_model(self, ticker: str, model: XGBClassifier) -> None:
-        model.save_model(self._model_path(ticker))
-
-    def _save_meta(
-        self,
-        ticker: str,
-        feature_cols: List[str],
-        accuracy: float,
-        params: Dict,
-        best_iteration: Optional[int] = None,
-    ) -> None:
-        meta = {
-            "ticker": ticker,
-            "features": feature_cols,
-            "trained_at": datetime.utcnow().isoformat(),
-            "accuracy": accuracy,
-            "params": params,
-        }
-        if best_iteration is not None:
-            meta["best_iteration"] = best_iteration
-        with self._model_meta_path(ticker).open("w", encoding="utf-8") as handle:
-            json.dump(meta, handle, ensure_ascii=False, indent=2)
-
-    def _load_meta(self, ticker: str) -> Dict:
-        if not self._model_meta_path(ticker).exists():
-            return {}
-        with self._model_meta_path(ticker).open("r", encoding="utf-8") as handle:
-            return json.load(handle)
-
-    def _log_fetch_error(self, ticker: str, stage: str, error: str) -> None:
-        self.log_dir.mkdir(exist_ok=True)
-        date_str = datetime.utcnow().strftime("%Y-%m-%d")
-        target = self.log_dir / f"fetch_errors_{date_str}.json"
-        entry = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "ticker": ticker,
-            "stage": stage,
-            "error": error,
-        }
-
-        existing: List[Dict] = []
-        if target.exists():
-            try:
-                existing = json.loads(target.read_text(encoding="utf-8"))
-            except Exception:
-                existing = []
-        existing.append(entry)
-        target.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    def _xgb_params(self, ticker: str, train_df: "pd.DataFrame", feature_cols: List[str]) -> Dict:
-        """Provide ticker-aware defaults to improve weaker performers while avoiding overfit."""
-        base = {
-            "n_estimators": 400,
-            "max_depth": 5,
-            "learning_rate": 0.05,
-            "subsample": 0.85,
-            "colsample_bytree": 0.9,
-            "min_child_weight": 1,
-            "objective": "binary:logistic",
-            "eval_metric": "logloss",
-            "tree_method": "hist",
-            "random_state": 42,
-        }
-        overrides = {
-            "AAPL": {"max_depth": 6, "subsample": 0.9, "colsample_bytree": 0.95},
-            "NFLX": {"n_estimators": 500, "learning_rate": 0.04},
-            "GOOGL": {"n_estimators": 450, "max_depth": 4},
-        }
-        params = {**base, **overrides.get(ticker, {})}
-
-        pos = float(train_df["TARGET"].sum())
-        neg = float(len(train_df) - pos)
-        if pos > 0 and neg > 0:
-            params["scale_pos_weight"] = max(0.5, neg / pos)
-
-        if len(feature_cols) > 60:
-            params["max_depth"] = min(params.get("max_depth", 5), 5)
-            params["min_child_weight"] = 2
-        return params
-
-    def _resolve_feature_cols(
-        self, dataset: "pd.DataFrame", feature_cols: Optional[List[str]] = None
-    ) -> List[str]:
-        """Determine feature columns from explicit input or DataFrame metadata."""
-
-        if feature_cols:
-            return feature_cols
-
-        from_attrs = dataset.attrs.get("feature_cols") if hasattr(dataset, "attrs") else None
-        if from_attrs:
-            return list(from_attrs)
-
-        return [
-            col
-            for col in dataset.columns
-            if col
-            not in {
-                "DATE",
-                "TARGET",
-                "CLOSE",
-                "OPEN",
-                "HIGH",
-                "LOW",
-            }
-        ]
-
-    def _train_single(
-        self,
-        ticker: str,
-        dataset: Optional["pd.DataFrame"] = None,
-        feature_cols: Optional[List[str]] = None,
-    ) -> Optional[Dict]:
+def get_ticker_specific_features(df, ticker):
+    """ティッカー固有の特徴選択"""
+    
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
         try:
-            if dataset is None:
-                dataset, feature_cols = build_feature_set(
-                    ticker, use_feature_reduction=True, return_feature_cols=True
-                )
-            elif isinstance(dataset, tuple) and len(dataset) == 2:
-                dataset, feature_cols = dataset
-        except Exception as exc:
-            self._log_fetch_error(ticker, "train", str(exc))
+            booster = xgb.Booster()
+            booster.load_model(model_path)
+
+            with open(scaler_path, 'rb') as f:
+                scaler = pickle.load(f)
+
+            return booster, scaler
+        except Exception as e:
+            print(f"  [WARNING] Failed to load existing model: {str(e)[:40]}")
+            return None, None
+    
+    # 上位15-25特徴を選択（ティッカーごとに異なる）
+    num_features = min(20, max(15, len(sorted_features)))
+    selected = [f[0] for f in sorted_features[:num_features]]
+    
+    # KEEP_FEATURES との交差を優先
+    keep_intersection = [f for f in selected if f in KEEP_FEATURES]
+    other = [f for f in selected if f not in KEEP_FEATURES]
+    
+    final_features = keep_intersection + other
+    final_features = final_features[:20]  # 最大20個
+    
+    print(f"  [FEATURES] {ticker}: {len(final_features)} selected")
+    print(f"             Keep: {len(keep_intersection)} | Other: {len(other)}")
+    
+    return final_features
+
+
+def get_ticker_dir(ticker):
+    ticker_dir = MODELS_ROOT / ticker
+    ticker_dir.mkdir(parents=True, exist_ok=True)
+    return ticker_dir
+
+
+def train_ticker(ticker, features_df, use_online_learning=True, use_feature_reduction=True):
+    """改善版：ティッカーごとに異なる特徴と予測を生成"""
+    
+    try:
+        print(f"\n  [TRAIN] {ticker} - 改善版モード起動")
+        
+        if features_df is None or features_df.empty or len(features_df) < 40:
+            print(f"  [ERROR] Insufficient data for {ticker}")
             return None
-
-        if dataset is None or dataset.empty:
-            self._log_fetch_error(ticker, "train", "empty dataset or missing features")
+        
+        df = features_df.copy()
+        
+        # Target生成
+        df['Target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
+        df = df.dropna()
+        
+        if len(df) < 40:
             return None
-
-        feature_cols = self._resolve_feature_cols(dataset, feature_cols)
-        if not feature_cols or len(dataset) < 60:
-            self._log_fetch_error(ticker, "train", "empty dataset or missing features")
-            return None
-
-        # chronological split: last 20% for validation
-        split_idx = int(len(dataset) * 0.8)
-        train_df = dataset.iloc[:split_idx]
-        test_df = dataset.iloc[split_idx:]
-
-        X_train = train_df[feature_cols]
-        y_train = train_df["TARGET"]
-        X_test = test_df[feature_cols]
-        y_test = test_df["TARGET"]
-
-        params = self._xgb_params(ticker, train_df, feature_cols)
-        model = XGBClassifier(**params)
-        model.fit(
-            X_train,
-            y_train,
-            eval_set=[(X_train, y_train), (X_test, y_test)],
-            early_stopping_rounds=40,
-            verbose=False,
-        )
-
-        best_iter = getattr(model, "best_iteration", None)
-        preds = model.predict(X_test)
-        accuracy = float(np.mean(preds == y_test)) if len(y_test) else 0.0
-        self._save_model(ticker, model)
-        self._save_meta(ticker, feature_cols, accuracy, params, best_iter)
-
-        importance = model.get_booster().get_score(importance_type="gain")
-        importance_sorted = sorted(
-            [{"feature": k, "importance": float(v)} for k, v in importance.items()],
-            key=lambda x: x["importance"],
-            reverse=True,
-        )
-
-        return {
-            "ticker": ticker,
-            "accuracy": accuracy,
-            "feature_cols": feature_cols,
-            "feature_importance": importance_sorted,
-            "train_size": len(train_df),
-            "test_size": len(test_df),
-            "scale_pos_weight": params.get("scale_pos_weight"),
-            "best_iteration": best_iter,
-            "latest_date": dataset["DATE"].max().isoformat(),
-        }
-
-    def train_all_tickers(self) -> List[Dict]:
-        summary: List[Dict] = []
-        for ticker in self.tickers:
-            result = self._train_single(ticker)
-            if result:
-                summary.append(result)
-        if summary:
-            self._append_training_metrics(summary)
-            self._write_feature_importance(summary)
-        return summary
-
-    def _append_training_metrics(self, metrics: List[Dict]) -> None:
-        path = self.analytics_dir / "training_metrics.json"
-        existing: List[Dict] = []
-        if path.exists():
-            try:
-                existing = json.loads(path.read_text(encoding="utf-8"))
-            except Exception:
-                existing = []
-        timestamp = datetime.utcnow().isoformat()
-        for entry in metrics:
-            entry["timestamp"] = timestamp
-        path.write_text(json.dumps(existing + metrics, ensure_ascii=False, indent=2), encoding="utf-8")
-        docs_path = self.docs_data_dir / "training_metrics.json"
-        docs_path.write_text(json.dumps(existing + metrics, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    def _write_feature_importance(self, metrics: List[Dict]) -> None:
-        importance_map = {
-            m["ticker"]: m.get("feature_importance", []) for m in metrics if "ticker" in m
-        }
-        target_path = self.analytics_dir / "feature_importance.json"
-        target_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
-        docs_path = self.docs_data_dir / "feature_importance.json"
-        docs_path.write_text(json.dumps(importance_map, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    def _build_prediction_entry(
-        self, ticker: str, prob_up: float, latest_row: Dict[str, float], method: str
-    ) -> Dict:
-        direction = "UP" if prob_up >= 0.5 else "DOWN"
-        predicted_change_pct = float(latest_row.get("RETURN_1D", 0) * 100)
-        confidence = max(prob_up, 1 - prob_up)
-        return {
-            "ticker": ticker,
-            "prob_up": prob_up,
-            "prob_down": 1 - prob_up,
-            "predicted_direction": direction,
-            "direction": direction,
-            "confidence": confidence,
-            "predicted_change_pct": predicted_change_pct,
-            "prediction_method": method,
-            "cv_confidence": float(latest_row.get("CV_CONFIDENCE", 0.5)),
-            "signal_strength": float(latest_row.get("CV_SIGNAL_STRENGTH", 0.5)),
-            "action": self._decide_action(confidence),
-        }
-
-    def _decide_action(self, confidence: Optional[float]) -> str:
-        """Map confidence to an action label for downstream consumers."""
-
-        if confidence is None:
-            return "HOLD"
-        if confidence >= 0.6:
-            return "EXECUTE"
-        if confidence >= 0.52:
-            return "HOLD"
-        return "SKIP"
-
-    def predict_all_tickers(self) -> List[Dict]:
-        predictions: List[Dict] = []
-        for ticker in self.tickers:
-            entry = self._predict_single(ticker)
-            if entry:
-                predictions.append(entry)
-        if predictions:
-            self._write_predictions(predictions)
-        return predictions
-
-    def _predict_single(
-        self,
-        ticker: str,
-        dataset: Optional["pd.DataFrame"] = None,
-        feature_cols: Optional[List[str]] = None,
-    ) -> Optional[Dict]:
-        meta = self._load_meta(ticker)
-        feature_cols = feature_cols or meta.get("features") or []
-        try:
-            if dataset is None:
-                dataset, built_feature_cols = build_feature_set(
-                    ticker, use_feature_reduction=True, return_feature_cols=True
-                )
-            elif isinstance(dataset, tuple) and len(dataset) == 2:
-                dataset, built_feature_cols = dataset
-            else:
-                built_feature_cols = dataset.attrs.get("feature_cols") if hasattr(dataset, "attrs") else None
-        except Exception as exc:
-            self._log_fetch_error(ticker, "predict", str(exc))
-            return None
-
+        
+        # ===== ティッカー固有の特徴選択 =====
+        feature_cols = get_ticker_specific_features(df, ticker)
+        
         if not feature_cols:
-            feature_cols = built_feature_cols or []
-        available_cols = [col for col in feature_cols if col in dataset.columns]
-        if dataset.empty or not available_cols:
-            self._log_fetch_error(ticker, "predict", "empty dataset or missing features")
+            print(f"  [ERROR] No valid features for {ticker}")
             return None
+        
+        X = df[feature_cols].replace([np.inf, -np.inf], np.nan).fillna(0)
+        y = df['Target']
+        
+        # ===== レジーム検知 =====
+        regime, vol, trend = detect_market_regime_fixed(df, ticker)
+        
+        # Remove NaN/Inf
+        X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
+        
+        # ===== Online Learning Logic =====
+        existing_model = None
+        existing_scaler = None
+        previous_accuracy = 0
+        previous_train_count = 0
+        
+        if use_online_learning:
+            existing_model, existing_scaler = load_existing_model(ticker)
+            model_info = load_model_info(ticker)
 
-        model = self._load_model(ticker)
+            if model_info:
+                previous_accuracy = model_info.get('accuracy', 0)
+                previous_train_count = model_info.get('total_train_samples', 0)
+
+            # Ensure feature compatibility before attempting an online update
+            if existing_model is not None:
+                try:
+                    model_feature_count = existing_model.num_features()
+                    data_feature_count = X.shape[1]
+                    if model_feature_count != data_feature_count:
+                        print(f"  [ONLINE] Feature mismatch (model={model_feature_count}, data={data_feature_count}); retraining from scratch")
+                        existing_model = None
+                        existing_scaler = None
+                except Exception as e:
+                    print(f"  [ONLINE] Failed to inspect existing model: {str(e)[:40]}")
+                    existing_model = None
+                    existing_scaler = None
+        
+        # Use existing scaler or create new one
+        if existing_scaler is not None:
+            scaler = existing_scaler
+            print(f"  [ONLINE] Using existing scaler")
+        else:
+            w_simple, w_agg = 0.5, 0.5
+            desc = "BALANCED"
+        
+        print(f"  [WEIGHTS] Simple={w_simple:.0%} | Aggressive={w_agg:.0%} ({desc})")
+        
+        # ===== シンプルモデル =====
+        scaler_s = StandardScaler()
+        X_s = scaler_s.fit_transform(X)
+        
+        model_s = xgb.XGBClassifier(
+            n_estimators=120,
+            max_depth=4,
+            learning_rate=0.05,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            random_state=42,
+            eval_metric='logloss',
+            verbosity=0
+        )
+        model_s.fit(X_s, y)
+        acc_s = model_s.score(X_s, y)
+        
+        # ===== アグレッシブアンサンブル =====
+        scaler_a = RobustScaler()
+        X_a = scaler_a.fit_transform(X)
+        
+        models_a = []
+        accs_a = []
+        
+        for fold in range(5):
+            m = xgb.XGBClassifier(
+                n_estimators=200,
+                max_depth=4 + fold % 2,
+                learning_rate=0.08 * (0.9 + fold * 0.02),
+                subsample=0.7 + fold * 0.04,
+                colsample_bytree=0.75 + fold * 0.03,
+                gamma=0.5 + fold * 0.1,
+                random_state=42 + fold,
+                eval_metric='logloss',
+                verbosity=0
+            )
+            m.fit(X_a, y)
+            models_a.append(m)
+            accs_a.append(m.score(X_a, y))
+        
+        acc_a = np.mean(accs_a)
+        
+        # ===== ハイブリッド精度 =====
+        hybrid_acc = acc_s * w_simple + acc_a * w_agg
+        
+        # ===== Train or Update Model =====
+        model = None
+        learning_type = "FRESH_TRAIN"
+
+        if existing_model is not None and use_online_learning:
+            # Online Learning: Update existing model
+            print(f"  [ONLINE] Updating existing model...")
+
+            try:
+                # Convert to DMatrix
+                dtrain_new = xgb.DMatrix(X_train, label=y_train)
+
+                # Train on new data while keeping old knowledge
+                model = xgb.train(
+                    params={
+                        'objective': 'binary:logistic',
+                        'max_depth': 5,
+                        'learning_rate': 0.05,  # Lower LR for gradual updates
+                        'subsample': 0.8,
+                        'colsample_bytree': 0.8
+                    },
+                    dtrain=dtrain_new,
+                    num_boost_round=50,  # Add 50 new boosting rounds
+                    xgb_model=existing_model  # Start from existing model
+                )
+
+                learning_type = "ONLINE_UPDATE"
+            except Exception as e:
+                print(f"  [ONLINE] Update failed: {str(e)[:60]} - retraining from scratch")
+                model = None
+
         if model is None:
-            train_result = self._train_single(ticker)
-            if not train_result:
-                return None
-            model = self._load_model(ticker)
-            available_cols = [col for col in train_result.get("feature_cols", []) if col in dataset.columns]
+            # Fresh Training: Create new model
+            print(f"  [ONLINE] Training new model...")
 
-        latest_row = dataset.iloc[-1]
-        X_latest = latest_row[available_cols].values.reshape(1, -1)
-        prob_up = float(model.predict_proba(X_latest)[0][1])
-
-        return self._build_prediction_entry(ticker, prob_up, latest_row.to_dict(), "xgboost")
-
-    def _write_predictions(self, predictions: List[Dict]) -> None:
-        timestamp = datetime.utcnow().isoformat()
-        payload = {
-            "generated_at_utc": timestamp,
-            "tickers": predictions,
-        }
-        dated_path = self.predictions_dir / f"predictions_{timestamp.split('T')[0]}.json"
-        self.predictions_dir.mkdir(exist_ok=True)
-        dated_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-        latest_path = self.predictions_dir / "latest_predictions.json"
-        latest_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-
-        docs_predictions = self.docs_data_dir / "latest_predictions.json"
-        docs_predictions.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-
-        # Compatibility for consumers expecting repo-root predictions.json
-        compat_root = Path("predictions.json")
-        compat_entries, _ = self._as_prediction_entries(payload, fallback_timestamp=timestamp)
-        if compat_entries:
-            compat_root.write_text(
-                json.dumps(compat_entries, ensure_ascii=False, indent=2),
-                encoding="utf-8",
+            model = xgb.XGBClassifier(
+                n_estimators=100,
+                max_depth=5,
+                learning_rate=0.1,
+                subsample=0.8,
+                colsample_bytree=0.8,
+                random_state=42,
+                verbosity=0
             )
 
-        history_path = self.analytics_dir / "prediction_history.json"
-        existing: List[Dict] = []
-        if history_path.exists():
-            try:
-                existing = json.loads(history_path.read_text(encoding="utf-8"))
-            except Exception:
-                existing = []
+            model.fit(X_train, y_train)
+            model = model.get_booster()  # Convert to Booster for consistency
 
-        enriched_entries = []
-        for entry in predictions:
-            enriched_entry = dict(entry)
-            enriched_entry["timestamp"] = timestamp
-            enriched_entries.append(enriched_entry)
-
-        history_path.write_text(json.dumps(existing + enriched_entries, ensure_ascii=False, indent=2), encoding="utf-8")
-        docs_history = self.docs_data_dir / "prediction_history.json"
-        docs_history.write_text(json.dumps(existing + enriched_entries, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
-def _unwrap_dataset(arg: "pd.DataFrame | Tuple[pd.DataFrame, List[str]] | None") -> Tuple[Optional["pd.DataFrame"], Optional[List[str]]]:
-    if isinstance(arg, tuple) and len(arg) == 2:
-        ds, cols = arg
-        return ds, cols
-    return arg, None
-
-
-def train_ticker(
-    ticker: str,
-    dataset: Optional["pd.DataFrame | Tuple[pd.DataFrame, List[str]]"] = None,
-    feature_cols: Optional[List[str]] = None,
-    engine: Optional[BlowdartMLEngine] = None,
-) -> Optional[Dict]:
-    """Convenience wrapper to train a single ticker.
-
-    Accepts either a prepared feature dataframe (optionally paired with a feature
-    list) or will download/engineer features on the fly. This keeps harnesses
-    that call ``train_ticker(ticker, df)`` working while leveraging the
-    ``BlowdartMLEngine`` internals for persistence and metadata.
-    """
-
-    engine = engine or BlowdartMLEngine(tickers=[ticker])
-    dataset, inferred_cols = _unwrap_dataset(dataset)
-    feature_cols = feature_cols or inferred_cols
-    return engine._train_single(ticker, dataset=dataset, feature_cols=feature_cols)
-
-
-def predict_ticker(
-    ticker: str,
-    dataset: Optional["pd.DataFrame | Tuple[pd.DataFrame, List[str]]"] = None,
-    feature_cols: Optional[List[str]] = None,
-    engine: Optional[BlowdartMLEngine] = None,
-) -> Optional[Dict]:
-    """Predict a single ticker using optional pre-built features.
-
-    Mirrors the ``train_ticker`` wrapper to keep external harness calls working
-    with DataFrame-only or tuple-style inputs.
-    """
-
-    engine = engine or BlowdartMLEngine(tickers=[ticker])
-    dataset, inferred_cols = _unwrap_dataset(dataset)
-    feature_cols = feature_cols or inferred_cols
-    return engine._predict_single(ticker, dataset=dataset, feature_cols=feature_cols)
+            learning_type = "FRESH_TRAIN"
+        
+        # Evaluate
+        dtest = xgb.DMatrix(X_test, label=y_test)
+        predictions = model.predict(dtest)
+        pred_binary = (predictions > 0.5).astype(int)
+        accuracy = np.mean(pred_binary == y_test)
+        
+        # Calculate improvement
+        accuracy_improvement = accuracy - previous_accuracy
+        
+        # Save model
+        model_path = f"{MODELS_DIR}/{ticker}_model.json"
+        model.save_model(model_path)
+        print(f"  [ONLINE] Model saved: {model_path}")
+        
+        # Save scaler
+        scaler_path = f"{MODELS_DIR}/{ticker}_scaler.pkl"
+        with open(scaler_path, 'wb') as f:
+            pickle.dump(scaler, f)
+        
+        # Save model info
+        model_info = {
+            "ticker": ticker,
+            "regime": regime,
+            "regime_vol": float(vol),
+            "trend_strength": float(trend),
+            "weights": {"simple": w_simple, "aggressive": w_agg},
+            "accuracies": {
+                "simple": float(acc_s),
+                "aggressive": float(acc_a),
+                "hybrid": float(hybrid_acc)
+            },
+            "feature_names": feature_cols,
+            "feature_count": len(feature_cols),
+            "version": "2025-11-27-fixed",
+            "saved_at": datetime.now().isoformat()
+        }
+        
+        with open(ticker_dir / "metadata.json", "w") as f:
+            json.dump(metadata, f, indent=2)
+        
+        print(f"  [RESULT] {ticker} | Hybrid Acc: {hybrid_acc:.4f}")
+        
+        return {
+            "accuracy": float(hybrid_acc),
+            "regime": regime,
+            "simple_weight": w_simple,
+            "aggressive_weight": w_agg,
+            "learning_type": "HYBRID_FIXED"
+        }
+    
+    except Exception as e:
+        print(f"  [ERROR] {ticker}: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
 
 
-__all__ = ["BlowdartMLEngine", "TICKERS", "train_ticker", "predict_ticker"]
+def predict_ticker(ticker, features_df):
+    """改善版：実際の精度に基づいた信頼度計算"""
+    
+    try:
+        if features_df is None or features_df.empty:
+            return None
+        
+        ticker_dir = get_ticker_dir(ticker)
+        metadata_path = ticker_dir / "metadata.json"
+        
+        if not metadata_path.exists():
+            print(f"  [PREDICT] Model not found for {ticker}")
+            return None
+        
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+        
+        feature_cols = metadata['feature_names']
+        
+        # 最新データ準備
+        latest_row = features_df.iloc[-1]
+        current_close = float(latest_row.get('Close', 0))
+        
+        X_latest = features_df[feature_cols].iloc[-1:].copy()
+        X_latest = X_latest.replace([np.inf, -np.inf], np.nan).fillna(0)
+        
+        # ===== シンプルモデル予測 =====
+        scaler_s = pickle.load(open(ticker_dir / "scaler_simple.pkl", "rb"))
+        model_s = xgb.XGBClassifier()
+        model_s.load_model(str(ticker_dir / "model_simple.json"))
+        
+        X_s = scaler_s.transform(X_latest)
+        pred_s = float(model_s.predict_proba(X_s)[0][1])
+        
+        # ===== アグレッシブアンサンブル予測 =====
+        scaler_a = pickle.load(open(ticker_dir / "scaler_agg.pkl", "rb"))
+        X_a = scaler_a.transform(X_latest)
+        
+        pred_a_list = []
+        for fold in range(5):
+            m = xgb.XGBClassifier()
+            m.load_model(str(ticker_dir / f"model_agg_{fold}.json"))
+            pred = float(m.predict_proba(X_a)[0][1])
+            pred_a_list.append(pred)
+        
+        pred_a = np.mean(pred_a_list)
+        
+        # ===== ハイブリッド予測 =====
+        w_s = metadata['weights']['simple']
+        w_a = metadata['weights']['aggressive']
+        
+        pred_hybrid = pred_s * w_s + pred_a * w_a
+        
+        if pred_class == 1:
+            direction = "↑ Bullish"
+        else:
+            direction = "↓ Bearish"
+
+        # predicted_price を計算 (信頼度に基づく微調整)
+        predicted_price = current_close * (1 + (pred_proba - 0.5) * 0.02)
+
+        # Get model info for additional context
+        model_info = load_model_info(ticker)
+        model_accuracy = model_info.get('accuracy', 0) if model_info else 0
+        
+        return {
+            "ticker": ticker,
+            "current_price": float(current_close),
+            "predicted_price": float(predicted_price),
+            "direction": direction,
+            "confidence": float(final_confidence),
+            "market_regime": regime,
+            "model_accuracy": float(hybrid_accuracy),
+            "simple_pred": float(pred_s),
+            "aggressive_pred": float(pred_a),
+            "hybrid_pred": float(pred_hybrid),
+            "timestamp": pd.Timestamp.now().isoformat()
+        }
+    
+    except Exception as e:
+        print(f"  [PREDICT ERROR] {ticker}: {e}")
+        return None
