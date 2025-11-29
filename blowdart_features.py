@@ -46,7 +46,6 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
     Args:
         price_data: DataFrame with OHLCV data
         ticker: Stock symbol (for logging)
-        use_feature_reduction: If True, reduce 74 features → 20 features
 
     Returns:
         DataFrame: Features ready for ML, or None if failed
@@ -166,7 +165,7 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
             print(f"  [FEATURES] Error: {str(e)[:100]}")
             print("  [FEATURES] Continuing with basic features only")
 
-        print(f"  [FEATURES] Total features before reduction: {df.shape[1]}")
+        print(f"  [FEATURES] Total features: {df.shape[1]}")
 
         # ===== Data Cleaning =====
 
@@ -178,13 +177,6 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
         if len(df) < 30:
             print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
             return None
-
-        # ===== Feature Reduction: 74 → 20 features =====
-        if use_feature_reduction:
-            print(f"  [REDUCTION] Applying feature reduction for {ticker}")
-            from feature_reduction import select_top_features
-            df = select_top_features(df)
-            print(f"  [REDUCTION] Final features: {df.shape[1]}")
 
         print(f"  [FEATURES] Final dataset: {len(df)} rows × {df.shape[1]} columns")
         return df

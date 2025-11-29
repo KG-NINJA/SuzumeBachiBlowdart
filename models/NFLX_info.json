@@ -10,5 +10,8 @@
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/NFLX_model.json",
   "scaler_path": "models/NFLX_scaler.pkl",
-  "timestamp": "2025-11-25T09:22:01.732405"
+  "timestamp": "2025-11-24T23:20:14.034084",
+  "regime": "MODERATE",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
 }

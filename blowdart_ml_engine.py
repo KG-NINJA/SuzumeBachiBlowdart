@@ -93,23 +93,18 @@ def detect_market_regime_fixed(df, ticker, lookback=20):
 def get_ticker_specific_features(df, ticker):
     """ティッカー固有の特徴選択"""
     
-    numeric_cols = [c for c in df.columns 
-                    if c not in ['Close', 'Target', 'Date', 'Open', 'High', 'Low', 'Volume']
-                    and c not in LEAK_FEATURES
-                    and df[c].dtype in [np.float64, np.float32, np.int64, np.int32]]
-    
-    # ティッカー固有の選別：分散が高い特徴を優先
-    feature_importance = {}
-    for col in numeric_cols:
-        if col in df.columns:
-            # NaN/Inf を除去後に分散を計算
-            clean_col = df[col].replace([np.inf, -np.inf], np.nan).dropna()
-            if len(clean_col) > 0:
-                variance = clean_col.var()
-                feature_importance[col] = variance
-    
-    # 分散でソート（ノイズが少ない特徴を優先）
-    sorted_features = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)
+    if os.path.exists(model_path) and os.path.exists(scaler_path):
+        try:
+            booster = xgb.Booster()
+            booster.load_model(model_path)
+
+            with open(scaler_path, 'rb') as f:
+                scaler = pickle.load(f)
+
+            return booster, scaler
+        except Exception as e:
+            print(f"  [WARNING] Failed to load existing model: {str(e)[:40]}")
+            return None, None
     
     # 上位15-25特徴を選択（ティッカーごとに異なる）
     num_features = min(20, max(15, len(sorted_features)))
@@ -166,13 +161,41 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         # ===== レジーム検知 =====
         regime, vol, trend = detect_market_regime_fixed(df, ticker)
         
-        # ===== 重み決定 =====
-        if regime == 'TRENDING' and vol < 0.5:
-            w_simple, w_agg = 0.7, 0.3
-            desc = "STABLE_TREND"
-        elif regime == 'CHOPPY' and vol > 0.75:
-            w_simple, w_agg = 0.2, 0.8
-            desc = "VOLATILE"
+        # Remove NaN/Inf
+        X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
+        
+        # ===== Online Learning Logic =====
+        existing_model = None
+        existing_scaler = None
+        previous_accuracy = 0
+        previous_train_count = 0
+        
+        if use_online_learning:
+            existing_model, existing_scaler = load_existing_model(ticker)
+            model_info = load_model_info(ticker)
+
+            if model_info:
+                previous_accuracy = model_info.get('accuracy', 0)
+                previous_train_count = model_info.get('total_train_samples', 0)
+
+            # Ensure feature compatibility before attempting an online update
+            if existing_model is not None:
+                try:
+                    model_feature_count = existing_model.num_features()
+                    data_feature_count = X.shape[1]
+                    if model_feature_count != data_feature_count:
+                        print(f"  [ONLINE] Feature mismatch (model={model_feature_count}, data={data_feature_count}); retraining from scratch")
+                        existing_model = None
+                        existing_scaler = None
+                except Exception as e:
+                    print(f"  [ONLINE] Failed to inspect existing model: {str(e)[:40]}")
+                    existing_model = None
+                    existing_scaler = None
+        
+        # Use existing scaler or create new one
+        if existing_scaler is not None:
+            scaler = existing_scaler
+            print(f"  [ONLINE] Using existing scaler")
         else:
             w_simple, w_agg = 0.5, 0.5
             desc = "BALANCED"
@@ -224,19 +247,77 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         # ===== ハイブリッド精度 =====
         hybrid_acc = acc_s * w_simple + acc_a * w_agg
         
-        print(f"  [ACCURACY] Simple={acc_s:.4f} | Agg={acc_a:.4f} | Hybrid={hybrid_acc:.4f}")
+        # ===== Train or Update Model =====
+        model = None
+        learning_type = "FRESH_TRAIN"
+
+        if existing_model is not None and use_online_learning:
+            # Online Learning: Update existing model
+            print(f"  [ONLINE] Updating existing model...")
+
+            try:
+                # Convert to DMatrix
+                dtrain_new = xgb.DMatrix(X_train, label=y_train)
+
+                # Train on new data while keeping old knowledge
+                model = xgb.train(
+                    params={
+                        'objective': 'binary:logistic',
+                        'max_depth': 5,
+                        'learning_rate': 0.05,  # Lower LR for gradual updates
+                        'subsample': 0.8,
+                        'colsample_bytree': 0.8
+                    },
+                    dtrain=dtrain_new,
+                    num_boost_round=50,  # Add 50 new boosting rounds
+                    xgb_model=existing_model  # Start from existing model
+                )
+
+                learning_type = "ONLINE_UPDATE"
+            except Exception as e:
+                print(f"  [ONLINE] Update failed: {str(e)[:60]} - retraining from scratch")
+                model = None
+
+        if model is None:
+            # Fresh Training: Create new model
+            print(f"  [ONLINE] Training new model...")
+
+            model = xgb.XGBClassifier(
+                n_estimators=100,
+                max_depth=5,
+                learning_rate=0.1,
+                subsample=0.8,
+                colsample_bytree=0.8,
+                random_state=42,
+                verbosity=0
+            )
+
+            model.fit(X_train, y_train)
+            model = model.get_booster()  # Convert to Booster for consistency
+
+            learning_type = "FRESH_TRAIN"
         
-        # ===== 保存 =====
-        ticker_dir = get_ticker_dir(ticker)
+        # Evaluate
+        dtest = xgb.DMatrix(X_test, label=y_test)
+        predictions = model.predict(dtest)
+        pred_binary = (predictions > 0.5).astype(int)
+        accuracy = np.mean(pred_binary == y_test)
         
-        model_s.save_model(str(ticker_dir / "model_simple.json"))
-        for i, m in enumerate(models_a):
-            m.save_model(str(ticker_dir / f"model_agg_{i}.json"))
+        # Calculate improvement
+        accuracy_improvement = accuracy - previous_accuracy
         
-        pickle.dump(scaler_s, open(ticker_dir / "scaler_simple.pkl", "wb"))
-        pickle.dump(scaler_a, open(ticker_dir / "scaler_agg.pkl", "wb"))
+        # Save model
+        model_path = f"{MODELS_DIR}/{ticker}_model.json"
+        model.save_model(model_path)
+        print(f"  [ONLINE] Model saved: {model_path}")
         
-        metadata = {
+        # Save scaler
+        scaler_path = f"{MODELS_DIR}/{ticker}_scaler.pkl"
+        with open(scaler_path, 'wb') as f:
+            pickle.dump(scaler, f)
+        
+        # Save model info
+        model_info = {
             "ticker": ticker,
             "regime": regime,
             "regime_vol": float(vol),
@@ -326,34 +407,17 @@ def predict_ticker(ticker, features_df):
         
         pred_hybrid = pred_s * w_s + pred_a * w_a
         
-        # ===== 信頼度：実際の精度に基づく =====
-        hybrid_accuracy = metadata['accuracies']['hybrid']
-        
-        # 信頼度 = 実精度 × (予測確度 - 0.5)
-        # つまり、精度が低ければ信頼度も低くなる
-        base_confidence = abs(pred_hybrid - 0.5) * 2
-        adjusted_confidence = base_confidence * hybrid_accuracy
-        
-        # レジーム適応
-        regime = metadata['regime']
-        if regime == 'TRENDING':
-            boost = 1.1  # 温和に
-        elif regime == 'CHOPPY':
-            boost = 0.9
+        if pred_class == 1:
+            direction = "↑ Bullish"
         else:
-            boost = 1.0
-        
-        final_confidence = np.clip(adjusted_confidence * boost, 0, 1)
-        
-        # 結果
-        direction = "↑ Bullish" if pred_hybrid > 0.5 else "↓ Bearish"
-        
-        # 信頼度が低い場合は Uncertain
-        if final_confidence < 0.4:
-            direction = "❓ Uncertain"
-        
-        price_change = final_confidence * 0.05 * (1 if pred_hybrid > 0.5 else -1)
-        predicted_price = current_close * (1 + price_change)
+            direction = "↓ Bearish"
+
+        # predicted_price を計算 (信頼度に基づく微調整)
+        predicted_price = current_close * (1 + (pred_proba - 0.5) * 0.02)
+
+        # Get model info for additional context
+        model_info = load_model_info(ticker)
+        model_accuracy = model_info.get('accuracy', 0) if model_info else 0
         
         return {
             "ticker": ticker,

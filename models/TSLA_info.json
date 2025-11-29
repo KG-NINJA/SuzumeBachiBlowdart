@@ -10,5 +10,8 @@
   "learning_type": "ONLINE_UPDATE",
   "model_path": "models/TSLA_model.json",
   "scaler_path": "models/TSLA_scaler.pkl",
-  "timestamp": "2025-11-25T09:22:01.561701"
+  "timestamp": "2025-11-24T23:20:13.927191",
+  "regime": "HIGH_ACCURACY",
+  "version": "2025-11-28-flat-structure",
+  "model_type": "XGBoost_Hybrid"
 }
