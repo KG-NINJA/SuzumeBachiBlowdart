@@ -224,6 +224,8 @@ class BlowdartMLEngine:
                 continue
 
     def _model_path(self, ticker: str) -> Path:
+        """Return the on-disk location for a ticker's trained XGBoost model."""
+
         return self.model_dir / f"{ticker}_xgb.json"
 
     def _model_meta_path(self, ticker: str) -> Path:
