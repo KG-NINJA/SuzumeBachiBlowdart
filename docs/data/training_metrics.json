@@ -2,56 +2,6 @@
   {
     "ticker": "NVDA",
     "accuracy": 0.4166666666666667,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "AAPL",
-    "accuracy": 0.6388888888888888,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "MSFT",
-    "accuracy": 0.5277777777777778,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "GOOGL",
-    "accuracy": 0.6666666666666666,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "AMZN",
-    "accuracy": 0.5277777777777778,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "META",
-    "accuracy": 0.5277777777777778,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "TSLA",
-    "accuracy": 0.4166666666666667,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "AMD",
-    "accuracy": 0.5555555555555556,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "NFLX",
-    "accuracy": 0.6388888888888888,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "QQQ",
-    "accuracy": 0.5555555555555556,
-    "status": "SUCCESS"
-  },
-  {
-    "ticker": "NVDA",
-    "accuracy": 0.4166666666666667,
     "feature_cols": [
       "VOLUME",
       "RETURN_1D",
