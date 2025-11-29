@@ -77,6 +77,52 @@ def _load_cache(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 
+def _load_legacy_cache(ticker: str) -> Optional[pd.DataFrame]:
+    """Load legacy CSV caches shipped in ``data/cache`` as an offline fallback.
+
+    The repository includes historical CSVs with ticker-suffixed columns (e.g.,
+    ``CLOSE_AAPL``). This helper normalizes them into the unified schema to
+    allow pipelines to execute without live network/API access.
+    """
+
+    legacy_path = DATA_CACHE_DIR / f"{ticker.upper()}.csv"
+    if not legacy_path.exists():
+        return None
+
+    try:
+        df = pd.read_csv(legacy_path)
+        if df.empty:
+            return None
+
+        # Normalize column names to uppercase and strip ticker suffixes.
+        df = df.rename(columns={col: str(col).upper() for col in df.columns})
+        suffix = f"_{ticker.upper()}"
+        normalized = {}
+        for col in df.columns:
+            base = col
+            if col.endswith(suffix):
+                base = col[: -len(suffix)]
+            if base == "DATE_":
+                base = "DATE"
+            normalized[col] = base
+        df.rename(columns=normalized, inplace=True)
+
+        # Prefer adjusted close when close is missing.
+        if "ADJ CLOSE" in df.columns and "CLOSE" not in df.columns:
+            df["CLOSE"] = df["ADJ CLOSE"]
+
+        required = ["DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME"]
+        missing = [col for col in required if col not in df.columns]
+        if missing:
+            raise ValueError(f"legacy cache missing columns: {missing}")
+
+        df = df[required]
+        return _validate_df(df)
+    except Exception as exc:  # pragma: no cover - legacy fallback best-effort
+        print(f"[cache] Failed to load legacy cache for {ticker}: {exc}")
+        return None
+
+
 def _save_cache(ticker: str, df: pd.DataFrame) -> None:
     try:
         path = _cache_path(ticker)
@@ -265,6 +311,11 @@ def safe_price_download(
     if cached is not None:
         print(f"[cache] hit for {ticker}")
         return cached
+
+    legacy_cached = _load_legacy_cache(ticker)
+    if legacy_cached is not None:
+        print(f"[cache] legacy hit for {ticker}")
+        return legacy_cached
 
     # Prefer Tiingo first because it is the most reliable with a free tier,
     # then AlphaVantage, then Polygon, and finally yfinance as a network-only fallback.
