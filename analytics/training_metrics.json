@@ -48,5 +48,1460 @@
     "ticker": "QQQ",
     "accuracy": 0.5555555555555556,
     "status": "SUCCESS"
+  },
+  {
+    "ticker": "NVDA",
+    "accuracy": 0.4166666666666667,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "TREND_SLOPE_10",
+      "TREND_SLOPE_20",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 3.3366923332214355
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 3.0779898166656494
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 2.898892879486084
+      },
+      {
+        "feature": "MACD",
+        "importance": 2.7256526947021484
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.628230094909668
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.4528205394744873
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 2.3570234775543213
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 2.317596435546875
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 2.301067352294922
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 2.0808205604553223
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 2.074575424194336
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 2.023529529571533
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 2.020066738128662
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 2.0121867656707764
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 1.8537914752960205
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 1.8533233404159546
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 1.8381091356277466
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 1.8298640251159668
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 1.8282667398452759
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 1.7982107400894165
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 1.7922263145446777
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 1.6520711183547974
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 1.5051888227462769
+      }
+    ],
+    "train_size": 144,
+    "test_size": 36,
+    "scale_pos_weight": 0.7777777777777778,
+    "best_iteration": 0,
+    "latest_date": "2025-11-21T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "AAPL",
+    "accuracy": 0.6388888888888888,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "TREND_SLOPE_10",
+      "TREND_SLOPE_20",
+      "TREND_SLOPE_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 2.730198860168457
+      },
+      {
+        "feature": "MACD",
+        "importance": 2.2834606170654297
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 2.2251522541046143
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.121703624725342
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 2.121159553527832
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 1.9868992567062378
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 1.9228874444961548
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 1.7485677003860474
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 1.7404059171676636
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 1.731303334236145
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 1.6492618322372437
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 1.644291877746582
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 1.6320931911468506
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 1.6311352252960205
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 1.586478590965271
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 1.491180658340454
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 1.4898827075958252
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 1.3821295499801636
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 1.3775074481964111
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 1.360770344734192
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 1.351691484451294
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 1.316574215888977
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 1.1501775979995728
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 0.8847638368606567
+      }
+    ],
+    "train_size": 144,
+    "test_size": 36,
+    "scale_pos_weight": 0.8461538461538461,
+    "best_iteration": 29,
+    "latest_date": "2025-11-21T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "MSFT",
+    "accuracy": 0.5277777777777778,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "TREND_SLOPE_10",
+      "TREND_SLOPE_20",
+      "TREND_SLOPE_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.368525266647339
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 2.315840244293213
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 2.242450475692749
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.192312717437744
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 2.1841461658477783
+      },
+      {
+        "feature": "MACD",
+        "importance": 2.140681505203247
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 2.0343353748321533
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 1.9976656436920166
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 1.9438717365264893
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 1.8828140497207642
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 1.856483817100525
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 1.854021668434143
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 1.8374725580215454
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 1.791345477104187
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 1.7852542400360107
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 1.7147972583770752
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 1.6329394578933716
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 1.5562971830368042
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 1.3961451053619385
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 1.3881431818008423
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 1.2703118324279785
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 1.2628291845321655
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 1.2211462259292603
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 0.9499931335449219
+      }
+    ],
+    "train_size": 144,
+    "test_size": 36,
+    "scale_pos_weight": 0.7349397590361446,
+    "best_iteration": 20,
+    "latest_date": "2025-11-21T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "GOOGL",
+    "accuracy": 0.6666666666666666,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "TREND_SLOPE_10",
+      "TREND_SLOPE_20",
+      "TREND_SLOPE_50",
+      "MA_GAP_5_20",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "RETURN_21D",
+        "importance": 1.6740221977233887
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 1.6455683708190918
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 1.6347070932388306
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 1.5593585968017578
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 1.5555627346038818
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 1.5497703552246094
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 1.5492675304412842
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 1.5175036191940308
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 1.5171481370925903
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 1.469192385673523
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 1.4494549036026
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 1.4466699361801147
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 1.436865210533142
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 1.4132498502731323
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 1.4023975133895874
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 1.3918575048446655
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 1.1487767696380615
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 1.1439696550369263
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 1.1319016218185425
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 1.1216423511505127
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 1.0359410047531128
+      },
+      {
+        "feature": "MACD",
+        "importance": 0.998771607875824
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 0.9962698221206665
+      }
+    ],
+    "train_size": 144,
+    "test_size": 36,
+    "scale_pos_weight": 0.8227848101265823,
+    "best_iteration": 92,
+    "latest_date": "2025-11-21T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "AMZN",
+    "accuracy": 0.4931506849315068,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "HIGH_LOW_SPREAD",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "RANGE_POS_5",
+      "TREND_SLOPE_10",
+      "RANGE_POS_10",
+      "TREND_SLOPE_20",
+      "RANGE_POS_20",
+      "TREND_SLOPE_50",
+      "RANGE_POS_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 4.554667949676514
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 4.0704240798950195
+      },
+      {
+        "feature": "RANGE_POS_10",
+        "importance": 3.988802194595337
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 3.909067153930664
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 3.7352123260498047
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 3.724006175994873
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 3.637681722640991
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 3.600782632827759
+      },
+      {
+        "feature": "RANGE_POS_50",
+        "importance": 3.463237762451172
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 3.4507362842559814
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 3.372549533843994
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 3.3717262744903564
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 3.306767702102661
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 3.238112449645996
+      },
+      {
+        "feature": "MACD",
+        "importance": 3.2313244342803955
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 3.1706812381744385
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 3.123093605041504
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 3.0941288471221924
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 3.0391430854797363
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 3.036773204803467
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 2.978073835372925
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.9406626224517822
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 2.903979778289795
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.878133535385132
+      },
+      {
+        "feature": "RANGE_POS_5",
+        "importance": 2.8597185611724854
+      },
+      {
+        "feature": "RANGE_POS_20",
+        "importance": 2.7126221656799316
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 2.583041191101074
+      },
+      {
+        "feature": "HIGH_LOW_SPREAD",
+        "importance": 2.5688657760620117
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.007542848587036
+      }
+    ],
+    "train_size": 292,
+    "test_size": 73,
+    "scale_pos_weight": 1.070921985815603,
+    "best_iteration": 0,
+    "latest_date": "2025-11-29T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "META",
+    "accuracy": 0.589041095890411,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "HIGH_LOW_SPREAD",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "RANGE_POS_5",
+      "TREND_SLOPE_10",
+      "RANGE_POS_10",
+      "TREND_SLOPE_20",
+      "RANGE_POS_20",
+      "TREND_SLOPE_50",
+      "RANGE_POS_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "RETURN_30D",
+        "importance": 4.696040153503418
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 4.527945041656494
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 4.087803363800049
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 3.815229654312134
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 3.7621326446533203
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 3.706695079803467
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 3.6046769618988037
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 3.5012047290802
+      },
+      {
+        "feature": "RANGE_POS_20",
+        "importance": 3.48059344291687
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 3.474609375
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 3.404109239578247
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 3.3983314037323
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 3.3828155994415283
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 3.355299949645996
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 3.0596554279327393
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 2.9159116744995117
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 2.893317222595215
+      },
+      {
+        "feature": "RANGE_POS_5",
+        "importance": 2.8874619007110596
+      },
+      {
+        "feature": "HIGH_LOW_SPREAD",
+        "importance": 2.7911221981048584
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 2.781057119369507
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 2.6811232566833496
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 2.656907081604004
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.6492233276367188
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 2.427760601043701
+      },
+      {
+        "feature": "RANGE_POS_50",
+        "importance": 2.4135501384735107
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.246582269668579
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.1658782958984375
+      },
+      {
+        "feature": "MACD",
+        "importance": 2.161886215209961
+      },
+      {
+        "feature": "RANGE_POS_10",
+        "importance": 1.8969568014144897
+      }
+    ],
+    "train_size": 292,
+    "test_size": 73,
+    "scale_pos_weight": 0.9466666666666667,
+    "best_iteration": 0,
+    "latest_date": "2025-11-29T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "TSLA",
+    "accuracy": 0.4166666666666667,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "TREND_SLOPE_10",
+      "TREND_SLOPE_20",
+      "TREND_SLOPE_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "RETURN_14D",
+        "importance": 3.2460265159606934
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 3.1106717586517334
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 2.945765972137451
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 2.788522481918335
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 2.6520700454711914
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 2.3436872959136963
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 2.2072365283966064
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 2.1750118732452393
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.135213851928711
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.119755506515503
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 2.0958364009857178
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.0897209644317627
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 1.8650599718093872
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 1.853380799293518
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 1.7814452648162842
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 1.752404808998108
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 1.6933143138885498
+      },
+      {
+        "feature": "MACD",
+        "importance": 1.6729949712753296
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 1.601059079170227
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 1.5977455377578735
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 1.5172417163848877
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 1.4765772819519043
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 1.406059741973877
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 1.326483964920044
+      }
+    ],
+    "train_size": 144,
+    "test_size": 36,
+    "scale_pos_weight": 0.8,
+    "best_iteration": 0,
+    "latest_date": "2025-11-21T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "AMD",
+    "accuracy": 0.5068493150684932,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "HIGH_LOW_SPREAD",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "RANGE_POS_5",
+      "TREND_SLOPE_10",
+      "RANGE_POS_10",
+      "TREND_SLOPE_20",
+      "RANGE_POS_20",
+      "TREND_SLOPE_50",
+      "RANGE_POS_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "RETURN_1D",
+        "importance": 3.6646080017089844
+      },
+      {
+        "feature": "RANGE_POS_50",
+        "importance": 3.5226731300354004
+      },
+      {
+        "feature": "MACD",
+        "importance": 3.443004846572876
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 3.40933895111084
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 3.3510875701904297
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 3.263075590133667
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 3.225222110748291
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 3.1461005210876465
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 3.143730401992798
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 3.132455587387085
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 3.1103549003601074
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 2.9956798553466797
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 2.9574525356292725
+      },
+      {
+        "feature": "RANGE_POS_5",
+        "importance": 2.9231841564178467
+      },
+      {
+        "feature": "HIGH_LOW_SPREAD",
+        "importance": 2.9064056873321533
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.861405372619629
+      },
+      {
+        "feature": "RANGE_POS_20",
+        "importance": 2.8154823780059814
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 2.7910876274108887
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.7867143154144287
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 2.7256829738616943
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 2.6791365146636963
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 2.656567335128784
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 2.650250196456909
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 2.633565902709961
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.5356080532073975
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 2.434781789779663
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.434481382369995
+      },
+      {
+        "feature": "RANGE_POS_10",
+        "importance": 2.3450045585632324
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 2.1381418704986572
+      }
+    ],
+    "train_size": 292,
+    "test_size": 73,
+    "scale_pos_weight": 0.9337748344370861,
+    "best_iteration": 8,
+    "latest_date": "2025-11-29T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "NFLX",
+    "accuracy": 0.5342465753424658,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "HIGH_LOW_SPREAD",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "RANGE_POS_5",
+      "TREND_SLOPE_10",
+      "RANGE_POS_10",
+      "TREND_SLOPE_20",
+      "RANGE_POS_20",
+      "TREND_SLOPE_50",
+      "RANGE_POS_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 3.91438889503479
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 3.3955366611480713
+      },
+      {
+        "feature": "RANGE_POS_10",
+        "importance": 3.2902281284332275
+      },
+      {
+        "feature": "MACD",
+        "importance": 3.1735012531280518
+      },
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 3.1249401569366455
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 3.061305046081543
+      },
+      {
+        "feature": "HIGH_LOW_SPREAD",
+        "importance": 2.9961555004119873
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 2.9514107704162598
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 2.915261745452881
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 2.9150121212005615
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.9133667945861816
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 2.9028406143188477
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.8999264240264893
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.8312480449676514
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 2.7957334518432617
+      },
+      {
+        "feature": "RANGE_POS_5",
+        "importance": 2.789886951446533
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 2.7305617332458496
+      },
+      {
+        "feature": "RANGE_POS_50",
+        "importance": 2.7229177951812744
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 2.68644642829895
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 2.6755263805389404
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 2.663177013397217
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 2.6319985389709473
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 2.6159744262695312
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 2.4808151721954346
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 2.4294521808624268
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 2.421217203140259
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.1327006816864014
+      },
+      {
+        "feature": "RANGE_POS_20",
+        "importance": 1.881374716758728
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 1.8426425457000732
+      }
+    ],
+    "train_size": 292,
+    "test_size": 73,
+    "scale_pos_weight": 1.056338028169014,
+    "best_iteration": 33,
+    "latest_date": "2025-11-29T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
+  },
+  {
+    "ticker": "QQQ",
+    "accuracy": 0.4931506849315068,
+    "feature_cols": [
+      "VOLUME",
+      "RETURN_1D",
+      "RETURN_3D",
+      "RETURN_7D",
+      "RETURN_14D",
+      "RETURN_21D",
+      "RETURN_30D",
+      "MOMENTUM_ACCEL",
+      "HIGH_LOW_SPREAD",
+      "INTRADAY_RANGE",
+      "MACD",
+      "MACD_SIGNAL",
+      "MACD_HIST",
+      "TREND_SLOPE_5",
+      "RANGE_POS_5",
+      "TREND_SLOPE_10",
+      "RANGE_POS_10",
+      "TREND_SLOPE_20",
+      "RANGE_POS_20",
+      "TREND_SLOPE_50",
+      "RANGE_POS_50",
+      "MA_GAP_5_20",
+      "MA_GAP_20_50",
+      "VOLUME_CHANGE",
+      "LAG_RETURN_1",
+      "LAG_RETURN_2",
+      "LAG_RETURN_3",
+      "LAG_RETURN_5",
+      "DAY_OF_WEEK"
+    ],
+    "feature_importance": [
+      {
+        "feature": "MA_GAP_5_20",
+        "importance": 4.400589466094971
+      },
+      {
+        "feature": "RANGE_POS_20",
+        "importance": 4.230729579925537
+      },
+      {
+        "feature": "TREND_SLOPE_5",
+        "importance": 3.9730234146118164
+      },
+      {
+        "feature": "RETURN_1D",
+        "importance": 3.7907845973968506
+      },
+      {
+        "feature": "MACD",
+        "importance": 3.7855064868927
+      },
+      {
+        "feature": "RANGE_POS_5",
+        "importance": 3.6529760360717773
+      },
+      {
+        "feature": "TREND_SLOPE_10",
+        "importance": 3.6443707942962646
+      },
+      {
+        "feature": "RETURN_14D",
+        "importance": 3.4063563346862793
+      },
+      {
+        "feature": "RETURN_7D",
+        "importance": 3.2719645500183105
+      },
+      {
+        "feature": "MA_GAP_20_50",
+        "importance": 3.225499153137207
+      },
+      {
+        "feature": "RANGE_POS_10",
+        "importance": 3.14553165435791
+      },
+      {
+        "feature": "HIGH_LOW_SPREAD",
+        "importance": 3.119804620742798
+      },
+      {
+        "feature": "LAG_RETURN_1",
+        "importance": 3.105451822280884
+      },
+      {
+        "feature": "TREND_SLOPE_50",
+        "importance": 3.051046848297119
+      },
+      {
+        "feature": "RETURN_30D",
+        "importance": 3.0335609912872314
+      },
+      {
+        "feature": "MACD_HIST",
+        "importance": 3.005187749862671
+      },
+      {
+        "feature": "VOLUME_CHANGE",
+        "importance": 2.944706678390503
+      },
+      {
+        "feature": "TREND_SLOPE_20",
+        "importance": 2.9137775897979736
+      },
+      {
+        "feature": "INTRADAY_RANGE",
+        "importance": 2.889167308807373
+      },
+      {
+        "feature": "MACD_SIGNAL",
+        "importance": 2.8541834354400635
+      },
+      {
+        "feature": "MOMENTUM_ACCEL",
+        "importance": 2.7984139919281006
+      },
+      {
+        "feature": "LAG_RETURN_5",
+        "importance": 2.646906852722168
+      },
+      {
+        "feature": "VOLUME",
+        "importance": 2.5585389137268066
+      },
+      {
+        "feature": "LAG_RETURN_3",
+        "importance": 2.5493507385253906
+      },
+      {
+        "feature": "DAY_OF_WEEK",
+        "importance": 2.4696991443634033
+      },
+      {
+        "feature": "RANGE_POS_50",
+        "importance": 2.319164752960205
+      },
+      {
+        "feature": "RETURN_21D",
+        "importance": 2.318025588989258
+      },
+      {
+        "feature": "RETURN_3D",
+        "importance": 2.1281495094299316
+      },
+      {
+        "feature": "LAG_RETURN_2",
+        "importance": 2.0823776721954346
+      }
+    ],
+    "train_size": 292,
+    "test_size": 73,
+    "scale_pos_weight": 0.8717948717948718,
+    "best_iteration": 2,
+    "latest_date": "2025-11-29T00:00:00",
+    "timestamp": "2025-11-29T03:11:05.483212"
   }
 ]

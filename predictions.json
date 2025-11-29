@@ -9,9 +9,9 @@
     "predicted_change_pct": -0.9743105141622355,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "SKIP"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "AAPL",
@@ -23,9 +23,9 @@
     "predicted_change_pct": 1.9680714495305063,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "EXECUTE"
+    "signal_strength": 0.3208,
+    "action": "EXECUTE",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "MSFT",
@@ -37,9 +37,9 @@
     "predicted_change_pct": -1.3188967362399273,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "HOLD"
+    "signal_strength": 0.3208,
+    "action": "HOLD",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "GOOGL",
@@ -51,37 +51,37 @@
     "predicted_change_pct": 3.5273764119848616,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "SKIP"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "AMZN",
-    "prob_up": 0.49073898792266846,
-    "prob_down": 0.5092610120773315,
-    "predicted_direction": "DOWN",
-    "direction": "DOWN",
-    "confidence": 0.5092610120773315,
-    "predicted_change_pct": -0.8331044487340789,
+    "prob_up": 0.5185345411300659,
+    "prob_down": 0.4814654588699341,
+    "predicted_direction": "UP",
+    "direction": "UP",
+    "confidence": 0.5185345411300659,
+    "predicted_change_pct": -0.4089343173330984,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "SKIP"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "META",
-    "prob_up": 0.48027339577674866,
-    "prob_down": 0.5197266042232513,
-    "predicted_direction": "DOWN",
-    "direction": "DOWN",
-    "confidence": 0.5197266042232513,
-    "predicted_change_pct": 2.1353929467998745,
+    "prob_up": 0.5120425224304199,
+    "prob_down": 0.4879574775695801,
+    "predicted_direction": "UP",
+    "direction": "UP",
+    "confidence": 0.5120425224304199,
+    "predicted_change_pct": -0.3274610020356561,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "SKIP"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "TSLA",
@@ -93,50 +93,50 @@
     "predicted_change_pct": -1.0474950113494086,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "SKIP"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "AMD",
-    "prob_up": 0.6878539323806763,
-    "prob_down": 0.31214606761932373,
+    "prob_up": 0.6423413753509521,
+    "prob_down": 0.35765862464904785,
     "predicted_direction": "UP",
     "direction": "UP",
-    "confidence": 0.6878539323806763,
-    "predicted_change_pct": 0.961653078751934,
+    "confidence": 0.6423413753509521,
+    "predicted_change_pct": -1.2619261077954524,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "EXECUTE"
+    "signal_strength": 0.3208,
+    "action": "EXECUTE",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "NFLX",
-    "prob_up": 0.3679690957069397,
-    "prob_down": 0.6320309042930603,
+    "prob_up": 0.4179738163948059,
+    "prob_down": 0.5820261836051941,
     "predicted_direction": "DOWN",
     "direction": "DOWN",
-    "confidence": 0.6320309042930603,
-    "predicted_change_pct": 2.608489565730032,
+    "confidence": 0.5820261836051941,
+    "predicted_change_pct": 4.3195318225339285,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "EXECUTE"
+    "signal_strength": 0.3208,
+    "action": "HOLD",
+    "timestamp": "2025-11-29T03:10:57.513265"
   },
   {
     "ticker": "QQQ",
-    "prob_up": 0.46532493829727173,
-    "prob_down": 0.5346750617027283,
+    "prob_up": 0.49017226696014404,
+    "prob_down": 0.509827733039856,
     "predicted_direction": "DOWN",
     "direction": "DOWN",
-    "confidence": 0.5346750617027283,
-    "predicted_change_pct": 1.2289843689039737,
+    "confidence": 0.509827733039856,
+    "predicted_change_pct": 3.686472393128226,
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
-    "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405",
-    "action": "HOLD"
+    "signal_strength": 0.3208,
+    "action": "SKIP",
+    "timestamp": "2025-11-29T03:10:57.513265"
   }
 ]

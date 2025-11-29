@@ -4,3 +4,6 @@ analytics/*.png
 analytics/*.jpg
 __pycache__/
 *.pyc
+
+# Local caches
+data/cache/
