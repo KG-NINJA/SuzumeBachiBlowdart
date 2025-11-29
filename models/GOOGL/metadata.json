@@ -1,0 +1,35 @@
+{
+  "ticker": "GOOGL",
+  "regime": "CHOPPY",
+  "regime_vol": 1.0,
+  "trend_strength": 0.05263157617728546,
+  "weights": {
+    "simple": 0.2,
+    "aggressive": 0.8
+  },
+  "accuracies": {
+    "simple": 0.9920634920634921,
+    "aggressive": 0.9968253968253968,
+    "hybrid": 0.995873015873016
+  },
+  "feature_names": [
+    "OBV",
+    "PVT",
+    "VROC",
+    "EMA26",
+    "RSI7",
+    "Momentum_10",
+    "Momentum",
+    "Minus_DI",
+    "Momentum_5",
+    "MACD",
+    "ATR",
+    "Volume_Ratio",
+    "Distance_to_Support",
+    "EMA_Distance_10_50",
+    "ATR_Percent"
+  ],
+  "feature_count": 15,
+  "version": "2025-11-27-fixed",
+  "saved_at": "2025-11-28T23:19:41.428053"
+}

@@ -1,0 +1,391 @@
+======================================================================
+宗叡最終版による全ティッカー再訓練開始
+======================================================================
+
+>>> NVDA 訓練中...
+
+============================================================
+Fetching NVDA...
+============================================================
+[2025-11-28 01:02:32] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NVDA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NVDA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] NVDA - 改善版モード起動
+  [FEATURES] NVDA: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] NVDA: CHOPPY          | Vol=1.00 | Trend=0.16
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9762 | Agg=0.9857 | Hybrid=0.9838
+  [RESULT] NVDA | Hybrid Acc: 0.9838
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AAPL 訓練中...
+
+============================================================
+Fetching AAPL...
+============================================================
+[2025-11-28 01:02:33] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AAPL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AAPL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] AAPL - 改善版モード起動
+  [FEATURES] AAPL: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AAPL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] AAPL | Hybrid Acc: 0.9905
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> MSFT 訓練中...
+
+============================================================
+Fetching MSFT...
+============================================================
+[2025-11-28 01:02:33] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for MSFT...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for MSFT
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] MSFT - 改善版モード起動
+  [FEATURES] MSFT: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] MSFT: CHOPPY          | Vol=1.00 | Trend=0.47
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9873 | Hybrid=0.9867
+  [RESULT] MSFT | Hybrid Acc: 0.9867
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> GOOGL 訓練中...
+
+============================================================
+Fetching GOOGL...
+============================================================
+[2025-11-28 01:02:34] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for GOOGL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for GOOGL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] GOOGL - 改善版モード起動
+  [FEATURES] GOOGL: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] GOOGL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9921 | Agg=0.9968 | Hybrid=0.9959
+  [RESULT] GOOGL | Hybrid Acc: 0.9959
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AMZN 訓練中...
+
+============================================================
+Fetching AMZN...
+============================================================
+[2025-11-28 01:02:34] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMZN...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMZN
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] AMZN - 改善版モード起動
+  [FEATURES] AMZN: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AMZN: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=1.0000 | Agg=1.0000 | Hybrid=1.0000
+  [RESULT] AMZN | Hybrid Acc: 1.0000
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> META 訓練中...
+
+============================================================
+Fetching META...
+============================================================
+[2025-11-28 01:02:34] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for META...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for META
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] META - 改善版モード起動
+  [FEATURES] META: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] META: CHOPPY          | Vol=1.00 | Trend=0.26
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=1.0000 | Agg=1.0000 | Hybrid=1.0000
+  [RESULT] META | Hybrid Acc: 1.0000
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> TSLA 訓練中...
+
+============================================================
+Fetching TSLA...
+============================================================
+[2025-11-28 01:02:35] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for TSLA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for TSLA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] TSLA - 改善版モード起動
+  [FEATURES] TSLA: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] TSLA: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] TSLA | Hybrid Acc: 0.9905
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> AMD 訓練中...
+
+============================================================
+Fetching AMD...
+============================================================
+[2025-11-28 01:02:35] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMD...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMD
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] AMD - 改善版モード起動
+  [FEATURES] AMD: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] AMD: CHOPPY          | Vol=1.00 | Trend=0.37
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9762 | Agg=0.9841 | Hybrid=0.9825
+  [RESULT] AMD | Hybrid Acc: 0.9825
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> NFLX 訓練中...
+
+============================================================
+Fetching NFLX...
+============================================================
+[2025-11-28 01:02:35] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NFLX...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NFLX
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] NFLX - 改善版モード起動
+  [FEATURES] NFLX: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] NFLX: CHOPPY          | Vol=1.00 | Trend=0.16
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9841 | Agg=0.9921 | Hybrid=0.9905
+  [RESULT] NFLX | Hybrid Acc: 0.9905
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+>>> QQQ 訓練中...
+
+============================================================
+Fetching QQQ...
+============================================================
+[2025-11-28 01:02:36] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for QQQ...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for QQQ
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+
+  [TRAIN] QQQ - 改善版モード起動
+  [FEATURES] QQQ: 15 selected
+             Keep: 12 | Other: 3
+  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+  [WEIGHTS] Simple=20% | Aggressive=80% (VOLATILE)
+  [ACCURACY] Simple=0.9683 | Agg=0.9873 | Hybrid=0.9835
+  [RESULT] QQQ | Hybrid Acc: 0.9835
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
+
+======================================================================
+宗叡最終版 訓練結果
+======================================================================
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY         0
+  AAPL SUCCESS CHOPPY         0
+  MSFT SUCCESS CHOPPY         0
+ GOOGL SUCCESS CHOPPY         0
+  AMZN SUCCESS CHOPPY         0
+  META SUCCESS CHOPPY         0
+  TSLA SUCCESS CHOPPY         0
+   AMD SUCCESS CHOPPY         0
+  NFLX SUCCESS CHOPPY         0
+   QQQ SUCCESS CHOPPY         0
+
+結果保存完了 → retraining_results.csv / json
+次は本物の性能が見える。

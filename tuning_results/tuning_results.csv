@@ -1,0 +1,11 @@
+ticker,best_params,best_cv_score,train_accuracy,test_accuracy,improvement
+NVDA,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+AAPL,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+MSFT,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+GOOGL,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+AMZN,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+META,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+TSLA,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+AMD,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+NFLX,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4
+QQQ,"{'colsample_bytree': 0.8, 'learning_rate': 0.01, 'max_depth': 3, 'subsample': 0.8}",1.0,1.0,1.0,0.4

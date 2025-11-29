@@ -1,0 +1,62 @@
+[
+  {
+    "ticker": "NVDA",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "AAPL",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "MSFT",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "GOOGL",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "AMZN",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "META",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "TSLA",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "AMD",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "NFLX",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  },
+  {
+    "ticker": "QQQ",
+    "status": "SUCCESS",
+    "regime": "CHOPPY",
+    "accuracy": 0
+  }
+]

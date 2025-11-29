@@ -39,7 +39,7 @@ def calculate_bollinger_bands(prices, period=20, num_std=2):
     return upper, sma, lower
 
 
-def build_feature_set(price_data, ticker):
+def build_feature_set(price_data, ticker, use_feature_reduction=True):
     """
     Build comprehensive feature set from price data
 

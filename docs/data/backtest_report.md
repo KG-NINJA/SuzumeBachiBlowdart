@@ -1,25 +1,25 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-11-25T01:29:05.724980
+**Generated:** 2025-11-29T01:27:22.783576
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 8 🟢 |
-| **Skip** | 2 🔴 |
-| **Avg Expected Move** | 1.48% |
-| **Avg Confidence** | 0.1858 |
-| **Avg Model Accuracy** | 0.5687 |
+| **Execute** | 4 🟢 |
+| **Skip** | 1 🔴 |
+| **Avg Expected Move** | 2.74% |
+| **Avg Confidence** | 0.5490 |
+| **Avg Model Accuracy** | 0.9878 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
-| 🟢 **BEST** | 0 | 10.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 2 | 20.0% | Above average on both metrics |
-| 🟠 **FAIR** | 7 | 70.0% | Decent on at least one metric |
+| 🟢 **BEST** | 5 | 100.0% | High accuracy (>65%) + High confidence (>15%) |
+| 🟡 **GOOD** | 0 | 0.0% | Above average on both metrics |
+| 🟠 **FAIR** | 0 | 0.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
 ## 🏆 BEST Trades (Execute Priority)
@@ -28,33 +28,36 @@
 
 | Ticker | Accuracy | Confidence | Expected Move | Phase 2 Action |
 |--------|----------|-----------|-------|-------|
-| TSLA | 68.75% | 18.17% | 1.49% | SELL |
+| GOOGL | 100.00% | 62.69% | 3.13% | SELL |
+| AMZN | 100.00% | 40.79% | 2.04% | SELL |
+| META | 100.00% | 50.99% | 2.55% | SELL |
+| NFLX | 98.95% | 47.79% | 2.39% | SELL |
+| TSLA | 98.67% | 54.95% | 2.75% | SELL |
 
 
 ## 📈 GOOD Trades (Consider)
 
 **These trades are above average:**
 
-- MSFT - Acc: 62.50%, Conf: 11.43%
-- AMZN - Acc: 56.25%, Conf: 11.57%
+No good-quality trades.
 
 
 ## 🔍 Analysis by Accuracy
 
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
-| > 70% | 1 | 0.95% |
-| 60-70% | 3 | 0.99% |
-| 50-60% | 4 | 2.40% |
-| < 50% | 2 | 0.62% |
+| > 70% | 10 | 2.74% |
+| 60-70% | 0 | 0.00% |
+| 50-60% | 0 | 0.00% |
+| < 50% | 0 | 0.00% |
 
 ---
 
 ## 📊 High Quality Indicators
 
-- **High Accuracy (>60%):** 4/10
-- **High Confidence (>15%):** 4/10
-- **Both (High Quality):** 1/10
+- **High Accuracy (>60%):** 10/10
+- **High Confidence (>15%):** 10/10
+- **Both (High Quality):** 10/10
 
 ---
 

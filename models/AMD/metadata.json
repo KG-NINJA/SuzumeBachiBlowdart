@@ -1,0 +1,35 @@
+{
+  "ticker": "AMD",
+  "regime": "CHOPPY",
+  "regime_vol": 1.0,
+  "trend_strength": 0.36842103324099823,
+  "weights": {
+    "simple": 0.2,
+    "aggressive": 0.8
+  },
+  "accuracies": {
+    "simple": 0.9761904761904762,
+    "aggressive": 0.984126984126984,
+    "hybrid": 0.9825396825396824
+  },
+  "feature_names": [
+    "OBV",
+    "PVT",
+    "VROC",
+    "EMA26",
+    "RSI7",
+    "Momentum_10",
+    "Momentum",
+    "Momentum_5",
+    "Minus_DI",
+    "MACD",
+    "ATR",
+    "Volume_Ratio",
+    "Distance_to_Support",
+    "EMA_Distance_10_50",
+    "ATR_Percent"
+  ],
+  "feature_count": 15,
+  "version": "2025-11-27-fixed",
+  "saved_at": "2025-11-28T23:19:42.873216"
+}

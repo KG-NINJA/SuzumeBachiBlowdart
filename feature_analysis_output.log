@@ -1,0 +1,353 @@
+======================================================================
+Feature Analysis for All Tickers
+======================================================================
+
+>>> NVDA
+
+============================================================
+Fetching NVDA...
+============================================================
+[2025-11-29 03:12:14] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NVDA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NVDA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 9
+
+>>> AAPL
+
+============================================================
+Fetching AAPL...
+============================================================
+[2025-11-29 03:12:14] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AAPL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AAPL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 14
+
+>>> MSFT
+
+============================================================
+Fetching MSFT...
+============================================================
+[2025-11-29 03:12:15] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for MSFT...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for MSFT
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 6
+
+>>> GOOGL
+
+============================================================
+Fetching GOOGL...
+============================================================
+[2025-11-29 03:12:15] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for GOOGL...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for GOOGL
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 14
+
+>>> AMZN
+
+============================================================
+Fetching AMZN...
+============================================================
+[2025-11-29 03:12:15] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMZN...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMZN
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 4
+
+>>> META
+
+============================================================
+Fetching META...
+============================================================
+[2025-11-29 03:12:15] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for META...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for META
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 9
+
+>>> TSLA
+
+============================================================
+Fetching TSLA...
+============================================================
+[2025-11-29 03:12:15] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for TSLA...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for TSLA
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 11
+
+>>> AMD
+
+============================================================
+Fetching AMD...
+============================================================
+[2025-11-29 03:12:16] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for AMD...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for AMD
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 13
+
+>>> NFLX
+
+============================================================
+Fetching NFLX...
+============================================================
+[2025-11-29 03:12:16] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for NFLX...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for NFLX
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 49
+
+>>> QQQ
+
+============================================================
+Fetching QQQ...
+============================================================
+[2025-11-29 03:12:16] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+  [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+  [FEATURES] Basic features added: 30 columns
+  [FEATURES] Adding advanced indicators for QQQ...
+  [Features] Adding advanced indicators...
+    ✓ Bollinger Bands
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features before reduction: 74
+  [REDUCTION] Applying feature reduction for QQQ
+  [REDUCTION] Selecting 20 features from 74
+  [REDUCTION] ✓ Reduced from 74 → 21 features
+  [REDUCTION] Final features: 21
+  [FEATURES] Final dataset: 126 rows × 21 columns
+  ✓ Analysis complete
+    - Total features: 20
+    - Top 20 features selected
+    - High correlation pairs: 10
+
+======================================================================
+Feature Analysis Complete
+======================================================================
+
+Analyzed tickers: 10/10
+
+Top 10 Most Important Features Across All Tickers:
+feature
+ATR                    0.069317
+Minus_DI               0.068229
+OBV                    0.066006
+DailyReturn            0.065358
+CloseOpenRatio         0.062408
+Momentum_10            0.059757
+HighLowRatio           0.059716
+Volume                 0.059620
+Momentum               0.058993
+ATR_Percent            0.058859
+VROC                   0.057896
+MACD                   0.057875
+Volume_Ratio           0.056772
+Distance_to_Support    0.055342
+Low                    0.054414
+RSI7                   0.054308
+PVT                    0.053562
+Momentum_5             0.052770
+EMA26                  0.051631
+EMA_Distance_10_50     0.050162
+Name: importance, dtype: float64
