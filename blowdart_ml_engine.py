@@ -97,6 +97,38 @@ class BlowdartMLEngine:
         generated_at = payload.get("generated_at_utc") or payload.get("timestamp") or payload.get("date")
         return {"generated_at_utc": generated_at, "tickers": tickers}
 
+    def _as_prediction_entries(
+        self, payload: Dict | List[Dict], fallback_timestamp: Optional[str] = None
+    ) -> Tuple[List[Dict], Optional[str]]:
+        """Flatten payloads into a list of ticker entries with timestamps.
+
+        The compatibility ``predictions.json`` file historically contained a
+        list, so we synthesize a flat list with timestamps even when the
+        canonical payload is nested under ``{"tickers": [...]}``.
+        """
+
+        entries: List[Dict] = []
+        timestamp = fallback_timestamp
+
+        if isinstance(payload, list):
+            entries = payload
+        elif self._payload_has_predictions(payload):
+            entries = payload.get("tickers", []) or []
+            timestamp = payload.get("generated_at_utc") or fallback_timestamp
+        else:
+            return [], fallback_timestamp
+
+        timestamp = timestamp or datetime.utcnow().isoformat()
+        normalized: List[Dict] = []
+        for entry in entries:
+            if not isinstance(entry, dict) or "ticker" not in entry:
+                continue
+            normalized_entry = dict(entry)
+            normalized_entry.setdefault("timestamp", timestamp)
+            normalized.append(normalized_entry)
+
+        return normalized, timestamp
+
     def _load_cached_prediction_payload(self) -> Optional[Dict]:
         """Find the freshest cached prediction payload across known locations.
 
@@ -164,20 +196,23 @@ class BlowdartMLEngine:
             compat_root,
         ]
 
+        compat_entries, compat_timestamp = self._as_prediction_entries(current_payload)
+
         for target in targets:
             try:
-                should_write = True
-                if target.exists():
-                    try:
-                        existing_payload = json.loads(target.read_text(encoding="utf-8"))
-                        if self._payload_has_predictions(existing_payload):
-                            should_write = False
-                    except Exception:
-                        should_write = True
+                target.parent.mkdir(parents=True, exist_ok=True)
 
-                if should_write:
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_text(json.dumps(current_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+                if target == compat_root and compat_entries:
+                    target.write_text(
+                        json.dumps(compat_entries, ensure_ascii=False, indent=2),
+                        encoding="utf-8",
+                    )
+                    continue
+
+                target.write_text(
+                    json.dumps(current_payload, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
             except Exception:
                 # Bootstrap best-effort only; do not fail initialization
                 continue
@@ -496,7 +531,12 @@ class BlowdartMLEngine:
 
         # Compatibility for consumers expecting repo-root predictions.json
         compat_root = Path("predictions.json")
-        compat_root.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        compat_entries, _ = self._as_prediction_entries(payload, fallback_timestamp=timestamp)
+        if compat_entries:
+            compat_root.write_text(
+                json.dumps(compat_entries, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
 
         history_path = self.analytics_dir / "prediction_history.json"
         existing: List[Dict] = []
@@ -506,11 +546,15 @@ class BlowdartMLEngine:
             except Exception:
                 existing = []
 
+        enriched_entries = []
         for entry in predictions:
-            entry["timestamp"] = timestamp
-        history_path.write_text(json.dumps(existing + predictions, ensure_ascii=False, indent=2), encoding="utf-8")
+            enriched_entry = dict(entry)
+            enriched_entry["timestamp"] = timestamp
+            enriched_entries.append(enriched_entry)
+
+        history_path.write_text(json.dumps(existing + enriched_entries, ensure_ascii=False, indent=2), encoding="utf-8")
         docs_history = self.docs_data_dir / "prediction_history.json"
-        docs_history.write_text(json.dumps(existing + predictions, ensure_ascii=False, indent=2), encoding="utf-8")
+        docs_history.write_text(json.dumps(existing + enriched_entries, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _unwrap_dataset(arg: "pd.DataFrame | Tuple[pd.DataFrame, List[str]] | None") -> Tuple[Optional["pd.DataFrame"], Optional[List[str]]]:
