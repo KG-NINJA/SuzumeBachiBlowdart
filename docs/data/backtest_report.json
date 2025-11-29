@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-11-28T01:26:59.388534",
-  "backtest_date": "2025-11-28",
+  "timestamp": "2025-11-29T01:27:22.783187",
+  "backtest_date": "2025-11-29",
   "total_predictions": 10,
   "execute_count": 4,
   "skip_count": 1,
@@ -33,7 +33,7 @@
         "model_accuracy": 0.9790476190476189,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:57.907067"
+        "timestamp": "2025-11-29T01:27:21.337419"
       },
       {
         "ticker": "AAPL",
@@ -45,7 +45,7 @@
         "model_accuracy": 0.9853968253968255,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.042738"
+        "timestamp": "2025-11-29T01:27:21.457045"
       },
       {
         "ticker": "MSFT",
@@ -57,7 +57,7 @@
         "model_accuracy": 0.9828571428571428,
         "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.130573"
+        "timestamp": "2025-11-29T01:27:21.540861"
       },
       {
         "ticker": "GOOGL",
@@ -69,7 +69,7 @@
         "model_accuracy": 1.0,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.217283"
+        "timestamp": "2025-11-29T01:27:21.630357"
       },
       {
         "ticker": "AMZN",
@@ -81,7 +81,7 @@
         "model_accuracy": 1.0,
         "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.304591"
+        "timestamp": "2025-11-29T01:27:21.714657"
       },
       {
         "ticker": "META",
@@ -93,7 +93,7 @@
         "model_accuracy": 1.0,
         "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.389371"
+        "timestamp": "2025-11-29T01:27:21.798235"
       },
       {
         "ticker": "TSLA",
@@ -105,7 +105,7 @@
         "model_accuracy": 0.9866666666666667,
         "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.473858"
+        "timestamp": "2025-11-29T01:27:21.882050"
       },
       {
         "ticker": "AMD",
@@ -117,7 +117,7 @@
         "model_accuracy": 0.9787301587301587,
         "phase1_action": "EXECUTE",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.558789"
+        "timestamp": "2025-11-29T01:27:21.966194"
       },
       {
         "ticker": "NFLX",
@@ -129,7 +129,7 @@
         "model_accuracy": 0.9895238095238097,
         "phase1_action": "HOLD",
         "phase2_action": "SELL",
-        "timestamp": "2025-11-28T01:26:58.650163"
+        "timestamp": "2025-11-29T01:27:22.054338"
       },
       {
         "ticker": "QQQ",
@@ -141,7 +141,7 @@
         "model_accuracy": 0.975873015873016,
         "phase1_action": "SKIP",
         "phase2_action": "BUY_CAUTION",
-        "timestamp": "2025-11-28T01:26:58.737114"
+        "timestamp": "2025-11-29T01:27:22.139848"
       }
     ],
     "GOOD": [],
