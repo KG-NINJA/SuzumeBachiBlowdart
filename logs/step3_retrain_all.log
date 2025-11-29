@@ -55,7 +55,7 @@ NameError: name 'model_path' is not defined
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-29 07:52:13] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -83,7 +83,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-29 07:52:14] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -111,7 +111,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-29 07:52:14] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -139,7 +139,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-29 07:52:14] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -167,7 +167,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-29 07:52:14] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -195,7 +195,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-29 07:52:14] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -223,7 +223,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-29 07:52:14] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -251,7 +251,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-29 07:52:14] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -291,7 +291,7 @@ Traceback (most recent call last):
     if os.path.exists(model_path) and os.path.exists(scaler_path):
 NameError: name 'model_path' is not defined
 ============================================================
-[2025-11-29 07:52:14] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -319,7 +319,7 @@ NameError: name 'model_path' is not defined
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-29 07:52:14] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-29 09:51:27] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
