@@ -164,6 +164,17 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         # Remove NaN/Inf
         X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
         
+        # ===== Time-Series Split (Fixing Data Leakage) =====
+        # Split into 80% train, 20% test (strictly by time)
+        split_idx = int(len(X) * 0.8)
+        
+        X_train = X.iloc[:split_idx]
+        y_train = y.iloc[:split_idx]
+        X_test = X.iloc[split_idx:]
+        y_test = y.iloc[split_idx:]
+        
+        print(f"  [SPLIT] Train: {len(X_train)} | Test: {len(X_test)}")
+        
         # ===== Online Learning Logic =====
         existing_model = None
         existing_scaler = None
@@ -204,7 +215,8 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         
         # ===== シンプルモデル =====
         scaler_s = StandardScaler()
-        X_s = scaler_s.fit_transform(X)
+        X_train_s = scaler_s.fit_transform(X_train)
+        X_test_s = scaler_s.transform(X_test)
         
         model_s = xgb.XGBClassifier(
             n_estimators=120,
@@ -216,12 +228,13 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
             eval_metric='logloss',
             verbosity=0
         )
-        model_s.fit(X_s, y)
-        acc_s = model_s.score(X_s, y)
+        model_s.fit(X_train_s, y_train)
+        acc_s = model_s.score(X_test_s, y_test)
         
         # ===== アグレッシブアンサンブル =====
         scaler_a = RobustScaler()
-        X_a = scaler_a.fit_transform(X)
+        X_train_a = scaler_a.fit_transform(X_train)
+        X_test_a = scaler_a.transform(X_test)
         
         models_a = []
         accs_a = []
@@ -238,9 +251,9 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
                 eval_metric='logloss',
                 verbosity=0
             )
-            m.fit(X_a, y)
+            m.fit(X_train_a, y_train)
             models_a.append(m)
-            accs_a.append(m.score(X_a, y))
+            accs_a.append(m.score(X_test_a, y_test))
         
         acc_a = np.mean(accs_a)
         
