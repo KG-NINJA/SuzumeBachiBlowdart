@@ -11,7 +11,8 @@
       "predicted_change_pct": -0.9743105141622355,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "SKIP"
     },
     {
       "ticker": "AAPL",
@@ -23,7 +24,8 @@
       "predicted_change_pct": 1.9680714495305063,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "EXECUTE"
     },
     {
       "ticker": "MSFT",
@@ -35,7 +37,8 @@
       "predicted_change_pct": -1.3188967362399273,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "HOLD"
     },
     {
       "ticker": "GOOGL",
@@ -47,7 +50,8 @@
       "predicted_change_pct": 3.5273764119848616,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "SKIP"
     },
     {
       "ticker": "AMZN",
@@ -59,7 +63,8 @@
       "predicted_change_pct": -0.8331044487340789,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "SKIP"
     },
     {
       "ticker": "META",
@@ -71,7 +76,8 @@
       "predicted_change_pct": 2.1353929467998745,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "SKIP"
     },
     {
       "ticker": "TSLA",
@@ -83,7 +89,8 @@
       "predicted_change_pct": -1.0474950113494086,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "SKIP"
     },
     {
       "ticker": "AMD",
@@ -95,7 +102,8 @@
       "predicted_change_pct": 0.961653078751934,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "EXECUTE"
     },
     {
       "ticker": "NFLX",
@@ -107,7 +115,8 @@
       "predicted_change_pct": 2.608489565730032,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "EXECUTE"
     },
     {
       "ticker": "QQQ",
@@ -119,7 +128,8 @@
       "predicted_change_pct": 1.2289843689039737,
       "prediction_method": "xgboost",
       "cv_confidence": 0.6598999999999999,
-      "signal_strength": 0.4061
+      "signal_strength": 0.4061,
+      "action": "HOLD"
     }
   ]
 }

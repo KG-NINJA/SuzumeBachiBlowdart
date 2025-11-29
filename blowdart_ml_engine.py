@@ -125,6 +125,12 @@ class BlowdartMLEngine:
                 continue
             normalized_entry = dict(entry)
             normalized_entry.setdefault("timestamp", timestamp)
+            confidence = normalized_entry.get("confidence")
+            if not isinstance(confidence, (int, float)):
+                prob_up = normalized_entry.get("prob_up")
+                if isinstance(prob_up, (int, float)):
+                    confidence = max(float(prob_up), 1 - float(prob_up))
+            normalized_entry.setdefault("action", self._decide_action(confidence))
             normalized.append(normalized_entry)
 
         return normalized, timestamp
@@ -460,7 +466,19 @@ class BlowdartMLEngine:
             "prediction_method": method,
             "cv_confidence": float(latest_row.get("CV_CONFIDENCE", 0.5)),
             "signal_strength": float(latest_row.get("CV_SIGNAL_STRENGTH", 0.5)),
+            "action": self._decide_action(confidence),
         }
+
+    def _decide_action(self, confidence: Optional[float]) -> str:
+        """Map confidence to an action label for downstream consumers."""
+
+        if confidence is None:
+            return "HOLD"
+        if confidence >= 0.6:
+            return "EXECUTE"
+        if confidence >= 0.52:
+            return "HOLD"
+        return "SKIP"
 
     def predict_all_tickers(self) -> List[Dict]:
         predictions: List[Dict] = []

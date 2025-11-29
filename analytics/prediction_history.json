@@ -10,7 +10,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "SKIP"
   },
   {
     "ticker": "AAPL",
@@ -23,7 +24,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "EXECUTE"
   },
   {
     "ticker": "MSFT",
@@ -36,7 +38,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "HOLD"
   },
   {
     "ticker": "GOOGL",
@@ -49,7 +52,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "SKIP"
   },
   {
     "ticker": "AMZN",
@@ -62,7 +66,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "SKIP"
   },
   {
     "ticker": "META",
@@ -75,7 +80,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "SKIP"
   },
   {
     "ticker": "TSLA",
@@ -88,7 +94,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "SKIP"
   },
   {
     "ticker": "AMD",
@@ -101,7 +108,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "EXECUTE"
   },
   {
     "ticker": "NFLX",
@@ -114,7 +122,8 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "EXECUTE"
   },
   {
     "ticker": "QQQ",
@@ -127,6 +136,7 @@
     "prediction_method": "xgboost",
     "cv_confidence": 0.6598999999999999,
     "signal_strength": 0.4061,
-    "timestamp": "2025-11-29T00:34:40.482405"
+    "timestamp": "2025-11-29T00:34:40.482405",
+    "action": "HOLD"
   }
 ]
