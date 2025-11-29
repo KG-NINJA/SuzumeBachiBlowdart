@@ -4,6 +4,7 @@ Detects market regime (UPTREND, DOWNTREND, MIXED) and adjusts predictions accord
 """
 
 import json
+import argparse
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -13,7 +14,7 @@ PREDICTIONS_DIR = "daily_predictions"
 Path(PREDICTIONS_DIR).mkdir(parents=True, exist_ok=True)
 
 
-def analyze_market_sentiment(predictions):
+def analyze_market_sentiment(predictions, timestamp=None):
     """
     Analyze overall market sentiment from predictions
     
@@ -54,7 +55,7 @@ def analyze_market_sentiment(predictions):
         regime_signal = "🟡 NEUTRAL"
     
     sentiment = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": timestamp or datetime.now().isoformat(),
         "bullish_count": int(bullish_count),
         "bearish_count": int(bearish_count),
         "hold_count": int(hold_count),
@@ -111,8 +112,18 @@ def calculate_relative_strength(predictions, market_sentiment):
         confidence_vs_avg = row['confidence'] - avg_confidence
         
         # Relative strength score (-1 to +1)
-        strength_score = (accuracy_vs_avg / max(avg_accuracy, 0.01)) * 0.5 + \
-                        (confidence_vs_avg / max(avg_confidence, 0.01)) * 0.5
+        # Fix: Use standard deviation for normalization if available, else fallback
+        std_accuracy = df['model_accuracy'].std() if len(df) > 1 else 0.05
+        std_confidence = df['confidence'].std() if len(df) > 1 else 0.10
+        
+        z_accuracy = accuracy_vs_avg / (std_accuracy + 1e-6)
+        z_confidence = confidence_vs_avg / (std_confidence + 1e-6)
+        
+        # Combine Z-scores (weighted)
+        strength_score = (z_accuracy * 0.6) + (z_confidence * 0.4)
+        
+        # Normalize to roughly -1 to 1 range (assuming Z-scores mostly within -3 to 3)
+        strength_score = np.clip(strength_score / 3.0, -1.0, 1.0)
         
         # Determine relative strength
         if strength_score > 0.2:
@@ -208,11 +219,11 @@ def get_phase2_recommendation(original_action, phase2_action, strength, regime):
         return f"⏸️ SKIP - Low confidence or misaligned with {regime}"
 
 
-def generate_phase2_report(predictions, market_sentiment, relative_strength, adjusted_predictions):
+def generate_phase2_report(predictions, market_sentiment, relative_strength, adjusted_predictions, timestamp=None):
     """Generate comprehensive Phase 2 report"""
     
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": timestamp or datetime.now().isoformat(),
         "market_sentiment": market_sentiment,
         "relative_strength": relative_strength,
         "adjusted_actions": {
@@ -224,7 +235,7 @@ def generate_phase2_report(predictions, market_sentiment, relative_strength, adj
     return report
 
 
-def generate_markdown_report(market_sentiment, relative_strength, adjusted_predictions):
+def generate_markdown_report(market_sentiment, relative_strength, adjusted_predictions, timestamp=None):
     """Generate human-readable markdown report"""
     
     regime = market_sentiment['market_regime']
@@ -232,7 +243,7 @@ def generate_markdown_report(market_sentiment, relative_strength, adjusted_predi
     
     markdown = f"""# 📈 Phase 2: Market Environment Analysis
 
-**Generated:** {datetime.now().isoformat()}
+**Generated:** {timestamp or datetime.now().isoformat()}
 
 ## 🎯 Market Regime
 
@@ -344,6 +355,11 @@ def get_regime_strategy(regime):
 
 def main():
     """Main execution"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--timestamp', type=str, help='Timestamp from main pipeline')
+    args = parser.parse_args()
+    
+    run_timestamp = args.timestamp if args.timestamp else datetime.now().isoformat()
     
     print("="*70)
     print("Phase 2: Market Environment Detection")
@@ -363,7 +379,7 @@ def main():
     
     # Analyze market sentiment
     print(f"\n[2/5] Analyzing market sentiment...")
-    market_sentiment = analyze_market_sentiment(predictions)
+    market_sentiment = analyze_market_sentiment(predictions, timestamp=run_timestamp)
     print(f"  ✓ Regime: {market_sentiment['market_regime']} {market_sentiment['regime_signal']}")
     print(f"  ✓ Bullish: {market_sentiment['bullish_ratio']*100:.1f}%")
     
@@ -381,16 +397,16 @@ def main():
     print(f"\n[5/5] Generating reports...")
     
     # JSON report
-    phase2_report = generate_phase2_report(predictions, market_sentiment, relative_strength, adjusted_predictions)
+    phase2_report = generate_phase2_report(predictions, market_sentiment, relative_strength, adjusted_predictions, timestamp=run_timestamp)
     report_file = f"{PREDICTIONS_DIR}/phase2_analysis.json"
     with open(report_file, 'w') as f:
         json.dump(phase2_report, f, indent=2, default=str)
     print(f"  ✓ Saved: {report_file}")
     
     # Markdown report
-    md_report = generate_markdown_report(market_sentiment, relative_strength, adjusted_predictions)
+    md_report = generate_markdown_report(market_sentiment, relative_strength, adjusted_predictions, timestamp=run_timestamp)
     md_file = f"{PREDICTIONS_DIR}/phase2_analysis.md"
-    with open(md_file, 'w') as f:
+    with open(md_file, 'w', encoding='utf-8') as f:
         f.write(md_report)
     print(f"  ✓ Saved: {md_file}")
     

@@ -1,117 +1,37 @@
 {
-  "timestamp": "2025-11-29T01:27:22.141532",
+  "timestamp": "2025-11-29T21:07:49.285827",
   "run_date": "2025-11-29",
   "results": [
     {
       "ticker": "NVDA",
-      "status": "OK",
-      "accuracy": 0.9790476190476189,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "AAPL",
-      "status": "OK",
-      "accuracy": 0.9853968253968255,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "MSFT",
-      "status": "OK",
-      "accuracy": 0.9828571428571428,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "GOOGL",
-      "status": "OK",
-      "accuracy": 1.0,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "AMZN",
-      "status": "OK",
-      "accuracy": 1.0,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "META",
-      "status": "OK",
-      "accuracy": 1.0,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "TSLA",
-      "status": "OK",
-      "accuracy": 0.9866666666666667,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
+      "status": "FAIL",
+      "reason": "Training failed"
     },
     {
       "ticker": "AMD",
-      "status": "OK",
-      "accuracy": 0.9787301587301587,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "NFLX",
-      "status": "OK",
-      "accuracy": 0.9895238095238097,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
-    },
-    {
-      "ticker": "QQQ",
-      "status": "OK",
-      "accuracy": 0.975873015873016,
-      "previous_accuracy": 0,
-      "improvement": 0,
-      "train_samples": null,
-      "learning_type": "HYBRID_FIXED"
+      "status": "FAIL",
+      "reason": "Training failed"
     }
   ],
-  "total_trained": 10,
-  "total_failed": 0,
+  "total_trained": 0,
+  "total_failed": 2,
   "predictions": {
-    "total": 10,
-    "execute": 4,
-    "skip": 1
+    "total": 0,
+    "execute": 0,
+    "skip": 0
   },
   "confidence": {
-    "total_predictions": 10,
-    "average_confidence": 0.548950171554804,
-    "average_confidence_pct": "54.9%",
-    "execute_count": 4,
-    "hold_count": 5,
-    "skip_count": 1,
+    "total_predictions": 0,
+    "average_confidence": 0,
+    "execute_count": 0,
+    "hold_count": 0,
+    "skip_count": 0,
     "confidence_distribution": {
-      "strong": 4,
-      "medium": 5,
-      "weak": 1
+      "strong": 0,
+      "medium": 0,
+      "weak": 0
     },
-    "execute_ratio": "40.0%"
+    "execute_ratio": "0.0%",
+    "note": "No predictions"
   }
 }

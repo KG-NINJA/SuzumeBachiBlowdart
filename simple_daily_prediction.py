@@ -10,7 +10,7 @@ import subprocess
 from utils_data_fetch import safe_price_download, LOGS_DIR
 from blowdart_features import build_feature_set
 from blowdart_ml_engine import train_ticker, predict_ticker
-from confidence_filter import apply_confidence_filter, generate_confidence_report
+from confidence_filter import apply_confidence_filter, generate_confidence_report, generate_confidence_markdown
 
 # ===== Configuration =====
 TICKERS = ["NVDA", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "NFLX", "QQQ"]
@@ -28,7 +28,8 @@ for dir_path in [PREDICTIONS_DIR, ANALYTICS_DIR, MODELS_DIR, LOGS_DIR, DOCS_DATA
 def main():
     print("="*70)
     print(f"SuzumeBachiBlowdart - Daily Prediction Run (Complete Pipeline)")
-    print(f"Start: {datetime.now().isoformat()}")
+    run_timestamp = datetime.now().isoformat()
+    print(f"Start: {run_timestamp}")
     print("="*70)
     
     all_predictions = []
@@ -139,7 +140,8 @@ def main():
     print("-" * 70)
     
     print("\n[2-1] Applying confidence-based filter...")
-    filtered_predictions = apply_confidence_filter(all_predictions, min_confidence=0.15)
+    # New threshold: 0.30 (30% score)
+    filtered_predictions = apply_confidence_filter(all_predictions, min_confidence=0.30)
     
     execute_predictions = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
     skip_predictions = [p for p in filtered_predictions if p.get('action') == 'SKIP']
@@ -184,10 +186,22 @@ def main():
         json.dump(confidence_report, f, indent=2, default=str)
     print(f"✓ Confidence report: {report_file}")
     
+    # Generate Markdown Report (Ensure consistency)
+    md_report = generate_confidence_markdown(confidence_report, filtered_predictions)
+    md_file = f"{PREDICTIONS_DIR}/confidence_report.md"
+    
+    # Delete stale file if exists
+    if os.path.exists(md_file):
+        os.remove(md_file)
+        
+    with open(md_file, 'w', encoding='utf-8') as f:
+        f.write(md_report)
+    print(f"✓ Confidence markdown: {md_file}")
+    
     # Save training metrics
     metrics_file = f"{ANALYTICS_DIR}/training_metrics.json"
     metrics = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": run_timestamp,
         "run_date": datetime.now().strftime('%Y-%m-%d'),
         "results": training_results,
         "total_trained": sum(1 for r in training_results if r['status'] == 'OK'),
@@ -211,7 +225,7 @@ def main():
     
     try:
         result = subprocess.run(
-            ["python", "market_regime_analysis.py"],
+            ["python", "market_regime_analysis.py", "--timestamp", run_timestamp],
             capture_output=True,
             text=True,
             timeout=60

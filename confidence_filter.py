@@ -15,12 +15,17 @@ Path(PREDICTIONS_DIR).mkdir(parents=True, exist_ok=True)
 
 
 def calculate_confidence_score(pred_proba):
-    """Calculate confidence score from prediction probability"""
-    confidence_score = abs(pred_proba - 0.5)
+    """
+    Calculate confidence score from prediction probability
+    Returns a score between 0.0 (50/50) and 1.0 (Certain)
+    """
+    # Convert 0.5-1.0 probability to 0.0-1.0 score
+    confidence_score = abs(pred_proba - 0.5) * 2
 
-    if confidence_score > 0.15:
+    # Thresholds: >30% Strong, >10% Medium, <=10% Weak
+    if confidence_score > 0.30:
         confidence_level = 'STRONG'
-    elif confidence_score > 0.05:
+    elif confidence_score > 0.10:
         confidence_level = 'MEDIUM'
     else:
         confidence_level = 'WEAK'
@@ -43,11 +48,11 @@ def apply_confidence_filter(predictions, min_confidence=0.15):
         if conf_score < min_confidence:
             pred['direction'] = "⏸ HOLD"
             pred['action'] = "SKIP"
-            pred['reason'] = f"Low confidence ({confidence:.2%}) - Market noise"
+            pred['reason'] = f"Low confidence ({conf_score:.1%}) - Market noise"
             pred['recommendation'] = "Skip this trade - wait for clearer signal"
         else:
             pred['action'] = "EXECUTE"
-            pred['reason'] = f"High confidence ({confidence:.2%}) - {conf_level} signal"
+            pred['reason'] = f"High confidence ({conf_score:.1%}) - {conf_level} signal"
             pred['recommendation'] = f"Execute {pred['direction']} trade"
 
         filtered_predictions.append(pred)
@@ -63,7 +68,10 @@ def generate_confidence_report(filtered_predictions):
             "total_predictions": 0,
             "average_confidence": 0,
             "execute_count": 0,
+            "hold_count": 0,
             "skip_count": 0,
+            "confidence_distribution": {"strong": 0, "medium": 0, "weak": 0},
+            "execute_ratio": "0.0%",
             "note": "No predictions"
         }
 
@@ -76,12 +84,52 @@ def generate_confidence_report(filtered_predictions):
         "hold_count": sum(1 for p in filtered_predictions if p.get('action') == 'HOLD'),
         "skip_count": sum(1 for p in filtered_predictions if p.get('action') == 'SKIP'),
         "confidence_distribution": {
-            "strong": sum(1 for c in confidences if c >= 0.60),
-            "medium": sum(1 for c in confidences if 0.40 <= c < 0.60),
-            "weak": sum(1 for c in confidences if c < 0.40)
+            "strong": sum(1 for c in confidences if abs(c - 0.5) * 2 >= 0.30),
+            "medium": sum(1 for c in confidences if 0.10 <= abs(c - 0.5) * 2 < 0.30),
+            "weak": sum(1 for c in confidences if abs(c - 0.5) * 2 < 0.10)
         },
         "execute_ratio": f"{sum(1 for p in filtered_predictions if p.get('action') == 'EXECUTE') / len(filtered_predictions):.1%}"
     }
+
+
+
+def generate_confidence_markdown(report, predictions):
+    """Generate a markdown version of the confidence report"""
+    
+    md = f"""# 📊 Confidence Analysis Report
+**Generated:** {datetime.now().isoformat()}
+
+## 🎯 Summary
+- **Average Confidence:** {report['average_confidence']:.1%} (Score 0-100%)
+- **Execute Ratio:** {report['execute_ratio']}
+- **Total Predictions:** {report['total_predictions']}
+
+## 🚦 Action Breakdown
+| Action | Count |
+|--------|-------|
+| **EXECUTE** | {report['execute_count']} |
+| **HOLD** | {report['hold_count']} |
+| **SKIP** | {report['skip_count']} |
+
+## 📉 Confidence Distribution
+- **STRONG (>30%):** {report['confidence_distribution']['strong']}
+- **MEDIUM (10-30%):** {report['confidence_distribution']['medium']}
+- **WEAK (<10%):** {report['confidence_distribution']['weak']}
+
+## 📋 Detailed Predictions
+| Ticker | Action | Conf Score | Direction | Reason |
+|--------|--------|------------|-----------|--------|
+"""
+    
+    # Sort by confidence score descending
+    sorted_preds = sorted(predictions, key=lambda x: x.get('confidence_score', 0), reverse=True)
+    
+    for p in sorted_preds:
+        score = p.get('confidence_score', 0)
+        direction = "📈" if "Bullish" in p['direction'] else "📉"
+        md += f"| **{p['ticker']}** | {p['action']} | {score:.1%} | {direction} | {p.get('reason', '')} |\n"
+        
+    return md
 
 
 if __name__ == "__main__":
