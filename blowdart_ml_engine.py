@@ -59,6 +59,9 @@ class BlowdartMLEngine:
     def _normalize_prediction_payload(self, payload: Dict) -> Optional[Dict]:
         """Normalize legacy market payloads into the tickers list structure."""
 
+        if isinstance(payload, list):
+            return {"generated_at_utc": None, "tickers": payload}
+
         if self._payload_has_predictions(payload):
             return payload
 
@@ -410,11 +413,14 @@ class BlowdartMLEngine:
     ) -> Dict:
         direction = "UP" if prob_up >= 0.5 else "DOWN"
         predicted_change_pct = float(latest_row.get("RETURN_1D", 0) * 100)
+        confidence = max(prob_up, 1 - prob_up)
         return {
             "ticker": ticker,
             "prob_up": prob_up,
             "prob_down": 1 - prob_up,
             "predicted_direction": direction,
+            "direction": direction,
+            "confidence": confidence,
             "predicted_change_pct": predicted_change_pct,
             "prediction_method": method,
             "cv_confidence": float(latest_row.get("CV_CONFIDENCE", 0.5)),

@@ -69,7 +69,7 @@ def load_cv_runner_features(log_dir: Path = LOG_DIR) -> Dict[str, float]:
 def download_price_history(ticker: str, period: str = "3y", *, days: Optional[int] = None) -> pd.DataFrame:
     """Download price history and standardize columns."""
     ensure_directories()
-    price_df = safe_price_download(ticker, range=period, days=days)
+    price_df = safe_price_download(ticker, range_=period, days=days)
     # ensure standard columns and ordering
     price_df = price_df.reset_index(drop=True)
     price_df.sort_values("DATE", inplace=True)
@@ -192,8 +192,8 @@ def engineer_features(df: pd.DataFrame, cv_features: Optional[Dict[str, float]] 
 
     # Robust filling to keep smaller tickers usable while avoiding leakage
     df.sort_values("DATE", inplace=True)
-    df.fillna(method="ffill", inplace=True)
-    df.fillna(method="bfill", inplace=True)
+    df.ffill(inplace=True)
+    df.bfill(inplace=True)
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.dropna(inplace=True)
 
