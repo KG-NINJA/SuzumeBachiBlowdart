@@ -7,3 +7,6 @@ __pycache__/
 
 # Local caches
 data/cache/
+
+# Generated run logs
+logs/
