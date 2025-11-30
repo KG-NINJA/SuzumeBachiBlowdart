@@ -4,32 +4,39 @@
   "regime_vol": 1.0,
   "trend_strength": 0.15789472853185638,
   "weights": {
-    "simple": 0.2,
-    "aggressive": 0.8
+    "simple": 0.7,
+    "aggressive": 0.3
   },
   "accuracies": {
-    "simple": 0.9841269841269841,
-    "aggressive": 0.9920634920634921,
-    "hybrid": 0.9904761904761905
+    "simple": 0.4230769230769231,
+    "aggressive": 0.39230769230769236,
+    "hybrid": 0.41384615384615386
   },
   "feature_names": [
-    "OBV",
-    "PVT",
-    "Momentum_5",
-    "Momentum_10",
-    "Momentum",
-    "VROC",
-    "EMA26",
-    "MACD",
-    "RSI7",
-    "ATR",
+    "High",
+    "ADX",
+    "Volume",
     "Minus_DI",
+    "Plus_DI",
+    "MA50",
+    "Momentum",
+    "RSI14",
+    "ATR",
+    "MA5",
+    "MACD",
+    "Momentum_5",
     "Volume_Ratio",
-    "ATR_Percent",
-    "EMA_Distance_10_50",
-    "Distance_to_Support"
+    "VROC",
+    "PVT",
+    "EMA12",
+    "Low",
+    "MA10",
+    "EMA26",
+    "MA20"
   ],
-  "feature_count": 15,
-  "version": "2025-11-27-fixed",
-  "saved_at": "2025-11-28T23:19:43.236079"
+  "feature_count": 20,
+  "train_samples": 100,
+  "test_samples": 26,
+  "version": "2025-11-30-fixed",
+  "saved_at": "2025-11-30T23:19:36.328188"
 }

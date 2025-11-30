@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "ticker": "NVDA",
+    "current_price": 178.88,
+    "predicted_price": 179.13025469815827,
+    "predicted_change_pct": 0.13990088224411476,
+    "direction": "\u2191 Bullish",
+    "prob_up": 0.5349752205610275,
+    "prob_down": 0.46502477943897247,
+    "confidence": 0.24651368209948907,
+    "market_regime": "CHOPPY",
+    "model_accuracy": 0.4230769230769231,
+    "simple_pred": 0.5528622269630432,
+    "aggressive_pred": 0.49323887228965757,
+    "hybrid_pred": 0.5349752205610275,
+    "timestamp": "2025-11-30T23:19:38.024221",
+    "confidence_score": 0.5069726358010218,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (50.7%) - STRONG signal",
+    "recommendation": "Execute \u2191 Bullish trade"
+  },
+  {
+    "ticker": "AMZN",
+    "current_price": 220.69,
+    "predicted_price": 221.37084612186695,
+    "predicted_change_pct": 0.3085079169273412,
+    "direction": "\u2191 Bullish",
+    "prob_up": 0.5771269792318344,
+    "prob_down": 0.4228730207681656,
+    "confidence": 0.32597313307798825,
+    "market_regime": "CHOPPY",
+    "model_accuracy": 0.49769230769230766,
+    "simple_pred": 0.5898448824882507,
+    "aggressive_pred": 0.5474518716335297,
+    "hybrid_pred": 0.5771269792318344,
+    "timestamp": "2025-11-30T23:19:40.575420",
+    "confidence_score": 0.3480537338440235,
+    "confidence_level": "STRONG",
+    "action": "EXECUTE",
+    "reason": "High confidence (34.8%) - STRONG signal",
+    "recommendation": "Execute \u2191 Bullish trade"
+  }
+]
