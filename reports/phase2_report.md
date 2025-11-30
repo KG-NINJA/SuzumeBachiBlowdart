@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Sun Nov 30 13:36:11 UTC 2025
+**Execution Date:** Sun Nov 30 14:43:40 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,33 +80,33 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-    ✓ Volume Features
-    ✓ Volatility Features
-    ✓ Momentum Features
-    ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] QQQ - 改善版モード起動
-  [ERROR] QQQ: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] QQQ: 20 selected
+  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] QQQ | Hybrid Acc: 0.5108 | Improvement: +0.0562
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status          reason
-  NVDA FAILED Training failed
-  AAPL FAILED Training failed
-  MSFT FAILED Training failed
- GOOGL FAILED Training failed
-  AMZN FAILED Training failed
-  META FAILED Training failed
-  TSLA FAILED Training failed
-   AMD FAILED Training failed
-  NFLX FAILED Training failed
-   QQQ FAILED Training failed
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY         0
+  AAPL SUCCESS CHOPPY         0
+  MSFT SUCCESS CHOPPY         0
+ GOOGL SUCCESS CHOPPY         0
+  AMZN SUCCESS CHOPPY         0
+  META SUCCESS CHOPPY         0
+  TSLA SUCCESS CHOPPY         0
+   AMD SUCCESS CHOPPY         0
+  NFLX SUCCESS CHOPPY         0
+   QQQ SUCCESS CHOPPY         0
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。

@@ -9,34 +9,34 @@
   },
   "accuracies": {
     "simple": 0.5,
-    "aggressive": 0.49230769230769234,
-    "hybrid": 0.49769230769230766
+    "aggressive": 0.48461538461538467,
+    "hybrid": 0.49538461538461537
   },
   "feature_names": [
-    "High",
-    "ADX",
-    "Volume",
-    "Minus_DI",
-    "Plus_DI",
     "MA50",
-    "Momentum",
+    "ADX",
+    "Low",
+    "PVT",
+    "MA20",
     "RSI14",
     "ATR",
-    "MA5",
-    "MACD",
-    "Momentum_5",
-    "Volume_Ratio",
-    "VROC",
-    "PVT",
-    "EMA12",
-    "Low",
-    "MA10",
+    "Open",
+    "High",
+    "Momentum",
+    "Minus_DI",
     "EMA26",
-    "MA20"
+    "Volume",
+    "EMA12",
+    "MA10",
+    "Momentum_5",
+    "OBV",
+    "Plus_DI",
+    "MACD",
+    "Volume_Ratio"
   ],
   "feature_count": 20,
   "train_samples": 100,
   "test_samples": 26,
   "version": "2025-11-30-fixed",
-  "saved_at": "2025-11-30T23:19:31.570942"
+  "saved_at": "2025-11-30T14:43:38.206974"
 }

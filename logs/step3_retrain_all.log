@@ -1,51 +1,3 @@
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
 ======================================================================
 宗叡最終版による全ティッカー再訓練開始
 ======================================================================
@@ -55,7 +7,7 @@ NameError: name 'model_path' is not defined
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-11-30 13:36:10] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:36] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -75,15 +27,19 @@ Fetching NVDA...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] NVDA - 改善版モード起動
-  [ERROR] NVDA: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] NVDA: 20 selected
+  [REGIME] NVDA: CHOPPY          | Vol=1.00 | Trend=0.16
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] NVDA | Hybrid Acc: 0.5631 | Improvement: +0.1400
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AAPL 訓練中...
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-11-30 13:36:10] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:36] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -103,15 +59,19 @@ Fetching AAPL...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] AAPL - 改善版モード起動
-  [ERROR] AAPL: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] AAPL: 20 selected
+  [REGIME] AAPL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] AAPL | Hybrid Acc: 0.5408 | Improvement: -0.0700
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> MSFT 訓練中...
 
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-11-30 13:36:10] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:37] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -131,15 +91,19 @@ Fetching MSFT...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] MSFT - 改善版モード起動
-  [ERROR] MSFT: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] MSFT: 20 selected
+  [REGIME] MSFT: CHOPPY          | Vol=1.00 | Trend=0.47
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] MSFT | Hybrid Acc: 0.4392 | Improvement: +0.0500
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> GOOGL 訓練中...
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-11-30 13:36:10] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:37] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -159,15 +123,19 @@ Fetching GOOGL...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] GOOGL - 改善版モード起動
-  [ERROR] GOOGL: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] GOOGL: 20 selected
+  [REGIME] GOOGL: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] GOOGL | Hybrid Acc: 0.4369 | Improvement: -0.1154
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMZN 訓練中...
 
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-11-30 13:36:10] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:37] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -187,15 +155,19 @@ Fetching AMZN...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] AMZN - 改善版モード起動
-  [ERROR] AMZN: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] AMZN: 20 selected
+  [REGIME] AMZN: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] AMZN | Hybrid Acc: 0.4954 | Improvement: -0.0023
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> META 訓練中...
 
 ============================================================
 Fetching META...
 ============================================================
-[2025-11-30 13:36:10] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:38] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -215,15 +187,19 @@ Fetching META...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] META - 改善版モード起動
-  [ERROR] META: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] META: 20 selected
+  [REGIME] META: CHOPPY          | Vol=1.00 | Trend=0.26
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] META | Hybrid Acc: 0.4885 | Improvement: +0.1492
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> TSLA 訓練中...
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-11-30 13:36:10] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:38] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -243,15 +219,19 @@ Fetching TSLA...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] TSLA - 改善版モード起動
-  [ERROR] TSLA: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] TSLA: 20 selected
+  [REGIME] TSLA: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] TSLA | Hybrid Acc: 0.5315 | Improvement: +0.0538
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMD 訓練中...
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-11-30 13:36:10] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:38] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -271,27 +251,19 @@ Fetching AMD...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] AMD - 改善版モード起動
-  [ERROR] AMD: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] AMD: 20 selected
+  [REGIME] AMD: CHOPPY          | Vol=1.00 | Trend=0.37
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] AMD | Hybrid Acc: 0.6177 | Improvement: +0.0046
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> NFLX 訓練中...
 
 ============================================================
 Fetching NFLX...
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 152, in train_ticker
-    feature_cols = get_ticker_specific_features(df, ticker)
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 96, in get_ticker_specific_features
-    if os.path.exists(model_path) and os.path.exists(scaler_path):
-NameError: name 'model_path' is not defined
 ============================================================
-[2025-11-30 13:36:10] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:39] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -311,15 +283,19 @@ NameError: name 'model_path' is not defined
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] NFLX - 改善版モード起動
-  [ERROR] NFLX: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] NFLX: 20 selected
+  [REGIME] NFLX: CHOPPY          | Vol=1.00 | Trend=0.16
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] NFLX | Hybrid Acc: 0.3823 | Improvement: -0.0315
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> QQQ 訓練中...
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-11-30 13:36:10] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-11-30 14:43:39] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -339,23 +315,27 @@ Fetching QQQ...
   [FEATURES] Final dataset: 126 rows × 74 columns
 
   [TRAIN] QQQ - 改善版モード起動
-  [ERROR] QQQ: name 'model_path' is not defined
-  訓練失敗
+  [FEATURES] QQQ: 20 selected
+  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+  [SPLIT] Train: 100 | Test: 26
+  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+  [RESULT] QQQ | Hybrid Acc: 0.5108 | Improvement: +0.0562
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status          reason
-  NVDA FAILED Training failed
-  AAPL FAILED Training failed
-  MSFT FAILED Training failed
- GOOGL FAILED Training failed
-  AMZN FAILED Training failed
-  META FAILED Training failed
-  TSLA FAILED Training failed
-   AMD FAILED Training failed
-  NFLX FAILED Training failed
-   QQQ FAILED Training failed
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY         0
+  AAPL SUCCESS CHOPPY         0
+  MSFT SUCCESS CHOPPY         0
+ GOOGL SUCCESS CHOPPY         0
+  AMZN SUCCESS CHOPPY         0
+  META SUCCESS CHOPPY         0
+  TSLA SUCCESS CHOPPY         0
+   AMD SUCCESS CHOPPY         0
+  NFLX SUCCESS CHOPPY         0
+   QQQ SUCCESS CHOPPY         0
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。
