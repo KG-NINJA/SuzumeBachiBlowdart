@@ -1,94 +1,94 @@
 {
-  "timestamp": "2025-11-30T23:19:25.636444",
+  "timestamp": "2025-11-30T23:19:24.082384",
   "run_date": "2025-11-30",
   "results": [
     {
       "ticker": "NVDA",
       "status": "OK",
-      "accuracy": 0.4230769230769231,
-      "previous_accuracy": 0.9838095238095239,
-      "improvement": -0.5607326007326008,
+      "accuracy": 0.6107692307692307,
+      "previous_accuracy": 0.563076923076923,
+      "improvement": 0.0476923076923077,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "AAPL",
       "status": "OK",
-      "accuracy": 0.6107692307692307,
-      "previous_accuracy": 0.9904761904761905,
-      "improvement": -0.3797069597069598,
+      "accuracy": 0.5769230769230769,
+      "previous_accuracy": 0.5407692307692307,
+      "improvement": 0.0361538461538462,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "MSFT",
       "status": "OK",
-      "accuracy": 0.3892307692307692,
-      "previous_accuracy": 0.9866666666666667,
-      "improvement": -0.5974358974358975,
+      "accuracy": 0.37384615384615383,
+      "previous_accuracy": 0.4392307692307692,
+      "improvement": -0.06538461538461537,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "GOOGL",
       "status": "OK",
-      "accuracy": 0.5523076923076922,
-      "previous_accuracy": 0.995873015873016,
-      "improvement": -0.44356532356532385,
+      "accuracy": 0.5607692307692307,
+      "previous_accuracy": 0.4369230769230769,
+      "improvement": 0.12384615384615377,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "AMZN",
       "status": "OK",
-      "accuracy": 0.49769230769230766,
-      "previous_accuracy": 1.0,
-      "improvement": -0.5023076923076923,
+      "accuracy": 0.5092307692307692,
+      "previous_accuracy": 0.49538461538461537,
+      "improvement": 0.013846153846153786,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "META",
       "status": "OK",
-      "accuracy": 0.3392307692307692,
-      "previous_accuracy": 1.0,
-      "improvement": -0.6607692307692308,
+      "accuracy": 0.3869230769230769,
+      "previous_accuracy": 0.48846153846153845,
+      "improvement": -0.10153846153846152,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "TSLA",
       "status": "OK",
-      "accuracy": 0.4776923076923077,
-      "previous_accuracy": 0.9904761904761905,
-      "improvement": -0.5127838827838829,
+      "accuracy": 0.5138461538461538,
+      "previous_accuracy": 0.5315384615384615,
+      "improvement": -0.017692307692307674,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "AMD",
       "status": "OK",
-      "accuracy": 0.6130769230769231,
-      "previous_accuracy": 0.9825396825396824,
-      "improvement": -0.3694627594627593,
+      "accuracy": 0.6423076923076922,
+      "previous_accuracy": 0.6176923076923078,
+      "improvement": 0.024615384615384484,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "NFLX",
       "status": "OK",
-      "accuracy": 0.41384615384615386,
-      "previous_accuracy": 0.9904761904761905,
-      "improvement": -0.5766300366300366,
+      "accuracy": 0.3823076923076923,
+      "previous_accuracy": 0.3823076923076923,
+      "improvement": 0.0,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     },
     {
       "ticker": "QQQ",
       "status": "OK",
-      "accuracy": 0.45461538461538464,
-      "previous_accuracy": 0.9834920634920635,
-      "improvement": -0.5288766788766789,
+      "accuracy": 0.4838461538461538,
+      "previous_accuracy": 0.5107692307692306,
+      "improvement": -0.026923076923076827,
       "train_samples": 100,
       "learning_type": "HYBRID_FIXED"
     }
@@ -97,20 +97,20 @@
   "total_failed": 0,
   "predictions": {
     "total": 10,
-    "execute": 2,
-    "skip": 8
+    "execute": 1,
+    "skip": 9
   },
   "confidence": {
     "total_predictions": 10,
-    "average_confidence": 0.501956937615688,
-    "execute_count": 2,
+    "average_confidence": 0.5169441474401034,
+    "execute_count": 1,
     "hold_count": 0,
-    "skip_count": 8,
+    "skip_count": 9,
     "confidence_distribution": {
-      "strong": 2,
+      "strong": 1,
       "medium": 7,
-      "weak": 1
+      "weak": 2
     },
-    "execute_ratio": "20.0%"
+    "execute_ratio": "10.0%"
   }
 }

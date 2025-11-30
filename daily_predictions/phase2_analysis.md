@@ -1,19 +1,19 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-29T01:27:22.444652
+**Generated:** 2025-11-30T23:19:24.082384
 
 ## 🎯 Market Regime
 
 | Metric | Value |
 |--------|-------|
-| **Regime** | STRONG_DOWNTREND 🔴 SELL |
-| **Bullish** | 0/10 (0.0%) |
-| **Bearish** | 9/10 (90.0%) |
-| **Hold** | 0/10 (10.0%) |
+| **Regime** | MIXED 🟡 NEUTRAL |
+| **Bullish** | 1/10 (10.0%) |
+| **Bearish** | 0/10 (0.0%) |
+| **Hold** | 9/10 (90.0%) |
 
 ## 📊 Interpretation
 
-Market is strongly bearish (90.0%). Focus on SELL signals. BUY signals should be avoided.
+Market is mixed (10.0% bullish, 0.0% bearish). Be selective.
 
 ---
 
@@ -21,11 +21,11 @@ Market is strongly bearish (90.0%). Focus on SELL signals. BUY signals should be
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AMD | 97.87% | 🟡 NEUTRAL | +0.16 |
-| 2 | NVDA | 97.90% | 🟡 NEUTRAL | +0.11 |
-| 3 | AAPL | 98.54% | 🟡 NEUTRAL | +0.09 |
-| 4 | GOOGL | 100.00% | 🟡 NEUTRAL | +0.08 |
-| 5 | MSFT | 98.29% | 🟡 NEUTRAL | +0.02 |
+| 1 | AMD | 64.23% | 🟢 STRONG | +0.34 |
+| 2 | AAPL | 57.69% | 🟡 NEUTRAL | +0.20 |
+| 3 | GOOGL | 56.08% | 🟡 NEUTRAL | +0.12 |
+| 4 | NVDA | 61.08% | 🟡 NEUTRAL | +0.12 |
+| 5 | TSLA | 51.38% | 🟡 NEUTRAL | +0.04 |
 
 
 ---
@@ -33,45 +33,37 @@ Market is strongly bearish (90.0%). Focus on SELL signals. BUY signals should be
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-- **NVDA** 📉 SELL | Conf: 67.89% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **AAPL** 📉 SELL | Conf: 65.02% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **MSFT** 📉 SELL | Conf: 56.92% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **GOOGL** 📉 SELL | Conf: 62.69% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **AMZN** 📉 SELL | Conf: 40.79% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **META** 📉 SELL | Conf: 50.99% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **TSLA** 📉 SELL | Conf: 54.95% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **AMD** 📉 SELL | Conf: 73.03% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
-- **NFLX** 📉 SELL | Conf: 47.79% | Strength: NEUTRAL
-  → ✅ EXECUTE - SELL (STRONG_DOWNTREND environment, NEUTRAL strength)
+No execute signals at this time.
 
 
 ### ⚠️ CAUTION
-- **QQQ** - ⚠️ CAUTION - BUY signal but STRONG_DOWNTREND environment - wait for confirmation
+No cautionary signals.
 
 
 ### ⏸️ SKIP
-All predictions are actionable.
+- **NVDA** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **AAPL** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **MSFT** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **GOOGL** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **AMZN** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **META** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **TSLA** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **AMD** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **NFLX** - ⏸️ SKIP - Low confidence or misaligned with MIXED
+- **QQQ** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 
 
 ---
 
 ## 🎯 Trading Strategy by Market Regime
 
-### Current: STRONG_DOWNTREND
+### Current: MIXED
 
 **Strategy:**
-• Focus on SELL signals
-• Avoid BUY signals
-• Use tight stops
-• Scale into shorts
+• Be selective
+• High-accuracy trades only
+• Reduce position size
+• Wait for clarity
 
 ---
 
