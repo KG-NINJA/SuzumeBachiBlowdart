@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Mon Dec  1 04:40:57 UTC 2025
+**Execution Date:** Mon Dec  1 14:21:53 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -21,26 +21,26 @@ Analyzed tickers: 10/10
 
 Top 10 Most Important Features Across All Tickers:
 feature
-DailyReturn            0.035081
-Momentum_10            0.033892
-OBV                    0.033795
-Volume                 0.031058
-HighLowRatio           0.030555
-MACD                   0.030350
-ATR_Percent            0.029862
-Minus_DI               0.029447
-EMA_Distance_10_50     0.028300
-Momentum               0.028290
-VROC                   0.027899
-RSI7                   0.027122
-EMA26                  0.027084
-Momentum_5             0.027070
-CloseOpenRatio         0.026998
-ATR                    0.026833
-Volume_Ratio           0.026765
-Distance_to_Support    0.025851
-PVT                    0.025675
-Low                    0.025049
+DailyReturn_lag1       0.034781
+Volume                 0.034349
+CloseOpenRatio_lag1    0.032811
+OBV                    0.032683
+ROC_5                  0.032166
+MACD                   0.030203
+Plus_DI                0.029803
+VROC                   0.029404
+Stoch_K                0.029161
+ATR_Percent            0.028806
+ATR                    0.028349
+Momentum               0.028328
+EMA_Distance_10_50     0.027194
+HighLowRatio_lag1      0.027149
+Low                    0.026214
+ROC10                  0.026119
+Open                   0.025947
+High                   0.025895
+Momentum_10            0.025676
+ADX                    0.025616
 Name: importance, dtype: float64
 ```
 
@@ -80,17 +80,17 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] QQQ - 改善版モード起動
-  [FEATURES] QQQ: 20 selected
-  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] QQQ | Hybrid Acc: 0.5400 | Improvement: +0.0562
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================

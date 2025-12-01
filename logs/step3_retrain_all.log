@@ -1,3 +1,51 @@
+2025-12-01 14:21:49,194 - blowdart_ml_engine - INFO - [TRAIN] NVDA - 改善版モード起動
+2025-12-01 14:21:49,197 - blowdart_ml_engine - INFO - [FEATURES] NVDA: 20 selected
+2025-12-01 14:21:49,200 - blowdart_ml_engine - INFO -   [REGIME] NVDA: CHOPPY          | Vol=1.00 | Trend=0.16
+2025-12-01 14:21:49,200 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:49,206 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:49,492 - blowdart_ml_engine - INFO - [RESULT] NVDA | Hybrid Acc: 0.4931 | Improvement: -0.1108
+2025-12-01 14:21:49,535 - blowdart_ml_engine - INFO - [TRAIN] AAPL - 改善版モード起動
+2025-12-01 14:21:49,538 - blowdart_ml_engine - INFO - [FEATURES] AAPL: 20 selected
+2025-12-01 14:21:49,540 - blowdart_ml_engine - INFO -   [REGIME] AAPL: CHOPPY          | Vol=1.00 | Trend=0.05
+2025-12-01 14:21:49,541 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:49,545 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:49,834 - blowdart_ml_engine - INFO - [RESULT] AAPL | Hybrid Acc: 0.6608 | Improvement: +0.0885
+2025-12-01 14:21:49,878 - blowdart_ml_engine - INFO - [TRAIN] MSFT - 改善版モード起動
+2025-12-01 14:21:49,881 - blowdart_ml_engine - INFO - [FEATURES] MSFT: 20 selected
+2025-12-01 14:21:49,883 - blowdart_ml_engine - INFO -   [REGIME] MSFT: CHOPPY          | Vol=1.00 | Trend=0.47
+2025-12-01 14:21:49,884 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:49,888 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:50,171 - blowdart_ml_engine - INFO - [RESULT] MSFT | Hybrid Acc: 0.4208 | Improvement: -0.1400
+2025-12-01 14:21:50,215 - blowdart_ml_engine - INFO - [TRAIN] GOOGL - 改善版モード起動
+2025-12-01 14:21:50,217 - blowdart_ml_engine - INFO - [FEATURES] GOOGL: 20 selected
+2025-12-01 14:21:50,220 - blowdart_ml_engine - INFO -   [REGIME] GOOGL: CHOPPY          | Vol=1.00 | Trend=0.05
+2025-12-01 14:21:50,220 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:50,225 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:50,509 - blowdart_ml_engine - INFO - [RESULT] GOOGL | Hybrid Acc: 0.5277 | Improvement: +0.1246
+2025-12-01 14:21:50,553 - blowdart_ml_engine - INFO - [TRAIN] AMZN - 改善版モード起動
+2025-12-01 14:21:50,556 - blowdart_ml_engine - INFO - [FEATURES] AMZN: 20 selected
+2025-12-01 14:21:50,559 - blowdart_ml_engine - INFO -   [REGIME] AMZN: CHOPPY          | Vol=1.00 | Trend=0.05
+2025-12-01 14:21:50,559 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:50,564 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:50,855 - blowdart_ml_engine - INFO - [RESULT] AMZN | Hybrid Acc: 0.5046 | Improvement: +0.0115
+2025-12-01 14:21:50,899 - blowdart_ml_engine - INFO - [TRAIN] META - 改善版モード起動
+2025-12-01 14:21:50,901 - blowdart_ml_engine - INFO - [FEATURES] META: 20 selected
+2025-12-01 14:21:50,904 - blowdart_ml_engine - INFO -   [REGIME] META: CHOPPY          | Vol=1.00 | Trend=0.26
+2025-12-01 14:21:50,904 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:50,909 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:51,198 - blowdart_ml_engine - INFO - [RESULT] META | Hybrid Acc: 0.3323 | Improvement: -0.0592
+2025-12-01 14:21:51,243 - blowdart_ml_engine - INFO - [TRAIN] TSLA - 改善版モード起動
+2025-12-01 14:21:51,246 - blowdart_ml_engine - INFO - [FEATURES] TSLA: 20 selected
+2025-12-01 14:21:51,249 - blowdart_ml_engine - INFO -   [REGIME] TSLA: CHOPPY          | Vol=1.00 | Trend=0.05
+2025-12-01 14:21:51,249 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:51,254 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:51,542 - blowdart_ml_engine - INFO - [RESULT] TSLA | Hybrid Acc: 0.5338 | Improvement: +0.0269
+2025-12-01 14:21:51,586 - blowdart_ml_engine - INFO - [TRAIN] AMD - 改善版モード起動
+2025-12-01 14:21:51,588 - blowdart_ml_engine - INFO - [FEATURES] AMD: 20 selected
+2025-12-01 14:21:51,591 - blowdart_ml_engine - INFO -   [REGIME] AMD: CHOPPY          | Vol=1.00 | Trend=0.37
+2025-12-01 14:21:51,591 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:51,596 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:51,887 - blowdart_ml_engine - INFO - [RESULT] AMD | Hybrid Acc: 0.6715 | Improvement: +0.0269
 ======================================================================
 宗叡最終版による全ティッカー再訓練開始
 ======================================================================
@@ -7,7 +55,7 @@
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-12-01 04:40:53] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:49] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -25,13 +73,6 @@ Fetching NVDA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] NVDA - 改善版モード起動
-  [FEATURES] NVDA: 20 selected
-  [REGIME] NVDA: CHOPPY          | Vol=1.00 | Trend=0.16
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] NVDA | Hybrid Acc: 0.5431 | Improvement: -0.0677
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AAPL 訓練中...
@@ -39,7 +80,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-12-01 04:40:53] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:49] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -57,13 +98,6 @@ Fetching AAPL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] AAPL - 改善版モード起動
-  [FEATURES] AAPL: 20 selected
-  [REGIME] AAPL: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] AAPL | Hybrid Acc: 0.4646 | Improvement: -0.1123
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> MSFT 訓練中...
@@ -71,7 +105,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-12-01 04:40:54] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:49] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -89,13 +123,6 @@ Fetching MSFT...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] MSFT - 改善版モード起動
-  [FEATURES] MSFT: 20 selected
-  [REGIME] MSFT: CHOPPY          | Vol=1.00 | Trend=0.47
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] MSFT | Hybrid Acc: 0.5362 | Improvement: +0.1623
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> GOOGL 訓練中...
@@ -103,7 +130,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-12-01 04:40:54] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:50] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -121,13 +148,6 @@ Fetching GOOGL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] GOOGL - 改善版モード起動
-  [FEATURES] GOOGL: 20 selected
-  [REGIME] GOOGL: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] GOOGL | Hybrid Acc: 0.4346 | Improvement: -0.1262
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMZN 訓練中...
@@ -135,7 +155,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-12-01 04:40:54] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:50] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -153,13 +173,6 @@ Fetching AMZN...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] AMZN - 改善版モード起動
-  [FEATURES] AMZN: 20 selected
-  [REGIME] AMZN: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] AMZN | Hybrid Acc: 0.4662 | Improvement: -0.0431
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> META 訓練中...
@@ -167,7 +180,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-12-01 04:40:55] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:50] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -185,13 +198,6 @@ Fetching META...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] META - 改善版モード起動
-  [FEATURES] META: 20 selected
-  [REGIME] META: CHOPPY          | Vol=1.00 | Trend=0.26
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] META | Hybrid Acc: 0.3646 | Improvement: -0.0223
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> TSLA 訓練中...
@@ -199,7 +205,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-12-01 04:40:55] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:51] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -217,13 +223,6 @@ Fetching TSLA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] TSLA - 改善版モード起動
-  [FEATURES] TSLA: 20 selected
-  [REGIME] TSLA: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] TSLA | Hybrid Acc: 0.5654 | Improvement: +0.0515
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> AMD 訓練中...
@@ -231,7 +230,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-12-01 04:40:55] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:51] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -249,13 +248,6 @@ Fetching AMD...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] AMD - 改善版モード起動
-  [FEATURES] AMD: 20 selected
-  [REGIME] AMD: CHOPPY          | Vol=1.00 | Trend=0.37
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] AMD | Hybrid Acc: 0.6200 | Improvement: -0.0223
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> NFLX 訓練中...
@@ -263,7 +255,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-12-01 04:40:56] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:51] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -272,6 +264,18 @@ Fetching NFLX...
     ✓ Bollinger Bands
     ✓ ADX
     ✓ RSI & Divergence
+2025-12-01 14:21:51,931 - blowdart_ml_engine - INFO - [TRAIN] NFLX - 改善版モード起動
+2025-12-01 14:21:51,933 - blowdart_ml_engine - INFO - [FEATURES] NFLX: 20 selected
+2025-12-01 14:21:51,936 - blowdart_ml_engine - INFO -   [REGIME] NFLX: CHOPPY          | Vol=1.00 | Trend=0.16
+2025-12-01 14:21:51,936 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:51,942 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:52,240 - blowdart_ml_engine - INFO - [RESULT] NFLX | Hybrid Acc: 0.4208 | Improvement: +0.0092
+2025-12-01 14:21:52,284 - blowdart_ml_engine - INFO - [TRAIN] QQQ - 改善版モード起動
+2025-12-01 14:21:52,286 - blowdart_ml_engine - INFO - [FEATURES] QQQ: 20 selected
+2025-12-01 14:21:52,289 - blowdart_ml_engine - INFO -   [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
+2025-12-01 14:21:52,289 - blowdart_ml_engine - INFO - [SPLIT] Train: 100 | Test: 26
+2025-12-01 14:21:52,294 - blowdart_ml_engine - INFO - [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
+2025-12-01 14:21:52,582 - blowdart_ml_engine - INFO - [RESULT] QQQ | Hybrid Acc: 0.4885 | Improvement: +0.0492
     ✓ MACD
     ✓ Volume Features
     ✓ Volatility Features
@@ -281,13 +285,6 @@ Fetching NFLX...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] NFLX - 改善版モード起動
-  [FEATURES] NFLX: 20 selected
-  [REGIME] NFLX: CHOPPY          | Vol=1.00 | Trend=0.16
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] NFLX | Hybrid Acc: 0.3800 | Improvement: -0.0023
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 >>> QQQ 訓練中...
@@ -295,7 +292,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-12-01 04:40:56] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:52] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -313,13 +310,6 @@ Fetching QQQ...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-
-  [TRAIN] QQQ - 改善版モード起動
-  [FEATURES] QQQ: 20 selected
-  [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
-  [SPLIT] Train: 100 | Test: 26
-  [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] QQQ | Hybrid Acc: 0.5400 | Improvement: +0.0562
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================

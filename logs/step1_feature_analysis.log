@@ -7,7 +7,7 @@ Feature Analysis for All Tickers
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-12-01 04:40:42] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:37] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -28,14 +28,14 @@ Fetching NVDA...
   ✓ Analysis complete
     - Total features: 71
     - Top 20 features selected
-    - High correlation pairs: 80
+    - High correlation pairs: 77
 
 >>> AAPL
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-12-01 04:40:42] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:38] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -63,7 +63,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-12-01 04:40:43] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:38] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -84,14 +84,14 @@ Fetching MSFT...
   ✓ Analysis complete
     - Total features: 71
     - Top 20 features selected
-    - High correlation pairs: 79
+    - High correlation pairs: 78
 
 >>> GOOGL
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-12-01 04:40:43] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:38] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -119,7 +119,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-12-01 04:40:43] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:39] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -147,7 +147,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-12-01 04:40:43] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:39] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -175,7 +175,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-12-01 04:40:44] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:39] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -196,14 +196,14 @@ Fetching TSLA...
   ✓ Analysis complete
     - Total features: 71
     - Top 20 features selected
-    - High correlation pairs: 73
+    - High correlation pairs: 71
 
 >>> AMD
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-12-01 04:40:44] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:39] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -231,7 +231,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-12-01 04:40:44] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:40] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -252,14 +252,14 @@ Fetching NFLX...
   ✓ Analysis complete
     - Total features: 71
     - Top 20 features selected
-    - High correlation pairs: 422
+    - High correlation pairs: 405
 
 >>> QQQ
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-12-01 04:40:44] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 14:21:40] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -290,24 +290,24 @@ Analyzed tickers: 10/10
 
 Top 10 Most Important Features Across All Tickers:
 feature
-DailyReturn            0.035081
-Momentum_10            0.033892
-OBV                    0.033795
-Volume                 0.031058
-HighLowRatio           0.030555
-MACD                   0.030350
-ATR_Percent            0.029862
-Minus_DI               0.029447
-EMA_Distance_10_50     0.028300
-Momentum               0.028290
-VROC                   0.027899
-RSI7                   0.027122
-EMA26                  0.027084
-Momentum_5             0.027070
-CloseOpenRatio         0.026998
-ATR                    0.026833
-Volume_Ratio           0.026765
-Distance_to_Support    0.025851
-PVT                    0.025675
-Low                    0.025049
+DailyReturn_lag1       0.034781
+Volume                 0.034349
+CloseOpenRatio_lag1    0.032811
+OBV                    0.032683
+ROC_5                  0.032166
+MACD                   0.030203
+Plus_DI                0.029803
+VROC                   0.029404
+Stoch_K                0.029161
+ATR_Percent            0.028806
+ATR                    0.028349
+Momentum               0.028328
+EMA_Distance_10_50     0.027194
+HighLowRatio_lag1      0.027149
+Low                    0.026214
+ROC10                  0.026119
+Open                   0.025947
+High                   0.025895
+Momentum_10            0.025676
+ADX                    0.025616
 Name: importance, dtype: float64
