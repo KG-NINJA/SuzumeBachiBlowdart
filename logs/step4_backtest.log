@@ -9,9 +9,9 @@ Phase 3: Backtest & Validation
   ✓ Simulated 10 trades
 
 [3/4] Calculating metrics...
-  ✓ Best trades: 10
-  ✓ Good trades: 0
-  ✓ Fair trades: 0
+  ✓ Best trades: 0
+  ✓ Good trades: 4
+  ✓ Fair trades: 6
   ✓ Poor trades: 0
 
 [4/4] Generating reports...
@@ -24,7 +24,7 @@ Phase 3 Backtest Complete
 ======================================================================
 
 Trade Quality:
-  Best:  10
-  Good:  0
-  Fair:  0
+  Best:  0
+  Good:  4
+  Fair:  6
   Poor:  0

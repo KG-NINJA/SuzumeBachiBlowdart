@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Sun Nov 30 14:43:40 UTC 2025
+**Execution Date:** Mon Dec  1 04:40:57 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -90,7 +90,7 @@ XGBoost Tuning Complete
   [REGIME] QQQ: CHOPPY          | Vol=1.00 | Trend=0.05
   [SPLIT] Train: 100 | Test: 26
   [WEIGHTS] Simple=70% | Aggressive=30% (CONSERVATIVE)
-  [RESULT] QQQ | Hybrid Acc: 0.5108 | Improvement: +0.0562
+  [RESULT] QQQ | Hybrid Acc: 0.5400 | Improvement: +0.0562
   成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
 
 ======================================================================
@@ -125,9 +125,9 @@ Phase 3: Backtest & Validation
   ✓ Simulated 10 trades
 
 [3/4] Calculating metrics...
-  ✓ Best trades: 10
-  ✓ Good trades: 0
-  ✓ Fair trades: 0
+  ✓ Best trades: 0
+  ✓ Good trades: 4
+  ✓ Fair trades: 6
   ✓ Poor trades: 0
 
 [4/4] Generating reports...
@@ -140,9 +140,9 @@ Phase 3 Backtest Complete
 ======================================================================
 
 Trade Quality:
-  Best:  10
-  Good:  0
-  Fair:  0
+  Best:  0
+  Good:  4
+  Fair:  6
   Poor:  0
 ```
 
