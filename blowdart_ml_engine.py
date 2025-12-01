@@ -148,20 +148,43 @@ def train_model(df: pd.DataFrame, ticker: str):
 # Legacy Compatibility Wrapper
 #   For 宗叡版 / retrain_all.py auto compatibility
 # ===========================================================
-def train_ticker(ticker: str) -> float:
+def train_ticker(*args, **kwargs) -> float:
     """
-    Legacy wrapper for older scripts.
-    - Automatically loads local cache dataset
-    - Calls train_model()
+    Full backward-compatible train_ticker wrapper.
+    Handles ALL old signatures:
+        train_ticker(ticker)
+        train_ticker(ticker, df)
+        train_ticker(self, ticker)
+        train_ticker(self, ticker, df)
     """
     try:
-        from data_loader import load_local_cache  # 宗叡版の loader と互換
+        from data_loader import load_local_cache
 
-        df = load_local_cache(ticker)
-        logger.info(f"[COMPAT] train_ticker() → train_model() [{ticker}]")
+        # ----------------------------
+        # 引数解析ロジック
+        # ----------------------------
+        args = list(args)
+
+        # self が来ている場合は捨てる
+        if len(args) >= 1 and not isinstance(args[0], str):
+            args = args[1:]
+
+        # ticker 抽出
+        if len(args) >= 1:
+            ticker = args[0]
+        else:
+            raise ValueError("train_ticker() missing ticker")
+
+        # df 抽出（古い宗叡版は2引数で df を渡すことがある）
+        if len(args) >= 2:
+            df = args[1]
+        else:
+            df = load_local_cache(ticker)
+
+        logger.info(f"[COMPAT] train_ticker() unified call → train_model() [{ticker}]")
 
         return train_model(df, ticker)
 
     except Exception as e:
-        logger.error(f"[train_ticker] {ticker} failed: {e}")
+        logger.error(f"[train_ticker] {args} failed: {e}")
         return 0.0
