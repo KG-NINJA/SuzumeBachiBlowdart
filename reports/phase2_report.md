@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Mon Dec  1 15:00:10 UTC 2025
+**Execution Date:** Mon Dec  1 15:07:45 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -91,22 +91,22 @@ XGBoost Tuning Complete
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status          reason
-  NVDA FAILED Training failed
-  AAPL FAILED Training failed
-  MSFT FAILED Training failed
- GOOGL FAILED Training failed
-  AMZN FAILED Training failed
-  META FAILED Training failed
-  TSLA FAILED Training failed
-   AMD FAILED Training failed
-  NFLX FAILED Training failed
-   QQQ FAILED Training failed
+ticker  status  regime  accuracy
+  NVDA SUCCESS UNKNOWN         0
+  AAPL SUCCESS UNKNOWN         0
+  MSFT SUCCESS UNKNOWN         0
+ GOOGL SUCCESS UNKNOWN         0
+  AMZN SUCCESS UNKNOWN         0
+  META SUCCESS UNKNOWN         0
+  TSLA SUCCESS UNKNOWN         0
+   AMD SUCCESS UNKNOWN         0
+  NFLX SUCCESS UNKNOWN         0
+   QQQ SUCCESS UNKNOWN         0
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。

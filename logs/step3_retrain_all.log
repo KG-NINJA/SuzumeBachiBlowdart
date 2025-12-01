@@ -15,7 +15,7 @@
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-12-01 15:00:09] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -33,14 +33,14 @@ Fetching NVDA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> AAPL 訓練中...
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-12-01 15:00:09] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -58,14 +58,14 @@ Fetching AAPL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> MSFT 訓練中...
 
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-12-01 15:00:09] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -83,14 +83,14 @@ Fetching MSFT...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> GOOGL 訓練中...
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-12-01 15:00:10] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -108,14 +108,14 @@ Fetching GOOGL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> AMZN 訓練中...
 
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-12-01 15:00:10] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -133,14 +133,14 @@ Fetching AMZN...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> META 訓練中...
 
 ============================================================
 Fetching META...
 ============================================================
-[2025-12-01 15:00:10] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -158,14 +158,14 @@ Fetching META...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> TSLA 訓練中...
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-12-01 15:00:10] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -183,14 +183,14 @@ Fetching TSLA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> AMD 訓練中...
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-12-01 15:00:10] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -208,14 +208,14 @@ Fetching AMD...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> NFLX 訓練中...
 
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-12-01 15:00:10] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -224,6 +224,8 @@ Fetching NFLX...
     ✓ Bollinger Bands
     ✓ ADX
     ✓ RSI & Divergence
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
     ✓ MACD
     ✓ Volume Features
     ✓ Volatility Features
@@ -232,17 +234,15 @@ Fetching NFLX...
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 >>> QQQ 訓練中...
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-12-01 15:00:10] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:07:44] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -260,22 +260,22 @@ Fetching QQQ...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  訓練失敗
+  成功 | Regime: UNKNOWN | Hybrid Acc: 0.0000
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status          reason
-  NVDA FAILED Training failed
-  AAPL FAILED Training failed
-  MSFT FAILED Training failed
- GOOGL FAILED Training failed
-  AMZN FAILED Training failed
-  META FAILED Training failed
-  TSLA FAILED Training failed
-   AMD FAILED Training failed
-  NFLX FAILED Training failed
-   QQQ FAILED Training failed
+ticker  status  regime  accuracy
+  NVDA SUCCESS UNKNOWN         0
+  AAPL SUCCESS UNKNOWN         0
+  MSFT SUCCESS UNKNOWN         0
+ GOOGL SUCCESS UNKNOWN         0
+  AMZN SUCCESS UNKNOWN         0
+  META SUCCESS UNKNOWN         0
+  TSLA SUCCESS UNKNOWN         0
+   AMD SUCCESS UNKNOWN         0
+  NFLX SUCCESS UNKNOWN         0
+   QQQ SUCCESS UNKNOWN         0
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。
