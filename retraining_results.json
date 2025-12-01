@@ -1,62 +1,52 @@
 [
   {
     "ticker": "NVDA",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "AAPL",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "MSFT",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "GOOGL",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "AMZN",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "META",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "TSLA",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "AMD",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "NFLX",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   },
   {
     "ticker": "QQQ",
-    "status": "SUCCESS",
-    "regime": "CHOPPY",
-    "accuracy": 0
+    "status": "ERROR",
+    "error": "train_ticker() takes 1 positional argument but 2 w"
   }
 ]
