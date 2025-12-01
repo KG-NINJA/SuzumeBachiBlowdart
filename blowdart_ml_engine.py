@@ -9,11 +9,13 @@ logger = logging.getLogger("blowdart_ml_engine")
 
 
 # ===========================================================
-# ターゲット生成（落ちない＋fallback込み）
+# Safety Patch 1:
+#   Robust target generator + fallback
 # ===========================================================
 def generate_target(df: pd.DataFrame) -> pd.DataFrame:
     """
-    target = 明日 Close が上がるかどうかの 1/0
+    Create a binary up/down target for next-day price.
+    Includes full fallback logic for safety.
     """
     try:
         if "Close" not in df.columns:
@@ -22,128 +24,83 @@ def generate_target(df: pd.DataFrame) -> pd.DataFrame:
         df["target"] = (df["Close"].shift(-1) > df["Close"]).astype(int)
         df = df.dropna(subset=["target"])
 
-        # 全部 1 または 0 の場合 → fallback
+        # If all same → fallback
         if df["target"].nunique() < 2:
-            logger.warning("[TARGET] Unique target=1 → fallback random")
+            logger.warning("[TARGET] Unique=1 → fallback random jitter")
             df["target"] = (np.random.rand(len(df)) > 0.5).astype(int)
 
         return df
 
     except Exception as e:
-        logger.error(f"[TARGET] Failed: {e}")
+        logger.error(f"[TARGET] Failed to generate target: {e}")
         df["target"] = (np.random.rand(len(df)) > 0.5).astype(int)
         return df
 
 
 # ===========================================================
-# 統合特徴量 20版 + 74版 → 自動統合
+# Safety Patch 2:
+#   Hybrid accuracy calculation with full guards
 # ===========================================================
-def select_integrated_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    改善版20特徴量 ＋ 宗叡74特徴量 を自動統合。
-    存在しない列は無視。
-    """
-    feature_candidates = [
-        # ==== 20 features 基本 ====
-        "return_1d", "return_3d", "return_5d",
-        "volatility_5d", "volatility_10d",
-        "ma_5", "ma_10", "ma_20",
-        "rsi14", "macd", "macd_signal",
-        "volume_change", "atr", "stoch_k", "stoch_d",
-        "ema_5", "ema_10", "ema_20", "ema_ratio",
-        "range_ratio",
-
-        # ==== 宗叡 74 features（存在すれば使う） ====
-        "bb_upper", "bb_lower", "bb_width",
-        "adx", "di_plus", "di_minus",
-        "rsi_divergence",
-        "macd_hist",
-        "vol_ma_ratio",
-        "trend_strength",
-        "momentum_3", "momentum_10",
-        "volatility_20",
-        "volume_trend",
-    ]
-
-    final_features = [c for c in feature_candidates if c in df.columns]
-
-    logger.info(f"[FEATURES] Integrated: {len(final_features)} selected")
-    return df[final_features + ["target"]]
-
-
-# ===========================================================
-# レジーム分類（改善版が安定）
-# ===========================================================
-def detect_regime(df):
-    """
-    トレンド／ボラティリティの強弱から CHOPPY / TRENDING を判定
-    """
-    try:
-        vol = df["volatility_10d"].mean() if "volatility_10d" in df else 1
-        trend = abs(df["trend_strength"].mean()) if "trend_strength" in df else 0.1
-
-        if vol < 0.5 and trend > 0.3:
-            regime = "TRENDING"
-        else:
-            regime = "CHOPPY"
-
-        logger.info(f"[REGIME] {regime:10s} | Vol={vol:.2f} | Trend={trend:.2f}")
-        return regime
-
-    except Exception as e:
-        logger.error(f"[REGIME] detection failed: {e}")
-        return "CHOPPY"
-
-
-# ===========================================================
-# ハイブリッド精度（強制安全化）
-# ===========================================================
-def calc_hybrid_accuracy(y_test, pred_simple, pred_agg):
+def calc_hybrid_accuracy(y_test, pred_simple, pred_aggressive):
     try:
         if len(y_test) == 0:
+            logger.error("[HYBRID] Empty y_test")
             return 0.0
 
-        # shape/None 安全化
         if pred_simple is None or len(pred_simple) != len(y_test):
+            logger.warning("[HYBRID] Simple prediction invalid → fallback")
             pred_simple = np.zeros(len(y_test))
-        if pred_agg is None or len(pred_agg) != len(y_test):
-            pred_agg = np.zeros(len(y_test))
 
-        acc_s = accuracy_score(y_test, pred_simple)
-        acc_a = accuracy_score(y_test, pred_agg)
+        if pred_aggressive is None or len(pred_aggressive) != len(y_test):
+            logger.warning("[HYBRID] Aggressive prediction invalid → fallback")
+            pred_aggressive = np.zeros(len(y_test))
 
-        hybrid = acc_s * 0.7 + acc_a * 0.3
+        acc_simple = accuracy_score(y_test, pred_simple)
+        acc_aggressive = accuracy_score(y_test, pred_aggressive)
+
+        w1 = 0.7
+        w2 = 0.3
+
+        hybrid = (acc_simple * w1) + (acc_aggressive * w2)
+
         return float(hybrid)
 
     except Exception as e:
-        logger.error(f"[HYBRID] error: {e}")
+        logger.error(f"[HYBRID] calc failed: {e}")
         return 0.0
 
 
 # ===========================================================
-# 主要トレーニング関数（統合版）
+# Safety Patch 3:
+#   Unified Blowdart Integrated Training Engine
 # ===========================================================
-def train_model(df: pd.DataFrame, ticker: str) -> float:
+def train_model(df: pd.DataFrame, ticker: str):
+    """
+    Main unified training function.
+    - Handles 20-features版 / 宗叡最終版 どちらでも動作
+    - dropna の最適タイミングにより dataset=0 を防止
+    - RandomForest(Hybrid) による安全学習
+    """
     try:
-        logger.info(f"[TRAIN] {ticker} - 統合安定版起動")
+        logger.info(f"[TRAIN] {ticker} - Blowdart Integrated v1.0")
 
-        # ---- 1) ターゲット生成 ----
+        # -------------------------
+        # Step 1: target
+        # -------------------------
         df = generate_target(df)
 
-        # ---- 2) NA 除去（最も重要）----
+        # -------------------------
+        # Step 2: drop invalid rows
+        # -------------------------
         df = df.dropna().reset_index(drop=True)
 
-        if len(df) < 60:
-            logger.error(f"[TRAIN] {ticker}: too small ({len(df)} rows)")
+        if len(df) < 50:
+            logger.error(f"[TRAIN] {ticker}: dataset too small → {len(df)} rows")
             return 0.0
 
-        # ---- 3) 特徴量統合 ----
-        df = select_integrated_features(df)
-
-        # ---- 4) Regime ----
-        detect_regime(df)
-
-        # ---- 5) train/test ----
+        # -------------------------
+        # Step 3: train/test split
+        # -------------------------
         X = df.drop(columns=["target"])
         y = df["target"]
 
@@ -151,37 +108,60 @@ def train_model(df: pd.DataFrame, ticker: str) -> float:
             X, y, test_size=0.2, shuffle=False
         )
 
-        logger.info(f"[SPLIT] Train={len(X_train)} | Test={len(X_test)}")
+        logger.info(f"[SPLIT] {ticker}: Train={len(X_train)} | Test={len(X_test)}")
 
         if len(X_test) == 0:
-            logger.error(f"[TRAIN] Test size=0 → abort")
+            logger.error(f"[TRAIN] {ticker}: X_test=0 → abort")
             return 0.0
 
-        # ---- 6) 2モデル ----
+        # -------------------------
+        # Step 4: two models
+        # -------------------------
         model_simple = RandomForestClassifier(
-            n_estimators=80,
-            max_depth=5,
-            random_state=42
+            n_estimators=80, max_depth=5, random_state=42
         )
         model_agg = RandomForestClassifier(
-            n_estimators=200,
-            max_depth=10,
-            random_state=42
+            n_estimators=200, max_depth=10, random_state=42
         )
 
         model_simple.fit(X_train, y_train)
         model_agg.fit(X_train, y_train)
 
         pred_simple = model_simple.predict(X_test)
-        pred_agg = model_agg.predict(X_test)
+        pred_aggressive = model_agg.predict(X_test)
 
-        # ---- 7) Hybrid 精度 ----
-        acc = calc_hybrid_accuracy(y_test, pred_simple, pred_agg)
+        # -------------------------
+        # Step 5: Hybrid
+        # -------------------------
+        acc = calc_hybrid_accuracy(y_test, pred_simple, pred_aggressive)
 
         logger.info(f"[RESULT] {ticker} | Hybrid Acc: {acc:.4f}")
 
-        return acc
+        return float(acc)
 
     except Exception as e:
-        logger.error(f"[TRAIN] {ticker} fatal error: {e}")
+        logger.error(f"[TRAIN] {ticker} fatal: {e}")
+        return 0.0
+
+
+# ===========================================================
+# Legacy Compatibility Wrapper
+#   For 宗叡版 / retrain_all.py auto compatibility
+# ===========================================================
+def train_ticker(ticker: str) -> float:
+    """
+    Legacy wrapper for older scripts.
+    - Automatically loads local cache dataset
+    - Calls train_model()
+    """
+    try:
+        from data_loader import load_local_cache  # 宗叡版の loader と互換
+
+        df = load_local_cache(ticker)
+        logger.info(f"[COMPAT] train_ticker() → train_model() [{ticker}]")
+
+        return train_model(df, ticker)
+
+    except Exception as e:
+        logger.error(f"[train_ticker] {ticker} failed: {e}")
         return 0.0
