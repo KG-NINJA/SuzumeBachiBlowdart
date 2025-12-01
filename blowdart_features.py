@@ -141,14 +141,16 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
         df['Volume_Ratio'] = volume / (df['Volume_MA20'] + 0.0001)
 
         # Price patterns
-        df['HighLowRatio'] = (high - low) / close
-        df['CloseOpenRatio'] = (close - df['Open']) / df['Open']
+        # LEAK FIX: Shifted by 1 to avoid data leakage (using yesterday's data for today's prediction)
+        df['HighLowRatio_lag1'] = ((high - low) / close).shift(1)
+        df['CloseOpenRatio_lag1'] = ((close - df['Open']) / df['Open']).shift(1)
 
         # Returns
-        df['DailyReturn'] = close.pct_change() * 100
+        # LEAK FIX: Shifted by 1
+        df['DailyReturn_lag1'] = (close.pct_change() * 100).shift(1)
 
         # Volatility
-        df['Volatility'] = df['DailyReturn'].rolling(20).std()
+        df['Volatility'] = df['DailyReturn_lag1'].rolling(20).std()
 
         print(f"  [FEATURES] Basic features added: {df.shape[1]} columns")
 

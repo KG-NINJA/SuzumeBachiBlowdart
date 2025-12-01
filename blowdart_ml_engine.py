@@ -14,33 +14,39 @@ from pathlib import Path
 import pickle
 from datetime import datetime
 import warnings
-warnings.filterwarnings('ignore')
+from typing import Optional, Dict, List, Tuple, Any
+import logging
 
-MODELS_ROOT = Path("models")
+# ロギング設定
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+warnings.filterwarnings('ignore')
+from confidence_filter import calculate_confidence_score
+from config.hyperparameters import (
+    XGBoostConfig,
+    MarketRegimeConfig,
+    FeatureSelectionConfig,
+    TrainingConfig,
+    PredictionConfig,
+    PathConfig
+)
+
+# パス設定（config から取得）
+MODELS_ROOT = Path(PathConfig.MODELS_ROOT)
 MODELS_ROOT.mkdir(parents=True, exist_ok=True)
-REGIME_LOG = Path("regime_detection")
+REGIME_LOG = Path(PathConfig.REGIME_LOG)
 REGIME_LOG.mkdir(parents=True, exist_ok=True)
 
-# ===== リーク特徴（当日情報のみ除外） =====
-LEAK_FEATURES = {
-    'CloseOpenRatio',
-    'DailyReturn',
-    'HighLowRatio',
-}
-
-# ===== 保持する特徴（前営業日情報として有効） =====
-KEEP_FEATURES = {
-    'ATR', 'OBV', 'MACD', 'RSI7', 'RSI14',
-    'Momentum', 'Momentum_5', 'Momentum_10',
-    'Volume', 'Volume_Ratio',
-    'EMA12', 'EMA26', 'MA5', 'MA10', 'MA20', 'MA50',
-    'Plus_DI', 'Minus_DI', 'ADX',
-    'VROC', 'PVT',
-    'Low', 'High', 'Open'
-}
+# 特徴選択の設定（config から取得）
+LEAK_FEATURES = FeatureSelectionConfig.LEAK_FEATURES
+KEEP_FEATURES = FeatureSelectionConfig.KEEP_FEATURES
 
 
-def detect_market_regime_fixed(df, ticker, lookback=20):
+def detect_market_regime_fixed(df: pd.DataFrame, ticker: str, lookback: int = MarketRegimeConfig.LOOKBACK_PERIOD) -> Tuple[str, float, float]:
     """市場レジーム判定（改善版）"""
     
     if len(df) < lookback:
@@ -73,64 +79,123 @@ def detect_market_regime_fixed(df, ticker, lookback=20):
     total = up_days + down_days + 1e-6
     trend_strength = abs(up_days - down_days) / total
     
-    # レジーム判定
-    if trend_strength > 0.65 and vol_percentile < 0.55:
+    # レジーム判定（config の閾値を使用）
+    if trend_strength > MarketRegimeConfig.TREND_STRENGTH_THRESHOLD and vol_percentile < MarketRegimeConfig.VOLATILITY_THRESHOLD_LOW:
         regime = 'TRENDING'
-    elif vol_percentile > 0.75:
+    elif vol_percentile > MarketRegimeConfig.VOLATILITY_THRESHOLD_HIGH:
         regime = 'CHOPPY'
     else:
         regime = 'MEAN_REVERSION'
     
-    print(f"  [REGIME] {ticker}: {regime:15s} | Vol={vol_percentile:.2f} | Trend={trend_strength:.2f}")
+    logger.info(f"  [REGIME] {ticker}: {regime:15s} | Vol={vol_percentile:.2f} | Trend={trend_strength:.2f}")
     
     return regime, float(vol_percentile), float(trend_strength)
 
 
-def get_ticker_dir(ticker):
+def get_ticker_dir(ticker: str) -> Path:
     """ティッカー専用のモデルディレクトリを取得"""
     ticker_dir = MODELS_ROOT / ticker
     ticker_dir.mkdir(parents=True, exist_ok=True)
     return ticker_dir
 
 
-def load_existing_model(ticker):
-    """既存モデルを読み込み"""
+def load_existing_model(ticker: str) -> Tuple[Optional[Any], Optional[Any]]:
+    """
+    既存モデルをロード
+    
+    Args:
+        ticker: ティッカーシンボル
+    
+    Returns:
+        (model_booster, scaler) または (None, None) if failed
+    """
     try:
         ticker_dir = get_ticker_dir(ticker)
         model_path = ticker_dir / "model_simple.json"
         scaler_path = ticker_dir / "scaler_simple.pkl"
         
-        if not model_path.exists() or not scaler_path.exists():
+        # ファイル存在チェック
+        if not model_path.exists():
+            logger.debug(f"{ticker}: Model file not found at {model_path}")
             return None, None
         
-        model = xgb.XGBClassifier()
-        model.load_model(str(model_path))
+        if not scaler_path.exists():
+            logger.debug(f"{ticker}: Scaler file not found at {scaler_path}")
+            return None, None
         
-        with open(scaler_path, 'rb') as f:
-            scaler = pickle.load(f)
+        # モデルロード
+        try:
+            model = xgb.XGBClassifier()
+            model.load_model(str(model_path))
+            logger.debug(f"{ticker}: Model loaded successfully from {model_path}")
+        except (FileNotFoundError, OSError) as e:
+            logger.error(f"{ticker}: Model file access error: {str(e)}")
+            return None, None
+        except Exception as e:
+            logger.error(f"{ticker}: Failed to load model: {type(e).__name__}: {str(e)}")
+            return None, None
+        
+        # スケーラーロード
+        try:
+            with open(scaler_path, 'rb') as f:
+                scaler = pickle.load(f)
+            logger.debug(f"{ticker}: Scaler loaded successfully from {scaler_path}")
+        except pickle.UnpicklingError as e:
+            logger.error(f"{ticker}: Scaler file corrupted (UnpicklingError): {str(e)}")
+            return None, None
+        except (FileNotFoundError, OSError) as e:
+            logger.error(f"{ticker}: Scaler file access error: {str(e)}")
+            return None, None
+        except Exception as e:
+            logger.error(f"{ticker}: Unexpected error loading scaler: {type(e).__name__}: {str(e)}")
+            return None, None
         
         return model.get_booster(), scaler
+        
     except Exception as e:
-        print(f"  [WARNING] Failed to load existing model: {str(e)[:40]}")
+        logger.error(f"{ticker}: Failed to load existing model: {type(e).__name__}: {str(e)}", exc_info=True)
         return None, None
 
 
-def load_model_info(ticker):
-    """モデル情報を読み込み"""
+def load_model_info(ticker: str) -> Optional[Dict[str, Any]]:
+    """
+    モデル情報（メタデータ）を読み込み
+    
+    Args:
+        ticker: ティッカーシンボル
+    
+    Returns:
+        メタデータ辞書 または None if failed
+    """
     try:
         ticker_dir = get_ticker_dir(ticker)
         metadata_path = ticker_dir / "metadata.json"
         
         if not metadata_path.exists():
+            logger.debug(f"{ticker}: Metadata file not found at {metadata_path}")
             return None
         
-        with open(metadata_path, 'r') as f:
-            return json.load(f)
-    except Exception:
+        try:
+            with open(metadata_path, 'r', encoding='utf-8') as f:
+                metadata = json.load(f)
+            logger.debug(f"{ticker}: Metadata loaded successfully")
+            return metadata
+        except json.JSONDecodeError as e:
+            logger.error(f"{ticker}: Metadata file corrupted (JSONDecodeError): {str(e)}")
+            return None
+        except (FileNotFoundError, OSError) as e:
+            logger.error(f"{ticker}: Metadata file access error: {str(e)}")
+            return None
+        except Exception as e:
+            logger.error(f"{ticker}: Unexpected error loading metadata: {type(e).__name__}: {str(e)}")
+            return None
+            
+    except Exception as e:
+        logger.error(f"{ticker}: Failed to load model info: {type(e).__name__}: {str(e)}", exc_info=True)
         return None
 
 
-def get_ticker_specific_features(df, ticker):
+def get_ticker_specific_features(df: pd.DataFrame, ticker: str) -> List[str]:
     """ティッカー固有の特徴選択"""
     
     # 利用可能な全特徴を取得（ターゲットとリーク特徴を除外）
@@ -146,25 +211,25 @@ def get_ticker_specific_features(df, ticker):
     keep_intersection = [f for f in numeric_cols if f in KEEP_FEATURES]
     other = [f for f in numeric_cols if f not in KEEP_FEATURES]
     
-    # 最大20特徴
-    final_features = (keep_intersection + other)[:20]
+    # 最大特徴数（config から取得）
+    final_features = (keep_intersection + other)[:FeatureSelectionConfig.MAX_FEATURES]
     
-    if len(final_features) < 5:
-        print(f"  [WARNING] {ticker}: Only {len(final_features)} features available")
+    if len(final_features) < FeatureSelectionConfig.MIN_FEATURES:
+        logger.warning(f"{ticker}: Only {len(final_features)} features available")
     
-    print(f"  [FEATURES] {ticker}: {len(final_features)} selected")
+    logger.info(f"[FEATURES] {ticker}: {len(final_features)} selected")
     
     return final_features
 
 
-def train_ticker(ticker, features_df, use_online_learning=True, use_feature_reduction=True):
+def train_ticker(ticker: str, features_df: pd.DataFrame, use_online_learning: bool = True, use_feature_reduction: bool = True) -> Optional[Dict[str, Any]]:
     """ティッカーのモデル訓練（改善版）"""
     
     try:
-        print(f"\n  [TRAIN] {ticker} - 改善版モード起動")
+        logger.info(f"[TRAIN] {ticker} - 改善版モード起動")
         
-        if features_df is None or features_df.empty or len(features_df) < 40:
-            print(f"  [ERROR] Insufficient data for {ticker}")
+        if features_df is None or features_df.empty or len(features_df) < TrainingConfig.MIN_TRAINING_SAMPLES:
+            logger.error(f"Insufficient data for {ticker}")
             return None
         
         df = features_df.copy()
@@ -173,14 +238,14 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         df['Target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
         df = df.dropna()
         
-        if len(df) < 40:
+        if len(df) < TrainingConfig.MIN_TRAINING_SAMPLES:
             return None
         
         # 特徴選択
         feature_cols = get_ticker_specific_features(df, ticker)
         
         if not feature_cols:
-            print(f"  [ERROR] No valid features for {ticker}")
+            logger.error(f"No valid features for {ticker}")
             return None
         
         X = df[feature_cols].replace([np.inf, -np.inf], np.nan).fillna(0)
@@ -190,14 +255,14 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         regime, vol, trend = detect_market_regime_fixed(df, ticker)
         
         # 時系列分割（80% train, 20% test）
-        split_idx = int(len(X) * 0.8)
+        split_idx = int(len(X) * TrainingConfig.TRAIN_TEST_SPLIT_RATIO)
         
         X_train = X.iloc[:split_idx]
         y_train = y.iloc[:split_idx]
         X_test = X.iloc[split_idx:]
         y_test = y.iloc[split_idx:]
         
-        print(f"  [SPLIT] Train: {len(X_train)} | Test: {len(X_test)}")
+        logger.info(f"[SPLIT] Train: {len(X_train)} | Test: {len(X_test)}")
         
         # オンライン学習ロジック
         existing_model = None
@@ -211,34 +276,25 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
             if model_info:
                 previous_accuracy = model_info.get('accuracies', {}).get('hybrid', 0)
         
-        # レジームに応じた重み付け
+        # レジームに応じた重み付け（config から取得）
         if regime == 'TRENDING':
-            w_simple, w_agg = 0.3, 0.7
+            w_simple, w_agg = MarketRegimeConfig.TRENDING_WEIGHTS
             desc = "TREND-FOCUSED"
         elif regime == 'CHOPPY':
-            w_simple, w_agg = 0.7, 0.3
+            w_simple, w_agg = MarketRegimeConfig.CHOPPY_WEIGHTS
             desc = "CONSERVATIVE"
         else:
-            w_simple, w_agg = 0.5, 0.5
+            w_simple, w_agg = MarketRegimeConfig.MEAN_REVERSION_WEIGHTS
             desc = "BALANCED"
         
-        print(f"  [WEIGHTS] Simple={w_simple:.0%} | Aggressive={w_agg:.0%} ({desc})")
+        logger.info(f"[WEIGHTS] Simple={w_simple:.0%} | Aggressive={w_agg:.0%} ({desc})")
         
-        # シンプルモデル
+        # シンプルモデル（config から取得）
         scaler_s = StandardScaler()
         X_train_s = scaler_s.fit_transform(X_train)
         X_test_s = scaler_s.transform(X_test)
         
-        model_s = xgb.XGBClassifier(
-            n_estimators=120,
-            max_depth=4,
-            learning_rate=0.05,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            random_state=42,
-            eval_metric='logloss',
-            verbosity=0
-        )
+        model_s = xgb.XGBClassifier(**XGBoostConfig.get_simple_params())
         model_s.fit(X_train_s, y_train)
         acc_s = model_s.score(X_test_s, y_test)
         
@@ -250,18 +306,9 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         models_a = []
         accs_a = []
         
-        for fold in range(5):
-            m = xgb.XGBClassifier(
-                n_estimators=200,
-                max_depth=4 + fold % 2,
-                learning_rate=0.08 * (0.9 + fold * 0.02),
-                subsample=0.7 + fold * 0.04,
-                colsample_bytree=0.75 + fold * 0.03,
-                gamma=0.5 + fold * 0.1,
-                random_state=42 + fold,
-                eval_metric='logloss',
-                verbosity=0
-            )
+        for fold in range(XGBoostConfig.AGGRESSIVE_N_FOLDS):
+            # アグレッシブモデル（config から取得）
+            m = xgb.XGBClassifier(**XGBoostConfig.get_aggressive_params(fold))
             m.fit(X_train_a, y_train)
             models_a.append(m)
             accs_a.append(m.score(X_test_a, y_test))
@@ -310,7 +357,7 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         with open(ticker_dir / "metadata.json", "w") as f:
             json.dump(metadata, f, indent=2)
         
-        print(f"  [RESULT] {ticker} | Hybrid Acc: {hybrid_acc:.4f} | Improvement: {accuracy_improvement:+.4f}")
+        logger.info(f"[RESULT] {ticker} | Hybrid Acc: {hybrid_acc:.4f} | Improvement: {accuracy_improvement:+.4f}")
         
         return {
             "accuracy": float(hybrid_acc),
@@ -324,13 +371,13 @@ def train_ticker(ticker, features_df, use_online_learning=True, use_feature_redu
         }
     
     except Exception as e:
-        print(f"  [ERROR] {ticker}: {e}")
+        logger.error(f"{ticker}: {e}")
         import traceback
         traceback.print_exc()
         return None
 
 
-def predict_ticker(ticker, features_df):
+def predict_ticker(ticker: str, features_df: pd.DataFrame) -> Optional[Dict[str, Any]]:
     """ティッカーの予測（改善版 - 予測価格を正しく計算）"""
     
     try:
@@ -341,7 +388,7 @@ def predict_ticker(ticker, features_df):
         metadata_path = ticker_dir / "metadata.json"
         
         if not metadata_path.exists():
-            print(f"  [PREDICT] Model not found for {ticker}")
+            logger.warning(f"[PREDICT] Model not found for {ticker}")
             return None
         
         with open(metadata_path, 'r') as f:
@@ -356,7 +403,7 @@ def predict_ticker(ticker, features_df):
         current_close = float(latest_row.get('Close', 0))
         
         if current_close <= 0:
-            print(f"  [ERROR] Invalid current price for {ticker}")
+            logger.error(f"Invalid current price for {ticker}")
             return None
         
         X_latest = features_df[feature_cols].iloc[-1:].copy()
@@ -401,20 +448,23 @@ def predict_ticker(ticker, features_df):
             prob_up = pred_hybrid
             prob_down = 1 - pred_hybrid
         
-        # 予測価格の計算（改善版：より現実的な変動率）
+        # 予測価格の計算（config から取得）
         # ハイブリッド信頼度に基づいて価格変動を予測
         confidence_delta = abs(pred_hybrid - 0.5)  # 0-0.5の範囲
         
-        # 変動率: 信頼度が高いほど大きな変動を予測（最大±2%）
-        price_change_pct = confidence_delta * 0.04  # 0-2%
+        # 変動率: 信頼度が高いほど大きな変動を予測
+        price_change_pct = confidence_delta * PredictionConfig.MAX_PRICE_CHANGE_PCT
         
         if pred_class == 1:
             predicted_price = current_close * (1 + price_change_pct)
         else:
             predicted_price = current_close * (1 - price_change_pct)
         
-        # 信頼度の計算（ハイブリッド精度と予測確率を組み合わせ）
-        final_confidence = (hybrid_accuracy * 0.5) + (confidence_delta * 2 * 0.5)
+        # 信頼度の計算（統一関数を使用）
+        final_confidence, _ = calculate_confidence_score(
+            pred_proba=pred_hybrid,
+            model_accuracy=hybrid_accuracy
+        )
         
         return {
             "ticker": ticker,
@@ -434,7 +484,7 @@ def predict_ticker(ticker, features_df):
         }
     
     except Exception as e:
-        print(f"  [PREDICT ERROR] {ticker}: {e}")
+        logger.error(f"[PREDICT ERROR] {ticker}: {e}")
         import traceback
         traceback.print_exc()
         return None

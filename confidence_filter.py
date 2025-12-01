@@ -14,23 +14,55 @@ PREDICTIONS_DIR = "daily_predictions"
 Path(PREDICTIONS_DIR).mkdir(parents=True, exist_ok=True)
 
 
-def calculate_confidence_score(pred_proba):
-    """
-    Calculate confidence score from prediction probability
-    Returns a score between 0.0 (50/50) and 1.0 (Certain)
-    """
-    # Convert 0.5-1.0 probability to 0.0-1.0 score
-    confidence_score = abs(pred_proba - 0.5) * 2
+from typing import Tuple, Optional
 
-    # Thresholds: >30% Strong, >10% Medium, <=10% Weak
-    if confidence_score > 0.30:
+def calculate_confidence_score(
+    pred_proba: float,
+    model_accuracy: Optional[float] = None,
+    market_regime_factor: float = 1.0
+) -> Tuple[float, str]:
+    """
+    予測確率からシステム全体で統一された信頼度スコアを計算
+    
+    Args:
+        pred_proba: 0.0-1.0 の予測確率
+        model_accuracy: Optional モデル精度 (0.0-1.0)
+        market_regime_factor: 市場環境調整係数 (0.7-1.3)
+    
+    Returns:
+        (confidence_score: float, confidence_level: str)
+            - confidence_score: 0.0-1.0
+            - confidence_level: 'STRONG' | 'MEDIUM' | 'WEAK'
+    """
+    # 基本スコア: 0.5からの距離 (0.0 - 1.0)
+    # 0.5 -> 0.0, 1.0 -> 1.0, 0.0 -> 1.0
+    base_score = abs(pred_proba - 0.5) * 2
+    
+    # モデル精度による補正 (精度が高いほど信頼度UP)
+    if model_accuracy is not None:
+        # 精度50%を基準に、精度が高いほどスコアをブースト
+        # 例: 精度60% -> 1.2倍, 精度50% -> 1.0倍
+        # ただし、精度が低い場合でも信頼度を下げすぎないように調整
+        accuracy_factor = 0.5 + model_accuracy  # 0.5 + 0.6 = 1.1倍
+        score = base_score * accuracy_factor
+    else:
+        score = base_score
+        
+    # 市場環境による補正
+    score *= market_regime_factor
+    
+    # 0.0-1.0にクリップ
+    final_score = float(np.clip(score, 0.0, 1.0))
+    
+    # レベル判定
+    if final_score >= 0.30:
         confidence_level = 'STRONG'
-    elif confidence_score > 0.10:
+    elif final_score >= 0.10:
         confidence_level = 'MEDIUM'
     else:
         confidence_level = 'WEAK'
 
-    return confidence_score, confidence_level
+    return final_score, confidence_level
 
 
 def apply_confidence_filter(predictions, min_confidence=0.15):
@@ -84,9 +116,9 @@ def generate_confidence_report(filtered_predictions):
         "hold_count": sum(1 for p in filtered_predictions if p.get('action') == 'HOLD'),
         "skip_count": sum(1 for p in filtered_predictions if p.get('action') == 'SKIP'),
         "confidence_distribution": {
-            "strong": sum(1 for c in confidences if abs(c - 0.5) * 2 >= 0.30),
-            "medium": sum(1 for c in confidences if 0.10 <= abs(c - 0.5) * 2 < 0.30),
-            "weak": sum(1 for c in confidences if abs(c - 0.5) * 2 < 0.10)
+            "strong": sum(1 for p in filtered_predictions if p.get('confidence_level') == 'STRONG'),
+            "medium": sum(1 for p in filtered_predictions if p.get('confidence_level') == 'MEDIUM'),
+            "weak": sum(1 for p in filtered_predictions if p.get('confidence_level') == 'WEAK')
         },
         "execute_ratio": f"{sum(1 for p in filtered_predictions if p.get('action') == 'EXECUTE') / len(filtered_predictions):.1%}"
     }
