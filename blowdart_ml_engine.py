@@ -137,18 +137,17 @@ def train_model(df: pd.DataFrame, ticker: str):
 def train_ticker(*args, **kwargs):
     """
     Backward compatible wrapper for legacy calls.
-    Supports:
-        train_ticker(ticker)
-        train_ticker(ticker, df)
-        train_ticker(self, ticker)
-        train_ticker(self, ticker, df)
+
+    Returns:
+        dict = full train_model() result
+        BUT when numeric accuracy only is required, legacy callers may extract ["hybrid_acc"].
     """
     try:
         from data_loader import load_local_cache
 
         args = list(args)
 
-        # remove self if present
+        # remove self
         if len(args) >= 1 and not isinstance(args[0], str):
             args = args[1:]
 
@@ -166,9 +165,16 @@ def train_ticker(*args, **kwargs):
 
         result = train_model(df, ticker)
 
-        # backward compatibility: return float accuracy
-        return result.get("hybrid_acc", 0.0)
+        # ------------- 重要修正点 -------------
+        # 返すのは result（dict）にする！
+        # retrain_all / Phase 2 は dict を期待している
+        return result
 
     except Exception as e:
         logger.error(f"[train_ticker] failed: {e}")
-        return 0.0
+        return {
+            "ok": False,
+            "ticker": ticker if "ticker" in locals() else "",
+            "error": str(e),
+            "hybrid_acc": 0.0
+        }
