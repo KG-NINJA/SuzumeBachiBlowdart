@@ -1,6 +1,6 @@
 # 📈 Phase 2: Market Environment Analysis
 
-**Generated:** 2025-11-30T23:19:24.082384
+**Generated:** 2025-12-01T08:31:45.288480
 
 ## 🎯 Market Regime
 
@@ -21,11 +21,11 @@ Market is mixed (10.0% bullish, 0.0% bearish). Be selective.
 
 | Rank | Ticker | Accuracy | Strength | Signal |
 |------|--------|----------|----------|--------|
-| 1 | AMD | 64.23% | 🟢 STRONG | +0.34 |
-| 2 | AAPL | 57.69% | 🟡 NEUTRAL | +0.20 |
-| 3 | GOOGL | 56.08% | 🟡 NEUTRAL | +0.12 |
-| 4 | NVDA | 61.08% | 🟡 NEUTRAL | +0.12 |
-| 5 | TSLA | 51.38% | 🟡 NEUTRAL | +0.04 |
+| 1 | TSLA | 57.46% | 🟢 STRONG | +0.31 |
+| 2 | NVDA | 60.15% | 🟡 NEUTRAL | +0.20 |
+| 3 | AMD | 64.69% | 🟡 NEUTRAL | +0.18 |
+| 4 | AAPL | 62.38% | 🟡 NEUTRAL | +0.09 |
+| 5 | QQQ | 49.31% | 🟡 NEUTRAL | +0.05 |
 
 
 ---
@@ -33,7 +33,8 @@ Market is mixed (10.0% bullish, 0.0% bearish). Be selective.
 ## 🎲 Adjusted Trading Recommendations
 
 ### 🟢 EXECUTE
-No execute signals at this time.
+- **TSLA** 📈 BUY | Conf: 68.59% | Strength: STRONG
+  → ✅ EXECUTE - EXECUTE (MIXED environment, STRONG strength)
 
 
 ### ⚠️ CAUTION
@@ -47,7 +48,6 @@ No cautionary signals.
 - **GOOGL** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 - **AMZN** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 - **META** - ⏸️ SKIP - Low confidence or misaligned with MIXED
-- **TSLA** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 - **AMD** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 - **NFLX** - ⏸️ SKIP - Low confidence or misaligned with MIXED
 - **QQQ** - ⏸️ SKIP - Low confidence or misaligned with MIXED
