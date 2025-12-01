@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Mon Dec  1 14:52:10 UTC 2025
+**Execution Date:** Mon Dec  1 15:00:10 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -91,22 +91,22 @@ XGBoost Tuning Complete
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status                                              error
-  NVDA  ERROR train_ticker() takes 1 positional argument but 2 w
-  AAPL  ERROR train_ticker() takes 1 positional argument but 2 w
-  MSFT  ERROR train_ticker() takes 1 positional argument but 2 w
- GOOGL  ERROR train_ticker() takes 1 positional argument but 2 w
-  AMZN  ERROR train_ticker() takes 1 positional argument but 2 w
-  META  ERROR train_ticker() takes 1 positional argument but 2 w
-  TSLA  ERROR train_ticker() takes 1 positional argument but 2 w
-   AMD  ERROR train_ticker() takes 1 positional argument but 2 w
-  NFLX  ERROR train_ticker() takes 1 positional argument but 2 w
-   QQQ  ERROR train_ticker() takes 1 positional argument but 2 w
+ticker status          reason
+  NVDA FAILED Training failed
+  AAPL FAILED Training failed
+  MSFT FAILED Training failed
+ GOOGL FAILED Training failed
+  AMZN FAILED Training failed
+  META FAILED Training failed
+  TSLA FAILED Training failed
+   AMD FAILED Training failed
+  NFLX FAILED Training failed
+   QQQ FAILED Training failed
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。

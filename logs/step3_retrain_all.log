@@ -1,3 +1,11 @@
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
 ======================================================================
 宗叡最終版による全ティッカー再訓練開始
 ======================================================================
@@ -7,7 +15,7 @@
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-12-01 14:52:09] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:09] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -25,14 +33,14 @@ Fetching NVDA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> AAPL 訓練中...
 
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-12-01 14:52:09] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:09] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -50,14 +58,14 @@ Fetching AAPL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> MSFT 訓練中...
 
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-12-01 14:52:09] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:09] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -75,14 +83,14 @@ Fetching MSFT...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> GOOGL 訓練中...
 
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-12-01 14:52:09] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -100,14 +108,14 @@ Fetching GOOGL...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> AMZN 訓練中...
 
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-12-01 14:52:09] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -125,14 +133,14 @@ Fetching AMZN...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> META 訓練中...
 
 ============================================================
 Fetching META...
 ============================================================
-[2025-12-01 14:52:09] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -150,14 +158,14 @@ Fetching META...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> TSLA 訓練中...
 
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-12-01 14:52:09] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -175,14 +183,14 @@ Fetching TSLA...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> AMD 訓練中...
 
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-12-01 14:52:09] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -200,14 +208,14 @@ Fetching AMD...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> NFLX 訓練中...
 
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-12-01 14:52:09] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -224,15 +232,17 @@ Fetching NFLX...
   [Features] Total features: 74
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
+[train_ticker] failed: No module named 'data_loader'
+[train_ticker] failed: No module named 'data_loader'
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 >>> QQQ 訓練中...
 
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-12-01 14:52:09] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-01 15:00:10] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -250,22 +260,22 @@ Fetching QQQ...
   [FEATURES] Advanced features added successfully
   [FEATURES] Total features: 74
   [FEATURES] Final dataset: 126 rows × 74 columns
-  例外: train_ticker() takes 1 positional argument but 2 w
+  訓練失敗
 
 ======================================================================
 宗叡最終版 訓練結果
 ======================================================================
-ticker status                                              error
-  NVDA  ERROR train_ticker() takes 1 positional argument but 2 w
-  AAPL  ERROR train_ticker() takes 1 positional argument but 2 w
-  MSFT  ERROR train_ticker() takes 1 positional argument but 2 w
- GOOGL  ERROR train_ticker() takes 1 positional argument but 2 w
-  AMZN  ERROR train_ticker() takes 1 positional argument but 2 w
-  META  ERROR train_ticker() takes 1 positional argument but 2 w
-  TSLA  ERROR train_ticker() takes 1 positional argument but 2 w
-   AMD  ERROR train_ticker() takes 1 positional argument but 2 w
-  NFLX  ERROR train_ticker() takes 1 positional argument but 2 w
-   QQQ  ERROR train_ticker() takes 1 positional argument but 2 w
+ticker status          reason
+  NVDA FAILED Training failed
+  AAPL FAILED Training failed
+  MSFT FAILED Training failed
+ GOOGL FAILED Training failed
+  AMZN FAILED Training failed
+  META FAILED Training failed
+  TSLA FAILED Training failed
+   AMD FAILED Training failed
+  NFLX FAILED Training failed
+   QQQ FAILED Training failed
 
 結果保存完了 → retraining_results.csv / json
 次は本物の性能が見える。

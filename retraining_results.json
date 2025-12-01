@@ -1,52 +1,52 @@
 [
   {
     "ticker": "NVDA",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AAPL",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "MSFT",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "GOOGL",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AMZN",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "META",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "TSLA",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "AMD",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "NFLX",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   },
   {
     "ticker": "QQQ",
-    "status": "ERROR",
-    "error": "train_ticker() takes 1 positional argument but 2 w"
+    "status": "FAILED",
+    "reason": "Training failed"
   }
 ]
