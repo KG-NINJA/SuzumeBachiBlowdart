@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-12-01T08:31:45.288480",
+  "timestamp": "2025-12-01T09:26:56.273827",
   "market_sentiment": {
-    "timestamp": "2025-12-01T08:31:45.288480",
+    "timestamp": "2025-12-01T09:26:56.273827",
     "bullish_count": 1,
     "bearish_count": 0,
     "hold_count": 9,
@@ -14,92 +14,92 @@
   "relative_strength": {
     "NVDA": {
       "ticker": "NVDA",
-      "accuracy": 0.6015384615384616,
-      "accuracy_vs_avg": 0.09215384615384625,
-      "confidence": 0.5619225824337739,
-      "confidence_vs_avg": 0.0019548836396290348,
-      "strength_score": 0.19606890888668294,
+      "accuracy": 0.5723076923076923,
+      "accuracy_vs_avg": 0.07884615384615379,
+      "confidence": 0.4168556199165491,
+      "confidence_vs_avg": -0.12312372285586132,
+      "strength_score": 0.05500819881516319,
       "strength_level": "NEUTRAL"
     },
     "AAPL": {
       "ticker": "AAPL",
-      "accuracy": 0.6238461538461538,
-      "accuracy_vs_avg": 0.1144615384615385,
-      "confidence": 0.45654894542235597,
-      "confidence_vs_avg": -0.10341875337178891,
-      "strength_score": 0.09380938854795941,
-      "strength_level": "NEUTRAL"
+      "accuracy": 0.5138461538461538,
+      "accuracy_vs_avg": 0.020384615384615334,
+      "confidence": 0.2705089054657862,
+      "confidence_vs_avg": -0.26947043730662423,
+      "strength_score": -0.253709618035859,
+      "strength_level": "WEAK"
     },
     "MSFT": {
       "ticker": "MSFT",
-      "accuracy": 0.44153846153846155,
-      "accuracy_vs_avg": -0.06784615384615378,
-      "confidence": 0.6307663256388443,
-      "confidence_vs_avg": 0.0707986268446994,
-      "strength_score": -0.04216970433023041,
+      "accuracy": 0.45461538461538464,
+      "accuracy_vs_avg": -0.038846153846153864,
+      "confidence": 0.6317264027778918,
+      "confidence_vs_avg": 0.09174706000548138,
+      "strength_score": 0.007947183378252546,
       "strength_level": "NEUTRAL"
     },
     "GOOGL": {
       "ticker": "GOOGL",
-      "accuracy": 0.3915384615384615,
-      "accuracy_vs_avg": -0.11784615384615382,
-      "confidence": 0.40989666287715615,
-      "confidence_vs_avg": -0.15007103591698873,
-      "strength_score": -0.45947408159286757,
-      "strength_level": "WEAK"
+      "accuracy": 0.43,
+      "accuracy_vs_avg": -0.06346153846153851,
+      "confidence": 0.5263607960939407,
+      "confidence_vs_avg": -0.013618546678469734,
+      "strength_score": -0.17136168682358802,
+      "strength_level": "NEUTRAL"
     },
     "AMZN": {
       "ticker": "AMZN",
-      "accuracy": 0.49076923076923074,
-      "accuracy_vs_avg": -0.01861538461538459,
-      "confidence": 0.4835946211448082,
-      "confidence_vs_avg": -0.07637307764933665,
-      "strength_score": -0.1470788407304435,
+      "accuracy": 0.5361538461538461,
+      "accuracy_vs_avg": 0.042692307692307585,
+      "confidence": 0.48967955130797164,
+      "confidence_vs_avg": -0.0502997914644388,
+      "strength_score": 0.048238524755456556,
       "strength_level": "NEUTRAL"
     },
     "META": {
       "ticker": "META",
-      "accuracy": 0.4230769230769231,
-      "accuracy_vs_avg": -0.08630769230769225,
-      "confidence": 0.6461876858197725,
-      "confidence_vs_avg": 0.08621998702562761,
-      "strength_score": -0.059081243694695085,
+      "accuracy": 0.3915384615384615,
+      "accuracy_vs_avg": -0.101923076923077,
+      "confidence": 0.6176127309065598,
+      "confidence_vs_avg": 0.07763338813414933,
+      "strength_score": -0.16302724665628154,
       "strength_level": "NEUTRAL"
     },
     "TSLA": {
       "ticker": "TSLA",
-      "accuracy": 0.5746153846153845,
-      "accuracy_vs_avg": 0.0652307692307692,
-      "confidence": 0.6858598168079668,
-      "confidence_vs_avg": 0.12589211801382194,
-      "strength_score": 0.3149055920129751,
+      "accuracy": 0.5407692307692307,
+      "accuracy_vs_avg": 0.04730769230769216,
+      "confidence": 0.6220429405799278,
+      "confidence_vs_avg": 0.08206359780751737,
+      "strength_score": 0.20882081960231655,
       "strength_level": "STRONG"
     },
     "AMD": {
       "ticker": "AMD",
-      "accuracy": 0.6469230769230768,
-      "accuracy_vs_avg": 0.1375384615384615,
-      "confidence": 0.48575418910154927,
-      "confidence_vs_avg": -0.0742135096925956,
-      "strength_score": 0.18352723984422334,
-      "strength_level": "NEUTRAL"
+      "accuracy": 0.6130769230769231,
+      "accuracy_vs_avg": 0.11961538461538457,
+      "confidence": 0.6175563050233401,
+      "confidence_vs_avg": 0.07757696225092969,
+      "strength_score": 0.3815158261788349,
+      "strength_level": "STRONG"
     },
     "NFLX": {
       "ticker": "NFLX",
-      "accuracy": 0.40692307692307694,
-      "accuracy_vs_avg": -0.10246153846153838,
-      "confidence": 0.6184763931311094,
-      "confidence_vs_avg": 0.058508694336964484,
-      "strength_score": -0.13216389862762581,
-      "strength_level": "NEUTRAL"
+      "accuracy": 0.36,
+      "accuracy_vs_avg": -0.13346153846153852,
+      "confidence": 0.5987284266948698,
+      "confidence_vs_avg": 0.058749083922459366,
+      "strength_score": -0.26184962840693143,
+      "strength_level": "WEAK"
     },
     "QQQ": {
       "ticker": "QQQ",
-      "accuracy": 0.4930769230769231,
-      "accuracy_vs_avg": -0.016307692307692245,
-      "confidence": 0.6206697655641116,
-      "confidence_vs_avg": 0.0607020667699667,
-      "strength_score": 0.05165663968402153,
+      "accuracy": 0.5223076923076923,
+      "accuracy_vs_avg": 0.028846153846153744,
+      "confidence": 0.6087217489572672,
+      "confidence_vs_avg": 0.06874240618485672,
+      "strength_score": 0.14841762719263438,
       "strength_level": "NEUTRAL"
     }
   },
@@ -109,15 +109,15 @@
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
       "strength_level": "NEUTRAL",
-      "strength_score": 0.19606890888668294,
+      "strength_score": 0.05500819881516319,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "AAPL": {
       "market_regime": "MIXED",
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
-      "strength_level": "NEUTRAL",
-      "strength_score": 0.09380938854795941,
+      "strength_level": "WEAK",
+      "strength_score": -0.253709618035859,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "MSFT": {
@@ -125,15 +125,15 @@
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
       "strength_level": "NEUTRAL",
-      "strength_score": -0.04216970433023041,
+      "strength_score": 0.007947183378252546,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "GOOGL": {
       "market_regime": "MIXED",
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
-      "strength_level": "WEAK",
-      "strength_score": -0.45947408159286757,
+      "strength_level": "NEUTRAL",
+      "strength_score": -0.17136168682358802,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "AMZN": {
@@ -141,7 +141,7 @@
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
       "strength_level": "NEUTRAL",
-      "strength_score": -0.1470788407304435,
+      "strength_score": 0.048238524755456556,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "META": {
@@ -149,31 +149,31 @@
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
       "strength_level": "NEUTRAL",
-      "strength_score": -0.059081243694695085,
+      "strength_score": -0.16302724665628154,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "TSLA": {
       "market_regime": "MIXED",
       "market_signal": "\ud83d\udfe1 NEUTRAL",
-      "phase2_action": "EXECUTE",
+      "phase2_action": "SKIP",
       "strength_level": "STRONG",
-      "strength_score": 0.3149055920129751,
-      "recommendation": "\u2705 EXECUTE - EXECUTE (MIXED environment, STRONG strength)"
+      "strength_score": 0.20882081960231655,
+      "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "AMD": {
       "market_regime": "MIXED",
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
-      "strength_level": "NEUTRAL",
-      "strength_score": 0.18352723984422334,
+      "strength_level": "STRONG",
+      "strength_score": 0.3815158261788349,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "NFLX": {
       "market_regime": "MIXED",
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
-      "strength_level": "NEUTRAL",
-      "strength_score": -0.13216389862762581,
+      "strength_level": "WEAK",
+      "strength_score": -0.26184962840693143,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     },
     "QQQ": {
@@ -181,7 +181,7 @@
       "market_signal": "\ud83d\udfe1 NEUTRAL",
       "phase2_action": "SKIP",
       "strength_level": "NEUTRAL",
-      "strength_score": 0.05165663968402153,
+      "strength_score": 0.14841762719263438,
       "recommendation": "\u23f8\ufe0f SKIP - Low confidence or misaligned with MIXED"
     }
   }

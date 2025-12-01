@@ -1,13 +1,13 @@
 {
   "total_predictions": 10,
-  "average_confidence": 0.5599676987941449,
+  "average_confidence": 0.5399793427724104,
   "execute_count": 1,
   "hold_count": 0,
   "skip_count": 9,
   "confidence_distribution": {
     "strong": 1,
-    "medium": 6,
-    "weak": 3
+    "medium": 7,
+    "weak": 2
   },
   "execute_ratio": "10.0%"
 }
