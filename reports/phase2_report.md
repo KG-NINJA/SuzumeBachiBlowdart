@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Mon Dec  1 14:21:53 UTC 2025
+**Execution Date:** Mon Dec  1 14:44:15 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,36 +80,10 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-    ✓ ADX
-    ✓ RSI & Divergence
-    ✓ MACD
-    ✓ Volume Features
-    ✓ Volatility Features
-    ✓ Momentum Features
-    ✓ Trend Features
-  [Features] Total features: 74
-  [FEATURES] Advanced features added successfully
-  [FEATURES] Total features: 74
-  [FEATURES] Final dataset: 126 rows × 74 columns
-  成功 | Regime: CHOPPY | Hybrid Acc: 0.0000
-
-======================================================================
-宗叡最終版 訓練結果
-======================================================================
-ticker  status regime  accuracy
-  NVDA SUCCESS CHOPPY         0
-  AAPL SUCCESS CHOPPY         0
-  MSFT SUCCESS CHOPPY         0
- GOOGL SUCCESS CHOPPY         0
-  AMZN SUCCESS CHOPPY         0
-  META SUCCESS CHOPPY         0
-  TSLA SUCCESS CHOPPY         0
-   AMD SUCCESS CHOPPY         0
-  NFLX SUCCESS CHOPPY         0
-   QQQ SUCCESS CHOPPY         0
-
-結果保存完了 → retraining_results.csv / json
-次は本物の性能が見える。
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py", line 6, in <module>
+    from blowdart_ml_engine import train_ticker   # ← 宗叡版のtrain_ticker（引数なし）
+ImportError: cannot import name 'train_ticker' from 'blowdart_ml_engine' (/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py)
 ```
 
 ### Step 4 - Backtest Validation
