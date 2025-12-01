@@ -1,25 +1,25 @@
 # 🧪 Phase 3: Backtest & Validation Report
 
-**Generated:** 2025-12-01T09:27:01.647964
+**Generated:** 2025-12-01T14:13:33.415670
 
 ## 📊 Executive Summary
 
 | Metric | Value |
 |--------|-------|
 | **Total Predictions** | 10 |
-| **Execute** | 1 🟢 |
-| **Skip** | 9 🔴 |
-| **Avg Expected Move** | 1.17% |
-| **Avg Confidence** | 0.5400 |
-| **Avg Model Accuracy** | 0.4935 |
+| **Execute** | 7 🟢 |
+| **Skip** | 3 🔴 |
+| **Avg Expected Move** | 1.11% |
+| **Avg Confidence** | 0.5456 |
+| **Avg Model Accuracy** | 0.5027 |
 
 ## 🎯 Trade Quality Distribution
 
 | Category | Count | % | Description |
 |----------|-------|---|-------------|
 | 🟢 **BEST** | 0 | 0.0% | High accuracy (>65%) + High confidence (>15%) |
-| 🟡 **GOOD** | 2 | 20.0% | Above average on both metrics |
-| 🟠 **FAIR** | 8 | 80.0% | Decent on at least one metric |
+| 🟡 **GOOD** | 4 | 40.0% | Above average on both metrics |
+| 🟠 **FAIR** | 6 | 60.0% | Decent on at least one metric |
 | 🔴 **POOR** | 0 | 0.0% | Low accuracy AND low confidence |
 
 ## 🏆 BEST Trades (Execute Priority)
@@ -33,8 +33,10 @@ No best-quality trades at this time.
 
 **These trades are above average:**
 
-- NVDA - Acc: 57.23%, Conf: 41.69%
-- AMD - Acc: 61.31%, Conf: 61.76%
+- NVDA - Acc: 60.38%, Conf: 61.46%
+- AAPL - Acc: 57.23%, Conf: 20.96%
+- MSFT - Acc: 56.08%, Conf: 87.01%
+- AMD - Acc: 64.46%, Conf: 30.18%
 
 
 ## 🔍 Analysis by Accuracy
@@ -42,17 +44,17 @@ No best-quality trades at this time.
 | Accuracy Range | Count | Avg Expected Move |
 |--------|-------|-------------|
 | > 70% | 0 | 0.00% |
-| 60-70% | 1 | 1.24% |
-| 50-60% | 5 | 0.85% |
-| < 50% | 4 | 1.56% |
+| 60-70% | 2 | 0.82% |
+| 50-60% | 3 | 1.18% |
+| < 50% | 5 | 1.18% |
 
 ---
 
 ## 📊 High Quality Indicators
 
-- **High Accuracy (>60%):** 1/10
+- **High Accuracy (>60%):** 2/10
 - **High Confidence (>15%):** 10/10
-- **Both (High Quality):** 1/10
+- **Both (High Quality):** 2/10
 
 ---
 

@@ -8,35 +8,35 @@
     "aggressive": 0.3
   },
   "accuracies": {
-    "simple": 0.5384615384615384,
-    "aggressive": 0.48461538461538456,
-    "hybrid": 0.5223076923076923
+    "simple": 0.4230769230769231,
+    "aggressive": 0.4769230769230769,
+    "hybrid": 0.4392307692307692
   },
   "feature_names": [
-    "High",
-    "Plus_DI",
-    "MACD",
-    "RSI14",
-    "MA20",
-    "MA50",
-    "Minus_DI",
-    "EMA26",
-    "Volume_Ratio",
-    "Momentum_10",
-    "ADX",
-    "ATR",
-    "VROC",
-    "Momentum_5",
-    "EMA12",
     "Momentum",
-    "MA10",
-    "PVT",
+    "VROC",
+    "High",
+    "Volume_Ratio",
     "Low",
-    "OBV"
+    "OBV",
+    "ATR",
+    "MA10",
+    "ADX",
+    "MA5",
+    "Momentum_5",
+    "MA20",
+    "Plus_DI",
+    "EMA26",
+    "Momentum_10",
+    "RSI14",
+    "MA50",
+    "RSI7",
+    "EMA12",
+    "Minus_DI"
   ],
   "feature_count": 20,
   "train_samples": 100,
   "test_samples": 26,
   "version": "2025-11-30-fixed",
-  "saved_at": "2025-12-01T09:26:59.990791"
+  "saved_at": "2025-12-01T14:13:31.656427"
 }
