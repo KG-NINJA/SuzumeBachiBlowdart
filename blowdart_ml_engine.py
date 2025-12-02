@@ -6,9 +6,127 @@ from sklearn.ensemble import RandomForestClassifier
 import logging
 from typing import Optional, Dict, Any
 import json
+import pickle
 from pathlib import Path
+from datetime import datetime
 
 logger = logging.getLogger("blowdart_ml_engine")
+
+# モデルディレクトリ設定
+MODELS_DIR = Path("models")
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
+
+ANALYTICS_DIR = Path("analytics")
+ANALYTICS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# ===========================================================
+# Utility: Get ticker-specific model directory
+# ===========================================================
+def get_ticker_dir(ticker: str) -> Path:
+    """ティッカー用のモデルディレクトリを取得/作成"""
+    ticker_dir = MODELS_DIR / ticker
+    ticker_dir.mkdir(parents=True, exist_ok=True)
+    return ticker_dir
+
+
+# ===========================================================
+# Model Persistence: Save Model
+# ===========================================================
+def save_model(ticker: str, model: RandomForestClassifier, metadata: Dict[str, Any]) -> bool:
+    """
+    モデルとメタデータを保存
+    
+    Args:
+        ticker: 株式シンボル
+        model: RandomForestClassifier モデル
+        metadata: モデル情報（精度、訓練日時など）
+    
+    Returns:
+        成功時 True
+    """
+    try:
+        ticker_dir = get_ticker_dir(ticker)
+        
+        # モデルを pickle で保存
+        model_path = ticker_dir / "model.pkl"
+        with open(model_path, "wb") as f:
+            pickle.dump(model, f)
+        
+        # メタデータを JSON で保存
+        metadata["saved_at"] = datetime.now().isoformat()
+        metadata_path = ticker_dir / "metadata.json"
+        with open(metadata_path, "w") as f:
+            json.dump(metadata, f, indent=2, default=str)
+        
+        logger.info(f"[SAVE] {ticker}: Model and metadata saved")
+        return True
+    
+    except Exception as e:
+        logger.error(f"[SAVE] {ticker}: Failed to save model: {e}")
+        return False
+
+
+# ===========================================================
+# Model Persistence: Load Model
+# ===========================================================
+def load_model(ticker: str) -> Optional[RandomForestClassifier]:
+    """
+    保存されたモデルを読み込む
+    
+    Args:
+        ticker: 株式シンボル
+    
+    Returns:
+        RandomForestClassifier or None if not found
+    """
+    try:
+        ticker_dir = get_ticker_dir(ticker)
+        model_path = ticker_dir / "model.pkl"
+        
+        if not model_path.exists():
+            logger.debug(f"[LOAD] {ticker}: No saved model found")
+            return None
+        
+        with open(model_path, "rb") as f:
+            model = pickle.load(f)
+        
+        logger.info(f"[LOAD] {ticker}: Model loaded successfully")
+        return model
+    
+    except Exception as e:
+        logger.error(f"[LOAD] {ticker}: Failed to load model: {e}")
+        return None
+
+
+# ===========================================================
+# Model Persistence: Load Metadata
+# ===========================================================
+def load_metadata(ticker: str) -> Optional[Dict[str, Any]]:
+    """
+    保存されたメタデータを読み込む
+    
+    Args:
+        ticker: 株式シンボル
+    
+    Returns:
+        メタデータ辞書 or None
+    """
+    try:
+        ticker_dir = get_ticker_dir(ticker)
+        metadata_path = ticker_dir / "metadata.json"
+        
+        if not metadata_path.exists():
+            return None
+        
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+        
+        return metadata
+    
+    except Exception as e:
+        logger.error(f"[METADATA] {ticker}: Failed to load metadata: {e}")
+        return None
 
 
 # ===========================================================
@@ -17,12 +135,6 @@ logger = logging.getLogger("blowdart_ml_engine")
 def generate_target(df: pd.DataFrame) -> pd.DataFrame:
     """
     ターゲット変数を生成（翌日の価格上昇を予測）
-    
-    Args:
-        df: OHLCV データフレーム
-    
-    Returns:
-        ターゲット変数を追加したデータフレーム
     """
     try:
         if "Close" not in df.columns:
@@ -47,17 +159,7 @@ def generate_target(df: pd.DataFrame) -> pd.DataFrame:
 # Safety Patch 2: Hybrid accuracy with guards
 # ===========================================================
 def calc_hybrid_accuracy(y_test, pred_simple, pred_aggressive) -> float:
-    """
-    シンプルモデルとアグレッシブモデルのハイブリッド精度を計算
-    
-    Args:
-        y_test: テストラベル
-        pred_simple: シンプルモデルの予測
-        pred_aggressive: アグレッシブモデルの予測
-    
-    Returns:
-        ハイブリッド精度（0.0-1.0）
-    """
+    """シンプルモデルとアグレッシブモデルのハイブリッド精度を計算"""
     try:
         if len(y_test) == 0:
             return 0.0
@@ -71,12 +173,10 @@ def calc_hybrid_accuracy(y_test, pred_simple, pred_aggressive) -> float:
         acc_simple = accuracy_score(y_test, pred_simple)
         acc_aggressive = accuracy_score(y_test, pred_aggressive)
 
-        # シンプルモデルを 70%, アグレッシブを 30% の重み付け
         hybrid = (acc_simple * 0.7) + (acc_aggressive * 0.3)
         return float(hybrid)
 
-    except Exception as e:
-        logger.error(f"[HYBRID_ACC] Error: {e}")
+    except Exception:
         return 0.0
 
 
@@ -84,28 +184,17 @@ def calc_hybrid_accuracy(y_test, pred_simple, pred_aggressive) -> float:
 # Market Regime Detection (Simple Version)
 # ===========================================================
 def detect_market_regime(df: pd.DataFrame) -> str:
-    """
-    市場レジームを簡易判定
-    
-    Args:
-        df: 価格データフレーム
-    
-    Returns:
-        レジーム名: 'TRENDING' | 'CHOPPY' | 'NEUTRAL'
-    """
+    """市場レジームを簡易判定"""
     try:
         if len(df) < 20:
             return "NEUTRAL"
         
-        # 直近 20 営業日のリターンで判定
         recent_returns = df["Close"].pct_change().tail(20).dropna()
         
         if len(recent_returns) == 0:
             return "NEUTRAL"
         
         volatility = recent_returns.std()
-        
-        # トレンド強度
         up_days = (recent_returns > 0).sum()
         trend_ratio = up_days / len(recent_returns)
         
@@ -122,29 +211,22 @@ def detect_market_regime(df: pd.DataFrame) -> str:
 
 
 # ===========================================================
-# Unified Blowdart Training Engine (Stable v2)
+# Core: Train Model (New vs Update)
 # ===========================================================
-def train_model(df: pd.DataFrame, ticker: str) -> Dict[str, Any]:
+def train_model(df: pd.DataFrame, ticker: str, use_existing: bool = True) -> Dict[str, Any]:
     """
-    統合モデル訓練エンジン
+    統合モデル訓練エンジン（オンライン学習対応）
     
     Args:
         df: 特徴データフレーム
         ticker: 株式シンボル
+        use_existing: 既存モデルを使用するか（デフォルト: True）
     
     Returns:
-        dict = {
-            "ok": bool,
-            "ticker": str,
-            "hybrid_acc": float,
-            "test_size": int,
-            "feature_count": int,
-            "market_regime": str,
-            "error": str (if failed)
-        }
+        訓練結果辞書
     """
     try:
-        logger.info(f"[TRAIN] {ticker} - Blowdart Stable v2")
+        logger.info(f"[TRAIN] {ticker} - Starting training (use_existing={use_existing})")
 
         # ターゲット生成
         df = generate_target(df)
@@ -177,19 +259,43 @@ def train_model(df: pd.DataFrame, ticker: str) -> Dict[str, Any]:
                 "hybrid_acc": 0.0
             }
 
-        # シンプルモデル（保守的）
-        model_simple = RandomForestClassifier(
-            n_estimators=80, max_depth=5, random_state=42
-        )
-        model_simple.fit(X_train, y_train)
+        # 既存モデル読み込み試行
+        existing_model_simple = None
+        existing_model_agg = None
+        
+        if use_existing:
+            existing_model_simple = load_model(f"{ticker}_simple")
+            existing_model_agg = load_model(f"{ticker}_agg")
+        
+        # シンプルモデル
+        if existing_model_simple is not None:
+            logger.info(f"[TRAIN] {ticker}: Using existing simple model")
+            model_simple = existing_model_simple
+            # 新データで再訓練
+            model_simple.fit(X_train, y_train)
+        else:
+            logger.info(f"[TRAIN] {ticker}: Training new simple model")
+            model_simple = RandomForestClassifier(
+                n_estimators=80, max_depth=5, random_state=42
+            )
+            model_simple.fit(X_train, y_train)
+        
         pred_simple = model_simple.predict(X_test)
         acc_simple = accuracy_score(y_test, pred_simple)
 
-        # アグレッシブモデル（積極的）
-        model_agg = RandomForestClassifier(
-            n_estimators=200, max_depth=10, random_state=42
-        )
-        model_agg.fit(X_train, y_train)
+        # アグレッシブモデル
+        if existing_model_agg is not None:
+            logger.info(f"[TRAIN] {ticker}: Using existing aggressive model")
+            model_agg = existing_model_agg
+            # 新データで再訓練
+            model_agg.fit(X_train, y_train)
+        else:
+            logger.info(f"[TRAIN] {ticker}: Training new aggressive model")
+            model_agg = RandomForestClassifier(
+                n_estimators=200, max_depth=10, random_state=42
+            )
+            model_agg.fit(X_train, y_train)
+        
         pred_agg = model_agg.predict(X_test)
         acc_agg = accuracy_score(y_test, pred_agg)
 
@@ -198,6 +304,30 @@ def train_model(df: pd.DataFrame, ticker: str) -> Dict[str, Any]:
 
         # 市場レジーム判定
         market_regime = detect_market_regime(df)
+
+        # ✅ モデルを保存（重要！）
+        metadata_simple = {
+            "ticker": ticker,
+            "accuracy": float(acc_simple),
+            "test_size": len(X_test),
+            "feature_count": X.shape[1],
+            "market_regime": market_regime,
+            "model_type": "simple"
+        }
+        save_model(f"{ticker}_simple", model_simple, metadata_simple)
+
+        metadata_agg = {
+            "ticker": ticker,
+            "accuracy": float(acc_agg),
+            "test_size": len(X_test),
+            "feature_count": X.shape[1],
+            "market_regime": market_regime,
+            "model_type": "aggressive"
+        }
+        save_model(f"{ticker}_agg", model_agg, metadata_agg)
+
+        # ✅ 精度履歴を記録（重要！）
+        track_accuracy_history(ticker, hybrid_acc)
 
         logger.info(
             f"[TRAIN] {ticker} complete: "
@@ -215,7 +345,8 @@ def train_model(df: pd.DataFrame, ticker: str) -> Dict[str, Any]:
             "aggressive_acc": acc_agg,
             "test_size": len(X_test),
             "feature_count": X.shape[1],
-            "market_regime": market_regime
+            "market_regime": market_regime,
+            "models_saved": True
         }
 
     except Exception as e:
@@ -229,26 +360,119 @@ def train_model(df: pd.DataFrame, ticker: str) -> Dict[str, Any]:
 
 
 # ===========================================================
+# Analytics: Track Accuracy History
+# ===========================================================
+def track_accuracy_history(ticker: str, accuracy: float) -> bool:
+    """
+    精度履歴を記録
+    
+    Args:
+        ticker: 株式シンボル
+        accuracy: 精度値（0.0-1.0）
+    
+    Returns:
+        成功時 True
+    """
+    try:
+        history_file = ANALYTICS_DIR / "accuracy_history.json"
+        
+        # 既存履歴読み込み
+        if history_file.exists():
+            with open(history_file, "r") as f:
+                history = json.load(f)
+        else:
+            history = {}
+        
+        # 今日の日付
+        today = datetime.now().strftime("%Y-%m-%d")
+        
+        if today not in history:
+            history[today] = {}
+        
+        # 精度を記録
+        history[today][ticker] = float(accuracy)
+        
+        # 保存
+        with open(history_file, "w") as f:
+            json.dump(history, f, indent=2)
+        
+        logger.info(f"[HISTORY] {ticker}: Accuracy {accuracy:.4f} recorded for {today}")
+        return True
+    
+    except Exception as e:
+        logger.error(f"[HISTORY] Failed to track accuracy for {ticker}: {e}")
+        return False
+
+
+# ===========================================================
+# Analytics: Detect Accuracy Degradation
+# ===========================================================
+def detect_accuracy_degradation(ticker: str, current_accuracy: float) -> bool:
+    """
+    精度低下を検出
+    
+    Args:
+        ticker: 株式シンボル
+        current_accuracy: 現在の精度
+    
+    Returns:
+        低下検出時 True
+    """
+    try:
+        history_file = ANALYTICS_DIR / "accuracy_history.json"
+        
+        if not history_file.exists():
+            return False
+        
+        with open(history_file, "r") as f:
+            history = json.load(f)
+        
+        # 過去7日の精度を抽出
+        recent_accuracies = []
+        for date in sorted(history.keys())[-7:]:
+            if ticker in history[date]:
+                recent_accuracies.append(history[date][ticker])
+        
+        if not recent_accuracies:
+            return False
+        
+        avg_past = sum(recent_accuracies) / len(recent_accuracies)
+        
+        # 5%以上低下していたら警告
+        if current_accuracy < avg_past - 0.05:
+            logger.warning(
+                f"[DEGRADE] {ticker}: Accuracy degraded from {avg_past:.4f} "
+                f"to {current_accuracy:.4f}"
+            )
+            return True
+        
+        return False
+    
+    except Exception as e:
+        logger.warning(f"[DEGRADE] Failed to check degradation for {ticker}: {e}")
+        return False
+
+
+# ===========================================================
 # Legacy Compatibility Wrapper
 # ===========================================================
 def train_ticker(ticker: str, df: Optional[pd.DataFrame] = None, **kwargs) -> Dict[str, Any]:
     """
-    後方互換性のため のラッパー関数
-    simple_daily_prediction.py などから呼び出される
+    後方互換性のためのラッパー関数
     
     Args:
         ticker: 株式シンボル
-        df: Optional 特徴データフレーム
-        **kwargs: 追加パラメータ（互換性用）
+        df: 特徴データフレーム
+        **kwargs: 追加パラメータ
     
     Returns:
-        train_model() の結果辞書
+        訓練結果辞書
     """
     try:
         logger.info(f"[COMPAT] train_ticker({ticker})")
 
         if df is None:
-            logger.warning(f"[COMPAT] {ticker}: No df provided, using empty")
+            logger.warning(f"[COMPAT] {ticker}: No df provided")
             return {
                 "ok": False,
                 "ticker": ticker,
@@ -256,7 +480,8 @@ def train_ticker(ticker: str, df: Optional[pd.DataFrame] = None, **kwargs) -> Di
                 "hybrid_acc": 0.0
             }
 
-        result = train_model(df, ticker)
+        # オンライン学習を有効にして訓練
+        result = train_model(df, ticker, use_existing=True)
         return result
 
     except Exception as e:
@@ -270,37 +495,18 @@ def train_ticker(ticker: str, df: Optional[pd.DataFrame] = None, **kwargs) -> Di
 
 
 # ===========================================================
-# Prediction Function (Required for simple_daily_prediction.py)
+# Prediction Function
 # ===========================================================
 def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
     """
-    ティッカーの翌日価格変動を予測
-    simple_daily_prediction.py から呼び出される
+    ティッカーの翌日価格変動を予測（保存されたモデルを使用）
     
     Args:
         ticker: 株式シンボル
-        df: 特徴データフレーム（Close を含む）
+        df: 特徴データフレーム
     
     Returns:
-        dict: 予測結果
-            {
-                "ticker": str,
-                "current_price": float,
-                "predicted_price": float,
-                "predicted_change_pct": float,
-                "direction": "↑ Bullish" | "↓ Bearish",
-                "prob_up": float (0.0-1.0),
-                "prob_down": float (0.0-1.0),
-                "confidence": float (0.0-1.0),
-                "market_regime": str,
-                "model_accuracy": float,
-                "simple_pred": float,
-                "aggressive_pred": float,
-                "hybrid_pred": float,
-                "timestamp": str (ISO format)
-            }
-        
-        or None if prediction fails
+        予測結果辞書 or None
     """
     try:
         logger.info(f"[PREDICT] Starting prediction for {ticker}")
@@ -322,7 +528,7 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
             logger.error(f"[PREDICT] {ticker}: invalid close price {current_close}")
             return None
 
-        # 特徴データ準備（Close を除外）
+        # 特徴データ準備
         X_latest = df_copy.drop(columns=["Close"], errors="ignore").iloc[-1:].copy()
 
         # ターゲット生成と訓練データ準備
@@ -337,17 +543,21 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
         X = df_clean.drop(columns=["target", "Close"], errors="ignore")
         y = df_clean["target"]
 
-        # シンプルモデル訓練
-        model_simple = RandomForestClassifier(
-            n_estimators=80, max_depth=5, random_state=42
-        )
-        model_simple.fit(X, y)
+        # ✅ 保存されたモデルを読み込む（重要！）
+        model_simple = load_model(f"{ticker}_simple")
+        model_agg = load_model(f"{ticker}_agg")
 
-        # アグレッシブモデル訓練
-        model_agg = RandomForestClassifier(
-            n_estimators=200, max_depth=10, random_state=42
-        )
-        model_agg.fit(X, y)
+        # モデルがない場合は新規訓練
+        if model_simple is None or model_agg is None:
+            logger.info(f"[PREDICT] {ticker}: No saved models, training new ones")
+            model_simple = RandomForestClassifier(
+                n_estimators=80, max_depth=5, random_state=42
+            )
+            model_agg = RandomForestClassifier(
+                n_estimators=200, max_depth=10, random_state=42
+            )
+            model_simple.fit(X, y)
+            model_agg.fit(X, y)
 
         # 予測（確率）
         try:
@@ -368,11 +578,11 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
         # 予測クラス
         pred_class = 1 if pred_proba_hybrid > 0.5 else 0
 
-        # 信頼度スコア（0.5 からの距離）
-        confidence_score = abs(pred_proba_hybrid - 0.5) * 2  # 0.0-1.0 スケール
+        # 信頼度スコア
+        confidence_score = abs(pred_proba_hybrid - 0.5) * 2
 
-        # 予測価格計算（信頼度に応じた変動）
-        price_change_pct = confidence_score * 0.04  # 最大 ±2%
+        # 予測価格計算
+        price_change_pct = confidence_score * 0.04
 
         if pred_class == 1:
             predicted_price = current_close * (1 + price_change_pct)
@@ -388,7 +598,7 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
         # 市場レジーム判定
         market_regime = detect_market_regime(df_copy)
 
-        # 結果辞書構築
+        # 結果作成
         result = {
             "ticker": ticker,
             "current_price": float(current_close),
@@ -401,7 +611,7 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
             "prob_down": float(prob_down),
             "confidence": float(confidence_score),
             "market_regime": market_regime,
-            "model_accuracy": 0.55,  # ダミー値（実装簡潔化のため）
+            "model_accuracy": 0.55,
             "simple_pred": float(pred_proba_simple),
             "aggressive_pred": float(pred_proba_agg),
             "hybrid_pred": float(pred_proba_hybrid),
@@ -419,50 +629,3 @@ def predict_ticker(ticker: str, df: pd.DataFrame) -> Optional[Dict[str, Any]]:
     except Exception as e:
         logger.error(f"[PREDICT] {ticker} failed: {e}", exc_info=True)
         return None
-
-
-# ===========================================================
-# Utility: Get Ticker Directory
-# ===========================================================
-def get_ticker_dir(ticker: str) -> Path:
-    """
-    ティッカー用のモデルディレクトリを取得/作成
-    
-    Args:
-        ticker: 株式シンボル
-    
-    Returns:
-        Path オブジェクト
-    """
-    ticker_dir = Path("models") / ticker
-    ticker_dir.mkdir(parents=True, exist_ok=True)
-    return ticker_dir
-
-
-# ===========================================================
-# Utility: Save Model Info
-# ===========================================================
-def save_model_metadata(ticker: str, metadata: Dict[str, Any]) -> bool:
-    """
-    モデルのメタデータをJSON で保存
-    
-    Args:
-        ticker: 株式シンボル
-        metadata: メタデータ辞書
-    
-    Returns:
-        成功時 True
-    """
-    try:
-        ticker_dir = get_ticker_dir(ticker)
-        metadata_path = ticker_dir / "metadata.json"
-
-        with open(metadata_path, "w") as f:
-            json.dump(metadata, f, indent=2, default=str)
-
-        logger.info(f"[METADATA] Saved for {ticker}")
-        return True
-
-    except Exception as e:
-        logger.error(f"[METADATA] Save failed for {ticker}: {e}")
-        return False
