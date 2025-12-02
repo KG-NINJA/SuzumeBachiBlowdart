@@ -1,116 +1,103 @@
 {
-  "timestamp": "2025-12-01T14:13:27.737325",
-  "run_date": "2025-12-01",
+  "timestamp": "2025-12-02T01:18:06.132888",
+  "run_date": "2025-12-02",
   "results": [
     {
       "ticker": "NVDA",
       "status": "OK",
-      "accuracy": 0.6038461538461538,
-      "previous_accuracy": 0.5723076923076923,
-      "improvement": 0.031538461538461515,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "AAPL",
       "status": "OK",
-      "accuracy": 0.5723076923076923,
-      "previous_accuracy": 0.5138461538461538,
-      "improvement": 0.058461538461538454,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "MSFT",
       "status": "OK",
-      "accuracy": 0.5607692307692307,
-      "previous_accuracy": 0.45461538461538464,
-      "improvement": 0.10615384615384604,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "GOOGL",
       "status": "OK",
-      "accuracy": 0.40307692307692305,
-      "previous_accuracy": 0.43,
-      "improvement": -0.02692307692307694,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "AMZN",
       "status": "OK",
-      "accuracy": 0.4930769230769231,
-      "previous_accuracy": 0.5361538461538461,
-      "improvement": -0.04307692307692301,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "META",
       "status": "OK",
-      "accuracy": 0.3915384615384615,
-      "previous_accuracy": 0.3915384615384615,
-      "improvement": 0.0,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "TSLA",
       "status": "OK",
-      "accuracy": 0.5069230769230769,
-      "previous_accuracy": 0.5407692307692307,
-      "improvement": -0.03384615384615375,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "AMD",
       "status": "OK",
-      "accuracy": 0.6446153846153846,
-      "previous_accuracy": 0.6130769230769231,
-      "improvement": 0.031538461538461515,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "NFLX",
       "status": "OK",
-      "accuracy": 0.4115384615384615,
-      "previous_accuracy": 0.36,
-      "improvement": 0.05153846153846153,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     },
     {
       "ticker": "QQQ",
       "status": "OK",
-      "accuracy": 0.4392307692307692,
-      "previous_accuracy": 0.5223076923076923,
-      "improvement": -0.08307692307692305,
-      "train_samples": 100,
-      "learning_type": "HYBRID_FIXED"
+      "accuracy": 0.0,
+      "simple_acc": 0,
+      "aggressive_acc": 0,
+      "train_samples": null,
+      "market_regime": "UNKNOWN"
     }
   ],
   "total_trained": 10,
   "total_failed": 0,
   "predictions": {
-    "total": 10,
-    "execute": 7,
-    "skip": 3
-  },
-  "confidence": {
-    "total_predictions": 10,
-    "average_confidence": 0.5456442481436179,
-    "execute_count": 7,
-    "hold_count": 0,
-    "skip_count": 3,
-    "confidence_distribution": {
-      "strong": 7,
-      "medium": 1,
-      "weak": 2
-    },
-    "execute_ratio": "70.0%"
+    "total": 0,
+    "execute": 0,
+    "skip": 0
   }
 }
