@@ -9,7 +9,8 @@ xgboost==1.7.6
 catboost==1.2.2
 
 # V2 Engine: Hyperparameter Optimization
-optuna==3.14.0
+# Python 3.9-3.10 用: optuna 3.0.x を使用
+optuna==3.6.2
 
 # Data Visualization & Analysis
 matplotlib==3.8.2
