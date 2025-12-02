@@ -1,6 +1,6 @@
 # 📊 Model Accuracy Analysis Report
 
-**Generated:** 2025-11-29 01:27:23
+**Generated:** 2025-12-02 01:42:00
 
 ## Summary
 
@@ -55,15 +55,6 @@
 | 8 | NFLX | 0.5385 | 0.5769 | -0.0385 |
 | 9 | QQQ | 0.5385 | 0.5385 | +0.0000 |
 | 10 | AMZN | 0.4615 | 0.4615 | +0.0000 |
-
-
-## 📈 Predictions Summary
-
-- **Total Predictions:** 10
-- **Bullish:** 0
-- **Bearish:** 9
-- **Average Confidence:** 0.5490
-- **Average Model Accuracy:** 0.9878
 
 
 ## 🔧 Next Steps
