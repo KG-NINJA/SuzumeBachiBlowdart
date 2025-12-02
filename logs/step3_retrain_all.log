@@ -1,11 +1,155 @@
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
+[TRAIN] NVDA fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] AAPL fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] MSFT fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] GOOGL fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] AMZN fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] META fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] TSLA fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] AMD fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
 ======================================================================
 宗叡最終版による全ティッカー再訓練開始
 ======================================================================
@@ -15,7 +159,7 @@
 ============================================================
 Fetching NVDA...
 ============================================================
-[2025-12-01 15:07:44] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] NVDA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -40,7 +184,7 @@ Fetching NVDA...
 ============================================================
 Fetching AAPL...
 ============================================================
-[2025-12-01 15:07:44] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] AAPL   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -65,7 +209,7 @@ Fetching AAPL...
 ============================================================
 Fetching MSFT...
 ============================================================
-[2025-12-01 15:07:44] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] MSFT   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -90,7 +234,7 @@ Fetching MSFT...
 ============================================================
 Fetching GOOGL...
 ============================================================
-[2025-12-01 15:07:44] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] GOOGL  | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -115,7 +259,7 @@ Fetching GOOGL...
 ============================================================
 Fetching AMZN...
 ============================================================
-[2025-12-01 15:07:44] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] AMZN   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -140,7 +284,7 @@ Fetching AMZN...
 ============================================================
 Fetching META...
 ============================================================
-[2025-12-01 15:07:44] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] META   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -165,7 +309,7 @@ Fetching META...
 ============================================================
 Fetching TSLA...
 ============================================================
-[2025-12-01 15:07:44] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] TSLA   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -190,7 +334,7 @@ Fetching TSLA...
 ============================================================
 Fetching AMD...
 ============================================================
-[2025-12-01 15:07:44] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] AMD    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -215,7 +359,7 @@ Fetching AMD...
 ============================================================
 Fetching NFLX...
 ============================================================
-[2025-12-01 15:07:44] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] NFLX   | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
@@ -224,8 +368,44 @@ Fetching NFLX...
     ✓ Bollinger Bands
     ✓ ADX
     ✓ RSI & Divergence
-[train_ticker] failed: No module named 'data_loader'
-[train_ticker] failed: No module named 'data_loader'
+[TRAIN] NFLX fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
+[TRAIN] QQQ fatal: float() argument must be a string or a real number, not 'Timestamp'
+Traceback (most recent call last):
+  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py", line 281, in train_model
+    model_simple.fit(X_train, y_train)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 1152, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/ensemble/_forest.py", line 348, in fit
+    X, y = self._validate_data(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/base.py", line 622, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 1146, in check_X_y
+    X = check_array(
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/validation.py", line 915, in check_array
+    array = _asarray_with_order(array, order=order, dtype=dtype, xp=xp)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/sklearn/utils/_array_api.py", line 380, in _asarray_with_order
+    array = numpy.asarray(array, order=order, dtype=dtype)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/pandas/core/generic.py", line 2084, in __array__
+    arr = np.asarray(values, dtype=dtype)
+TypeError: float() argument must be a string or a real number, not 'Timestamp'
     ✓ MACD
     ✓ Volume Features
     ✓ Volatility Features
@@ -242,7 +422,7 @@ Fetching NFLX...
 ============================================================
 Fetching QQQ...
 ============================================================
-[2025-12-01 15:07:44] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
+[2025-12-02 22:46:12] QQQ    | LOCAL_CACHE     | SUCCESS  | 126 rows
   [FEATURES] Original columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Renamed columns: ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
   [FEATURES] Basic features added: 30 columns
