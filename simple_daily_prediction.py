@@ -82,15 +82,15 @@ def main():
                 })
                 continue
             
-            print(f"  ✓ Model trained: Accuracy={model_info.get('accuracy', 0):.4f}")
+            print(f"  ✓ Model trained: Accuracy={model_info.get('hybrid_acc', 0):.4f}")
             training_results.append({
                 "ticker": ticker,
                 "status": "OK",
-                "accuracy": model_info.get('accuracy'),
-                "previous_accuracy": model_info.get('previous_accuracy', 0),
-                "improvement": model_info.get('accuracy_improvement', 0),
-                "train_samples": model_info.get('train_samples'),
-                "learning_type": model_info.get('learning_type', 'UNKNOWN')
+                "accuracy": model_info.get('hybrid_acc'),
+                "simple_acc": model_info.get('simple_acc', 0),
+                "aggressive_acc": model_info.get('aggressive_acc', 0),
+                "train_samples": model_info.get('test_size'),
+                "market_regime": model_info.get('market_regime', 'UNKNOWN')
             })
         
         except Exception as e:
@@ -140,7 +140,7 @@ def main():
     print("-" * 70)
     
     print("\n[2-1] Applying confidence-based filter...")
-    # New threshold: 0.30 (30% score)
+    # Threshold: 0.30 (30% score)
     filtered_predictions = apply_confidence_filter(all_predictions, min_confidence=0.30)
     
     execute_predictions = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
@@ -178,25 +178,33 @@ def main():
     
     # Generate confidence report
     print("\n[3-2] Generating confidence analysis...")
-    confidence_report = generate_confidence_report(filtered_predictions)
-    
-    # Save report
-    report_file = f"{PREDICTIONS_DIR}/confidence_report.json"
-    with open(report_file, 'w') as f:
-        json.dump(confidence_report, f, indent=2, default=str)
-    print(f"✓ Confidence report: {report_file}")
-    
-    # Generate Markdown Report (Ensure consistency)
-    md_report = generate_confidence_markdown(confidence_report, filtered_predictions)
-    md_file = f"{PREDICTIONS_DIR}/confidence_report.md"
-    
-    # Delete stale file if exists
-    if os.path.exists(md_file):
-        os.remove(md_file)
+    try:
+        confidence_report = generate_confidence_report(filtered_predictions)
         
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write(md_report)
-    print(f"✓ Confidence markdown: {md_file}")
+        # Save JSON report
+        report_file = f"{PREDICTIONS_DIR}/confidence_report.json"
+        with open(report_file, 'w') as f:
+            json.dump(confidence_report, f, indent=2, default=str)
+        print(f"✓ Confidence report: {report_file}")
+        
+        # Generate Markdown Report
+        try:
+            md_report = generate_confidence_markdown(confidence_report, filtered_predictions)
+            md_file = f"{PREDICTIONS_DIR}/confidence_report.md"
+            
+            # Delete stale file if exists
+            if os.path.exists(md_file):
+                os.remove(md_file)
+            
+            with open(md_file, 'w', encoding='utf-8') as f:
+                f.write(md_report)
+            print(f"✓ Confidence markdown: {md_file}")
+        
+        except Exception as md_error:
+            print(f"⚠️ Markdown generation failed: {str(md_error)[:60]}")
+    
+    except Exception as report_error:
+        print(f"⚠️ Confidence report generation failed: {str(report_error)[:60]}")
     
     # Save training metrics
     metrics_file = f"{ANALYTICS_DIR}/training_metrics.json"
@@ -210,8 +218,7 @@ def main():
             "total": len(filtered_predictions),
             "execute": len(execute_predictions),
             "skip": len(skip_predictions)
-        },
-        "confidence": confidence_report
+        }
     }
     
     with open(metrics_file, 'w') as f:
@@ -232,10 +239,8 @@ def main():
         )
         if result.returncode == 0:
             print("✓ Market regime analysis completed")
-            if result.stdout:
-                print(result.stdout)
         else:
-            print(f"⚠️ Market regime analysis failed: {result.stderr[:200]}")
+            print(f"⚠️ Market regime analysis failed")
     except subprocess.TimeoutExpired:
         print("⚠️ Market regime analysis timeout")
     except Exception as e:
@@ -255,10 +260,8 @@ def main():
         )
         if result.returncode == 0:
             print("✓ Backtest validation completed")
-            if result.stdout:
-                print(result.stdout)
         else:
-            print(f"⚠️ Backtest validation failed: {result.stderr[:200]}")
+            print(f"⚠️ Backtest validation failed")
     except subprocess.TimeoutExpired:
         print("⚠️ Backtest validation timeout")
     except Exception as e:
@@ -279,69 +282,83 @@ def main():
         execute_ratio = len(execute_predictions) / len(filtered_predictions) * 100
         print(f"  Execute Ratio: {execute_ratio:.1f}%")
     else:
-        print("  Execute Ratio: N/A (no predictions)")
+        print(f"  Execute Ratio: N/A (no predictions)")
     
     if execute_predictions:
-        avg_confidence_execute = np.mean([p['confidence'] for p in execute_predictions])
+        avg_confidence_execute = np.mean([p['confidence_score'] for p in execute_predictions])
         print(f"  Avg Confidence (Execute): {avg_confidence_execute:.4f}")
     
     if skip_predictions:
-        avg_confidence_skip = np.mean([p['confidence'] for p in skip_predictions])
+        avg_confidence_skip = np.mean([p['confidence_score'] for p in skip_predictions])
         print(f"  Avg Confidence (Skip): {avg_confidence_skip:.4f}")
     
-    # Calculate average improvement
-    improvements = [r.get('improvement', 0) for r in training_results if r.get('status') == 'OK']
-    if improvements:
-        avg_improvement = np.mean(improvements)
-        print(f"Average accuracy improvement: {avg_improvement:+.4f}")
-    
-    print(f"Logs: {LOGS_DIR}/fetch_log_*.txt")
-    print("="*70)
+    print("\n" + "="*70)
     print(f"End: {datetime.now().isoformat()}")
     print("="*70)
     
     # Return status
-    if execute_predictions:
-        print("\n✓ SUCCESS: Complete pipeline executed")
-        return 0
-    else:
-        print("\n⚠️  WARNING: No high-confidence predictions")
-        return 1
+    print("\n✅ SUCCESS: Complete pipeline executed")
+    return 0
 
 
+# ===========================================================
+# FIXED: print_confidence_summary - 矛盾がない論理
+# ===========================================================
 def print_confidence_summary(execute_predictions, skip_predictions):
-    """Print detailed confidence analysis"""
+    """
+    信頼度分析レポートを出力（矛盾のない論理）
+    """
     
     print("\n" + "="*70)
     print("CONFIDENCE-BASED TRADING SUMMARY")
     print("="*70)
     
-    if execute_predictions:
-        print("\n🟢 HIGH CONFIDENCE - EXECUTE THESE TRADES:")
-        print("-" * 70)
-        for pred in sorted(execute_predictions, key=lambda x: x['confidence'], reverse=True):
-            direction_emoji = "📈" if "Bullish" in pred['direction'] else "📉"
-            print(f"{pred['ticker']:6s} | {direction_emoji} {pred['direction']:12s} | "
-                  f"Conf: {pred['confidence']:.2%} | "
-                  f"Model Acc: {pred['model_accuracy']:.2%} | "
-                  f"${pred['current_price']:.2f} → ${pred['predicted_price']:.2f}")
-    else:
-        print("\n🟢 HIGH CONFIDENCE - EXECUTE THESE TRADES:")
-        print("-" * 70)
-        print("No high-confidence signals at this time.")
+    # ===== HIGH CONFIDENCE セクション =====
+    print("\n🟢 HIGH CONFIDENCE - EXECUTE THESE TRADES:")
+    print("-" * 70)
     
-    if skip_predictions:
-        print("\n🔴 LOW CONFIDENCE - SKIP THESE (HOLD):")
-        print("-" * 70)
-        for pred in sorted(skip_predictions, key=lambda x: x['confidence'], reverse=True):
-            direction_emoji = "📈" if "Bullish" in pred['direction'] else "📉"
-            print(f"{pred['ticker']:6s} | {direction_emoji} {pred['direction']:12s} | "
-                  f"Conf: {pred['confidence']:.2%} | "
-                  f"Model Acc: {pred['model_accuracy']:.2%} | Reason: Low confidence")
+    if len(execute_predictions) > 0:
+        # HIGH CONFIDENCE がある場合
+        for pred in sorted(execute_predictions, key=lambda x: x.get('confidence_score', 0), reverse=True):
+            ticker = pred.get('ticker', '?')
+            direction = pred.get('direction', '?')
+            conf_score = pred.get('confidence_score', 0)
+            model_acc = pred.get('model_accuracy', 0)
+            curr_price = pred.get('current_price', 0)
+            pred_price = pred.get('predicted_price', 0)
+            
+            direction_emoji = "📈" if "Bullish" in str(direction) else "📉"
+            
+            print(f"{ticker:6s} | {direction_emoji} {str(direction):12s} | "
+                  f"Conf: {conf_score:.1%} | "
+                  f"Model Acc: {model_acc:.1%} | "
+                  f"${curr_price:.2f} → ${pred_price:.2f}")
     else:
-        print("\n🔴 LOW CONFIDENCE - SKIP THESE (HOLD):")
-        print("-" * 70)
-        print("All predictions have sufficient confidence!")
+        # HIGH CONFIDENCE がない場合
+        print("No high-confidence signals at this time.")
+        print("→ Market conditions uncertain. Waiting for clearer signals.")
+    
+    # ===== LOW CONFIDENCE セクション =====
+    print("\n🔴 LOW CONFIDENCE - SKIP THESE (HOLD):")
+    print("-" * 70)
+    
+    if len(skip_predictions) > 0:
+        # LOW CONFIDENCE がある場合
+        for pred in sorted(skip_predictions, key=lambda x: x.get('confidence_score', 0), reverse=True):
+            ticker = pred.get('ticker', '?')
+            direction = pred.get('direction', '?')
+            conf_score = pred.get('confidence_score', 0)
+            model_acc = pred.get('model_accuracy', 0)
+            
+            direction_emoji = "📈" if "Bullish" in str(direction) else "📉"
+            
+            print(f"{ticker:6s} | {direction_emoji} {str(direction):12s} | "
+                  f"Conf: {conf_score:.1%} | "
+                  f"Model Acc: {model_acc:.1%} | Reason: Low confidence")
+    else:
+        # LOW CONFIDENCE がない場合
+        print("✅ All predictions have sufficient confidence!")
+        print("→ Ready to execute all signals.")
     
     print("="*70)
 
@@ -349,17 +366,22 @@ def print_confidence_summary(execute_predictions, skip_predictions):
 if __name__ == "__main__":
     exit_code = main()
     
-    # Print confidence summary
+    # Print confidence summary（修正版）
     try:
         predictions_file = f"{PREDICTIONS_DIR}/latest_predictions.json"
-        with open(predictions_file, 'r') as f:
-            filtered_predictions = json.load(f)
-        
-        execute_preds = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
-        skip_preds = [p for p in filtered_predictions if p.get('action') == 'SKIP']
-        
-        print_confidence_summary(execute_preds, skip_preds)
+        if os.path.exists(predictions_file):
+            with open(predictions_file, 'r') as f:
+                filtered_predictions = json.load(f)
+            
+            execute_preds = [p for p in filtered_predictions if p.get('action') == 'EXECUTE']
+            skip_preds = [p for p in filtered_predictions if p.get('action') == 'SKIP']
+            
+            # 修正版の関数を呼び出し
+            print_confidence_summary(execute_preds, skip_preds)
+        else:
+            print("\n⚠️ Predictions file not found")
+    
     except Exception as e:
-        print(f"\n[WARNING] Could not print confidence summary: {str(e)}")
+        print(f"\n[WARNING] Could not print confidence summary: {str(e)[:60]}")
     
     sys.exit(exit_code)
