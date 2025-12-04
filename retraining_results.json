@@ -2,61 +2,61 @@
   {
     "ticker": "NVDA",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5923
   },
   {
     "ticker": "AAPL",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.55
   },
   {
     "ticker": "MSFT",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.6
   },
   {
     "ticker": "GOOGL",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5654
   },
   {
     "ticker": "AMZN",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5269
   },
   {
     "ticker": "META",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.3885
   },
   {
     "ticker": "TSLA",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5308
   },
   {
     "ticker": "AMD",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5769
   },
   {
     "ticker": "NFLX",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.3846
   },
   {
     "ticker": "QQQ",
     "status": "SUCCESS",
-    "regime": "UNKNOWN",
-    "accuracy": 0
+    "regime": "CHOPPY",
+    "accuracy": 0.5269
   }
 ]

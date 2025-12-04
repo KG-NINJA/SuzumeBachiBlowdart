@@ -48,32 +48,62 @@ def select_integrated_features(df: pd.DataFrame) -> pd.DataFrame:
     改善版20特徴量 ＋ 宗叡74特徴量 を自動統合。
     存在しない列は無視。
     """
+    # 実際に build_feature_set が生成するカラム名に合わせる
     feature_candidates = [
-        # ==== 20 features basic ====
-        "return_1d", "return_3d", "return_5d",
-        "volatility_5d", "volatility_10d",
-        "ma_5", "ma_10", "ma_20",
-        "rsi14", "macd", "macd_signal",
-        "volume_change", "atr", "stoch_k", "stoch_d",
-        "ema_5", "ema_10", "ema_20", "ema_ratio",
-        "range_ratio",
-
-        # ==== 宗叡 74 features（あれば使う） ====
-        "bb_upper", "bb_lower", "bb_width",
-        "adx", "di_plus", "di_minus",
-        "rsi_divergence",
-        "macd_hist",
-        "vol_ma_ratio",
-        "trend_strength",
-        "momentum_3", "momentum_10",
-        "volatility_20",
-        "volume_trend",
+        # ==== Basic Features ====
+        "Close", "High", "Low", "Open", "Volume",
+        
+        # ==== Moving Averages ====
+        "MA5", "MA10", "MA20", "MA50",
+        "EMA12", "EMA26",
+        "EMA_5_20", "EMA_10_50", "EMA_20_50",
+        "EMA_Distance_5_20", "EMA_Distance_10_50", "EMA_Distance_20_50",
+        
+        # ==== RSI ====
+        "RSI", "RSI14", "RSI7",
+        "RSI_Overbought", "RSI_Oversold", "RSI_Zone_Code",
+        "RSI_Divergence_Bullish", "RSI_Divergence_Bearish",
+        
+        # ==== MACD ====
+        "MACD", "MACD_Signal", "MACD_Hist", "MACD_Histogram",
+        "MACD_Bullish_Cross", "MACD_Bearish_Cross",
+        
+        # ==== Bollinger Bands ====
+        "BB_Upper", "BB_Middle", "BB_Lower", "BB_Width",
+        "BB_Position", "BB_Squeeze", "BB_Width_Vol",
+        
+        # ==== Volatility ====
+        "ATR", "ATR_Percent", "Volatility", "HV", "Vol_of_Vol",
+        
+        # ==== Volume ====
+        "Volume_MA20", "Volume_Ratio", "Volume_SMA",
+        "OBV", "OBV_SMA", "PVT", "VROC",
+        
+        # ==== Momentum ====
+        "Momentum", "Momentum_5", "Momentum_10", "Momentum_20",
+        "ROC10", "ROC20", "ROC_5", "ROC_10", "ROC_20",
+        
+        # ==== Trend ====
+        "Trend_Strength", "ADX", "Plus_DI", "Minus_DI",
+        "Stoch_K", "Stoch_D",
+        
+        # ==== Support/Resistance ====
+        "Support", "Resistance",
+        "Distance_to_Support", "Distance_to_Resistance",
+        
+        # ==== Lagged Features ====
+        "DailyReturn_lag1", "HighLowRatio_lag1", "CloseOpenRatio_lag1",
     ]
 
     final_features = [c for c in feature_candidates if c in df.columns]
 
     logger.info(f"[FEATURES] Integrated: {len(final_features)} selected")
-    return df[final_features + ["target"]]
+    
+    # targetがあれば含める、なければ特徴量のみ
+    if "target" in df.columns:
+        return df[final_features + ["target"]]
+    else:
+        return df[final_features]
 
 
 # ===========================================================
@@ -189,3 +219,48 @@ def train_model(df: pd.DataFrame, ticker: str) -> float:
     except Exception as e:
         logger.error(f"[TRAIN] {ticker} fatal error: {e}")
         return 0.0
+
+
+# ===========================================================
+# train_ticker() - retrain_all.py との互換性のため
+# ===========================================================
+def train_ticker(ticker: str, features_df: pd.DataFrame) -> Optional[Dict[str, Any]]:
+    """
+    単一ティッカーのモデルを訓練する（retrain_all.py との互換性のため）
+    
+    Args:
+        ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
+        features_df (pd.DataFrame): 特徴量DataFrame
+    
+    Returns:
+        dict: 訓練結果 (regime, accuracies) または None
+    """
+    try:
+        logger.info(f"[TRAIN_TICKER] {ticker}: 訓練開始")
+        
+        # レジーム検出
+        regime = detect_regime(features_df)
+        
+        # モデル訓練
+        accuracy = train_model(features_df, ticker)
+        
+        if accuracy > 0:
+            result = {
+                'ticker': ticker,
+                'regime': regime,
+                'accuracies': {
+                    'hybrid': accuracy
+                },
+                'status': 'SUCCESS'
+            }
+            logger.info(f"[TRAIN_TICKER] {ticker}: 訓練完了 | Acc={accuracy:.4f}")
+            return result
+        else:
+            logger.warning(f"[TRAIN_TICKER] {ticker}: 訓練失敗（精度=0）")
+            return None
+    
+    except Exception as e:
+        logger.error(f"[TRAIN_TICKER] {ticker} fatal: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
