@@ -10,6 +10,7 @@ import pickle
 from pathlib import Path
 from datetime import datetime
 from utils_data_fetch import safe_price_download
+from blowdart_features import build_feature_set
 
 logger = logging.getLogger("blowdart_ml_engine")
 
@@ -223,20 +224,34 @@ def train_model(df: pd.DataFrame, ticker: str) -> float:
 
 
 # ===========================================================
-# train_ticker() - retrain_all.py との互換性のため
+# train_ticker() - 統合インターフェース
 # ===========================================================
-def train_ticker(ticker: str, features_df: pd.DataFrame) -> Optional[Dict[str, Any]]:
+def train_ticker(ticker: str, features_df: pd.DataFrame = None) -> Optional[Dict[str, Any]]:
     """
-    単一ティッカーのモデルを訓練する（retrain_all.py との互換性のため）
+    単一ティッカーのモデルを訓練する
     
     Args:
         ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
-        features_df (pd.DataFrame): 特徴量DataFrame
+        features_df (pd.DataFrame, optional): 特徴量DataFrame。Noneの場合は自動取得。
     
     Returns:
         dict: 訓練結果 (regime, accuracies) または None
     """
     try:
+        # データが渡されていない場合は取得
+        if features_df is None:
+            logger.info(f"[TRAIN_TICKER] {ticker}: Fetching data...")
+            price_data = safe_price_download(ticker)
+            if price_data is None or price_data.empty:
+                logger.error(f"[TRAIN_TICKER] {ticker}: No data available")
+                return None
+            
+            logger.info(f"[TRAIN_TICKER] {ticker}: Building features...")
+            features_df = build_feature_set(price_data, ticker)
+            if features_df is None or features_df.empty:
+                logger.error(f"[TRAIN_TICKER] {ticker}: Feature engineering failed")
+                return None
+
         logger.info(f"[TRAIN_TICKER] {ticker}: 訓練開始")
         
         # レジーム検出
@@ -267,45 +282,19 @@ def train_ticker(ticker: str, features_df: pd.DataFrame) -> Optional[Dict[str, A
         return None
 
 
-# ===========================================================
-# train_ticker() - fetch_dataを使うシンプルなインターフェース
-# ===========================================================
-def train_ticker_simple(ticker):
-    """
-    単一ティッカーのモデルを訓練する
-    
-    Args:
-        ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
-    
-    Returns:
-        dict: 訓練済みモデルと結果
-    """
-    try:
-        print(f"[TRAIN] {ticker}: Fetching data...")
-        data = safe_price_download(ticker)
-        
-        print(f"[TRAIN] {ticker}: Training model...")
-        result = train_model(ticker, data)
-        
-        print(f"[TRAIN] {ticker}: Training complete")
-        return result
-    
-    except Exception as e:
-        print(f"[TRAIN] {ticker} fatal: {e}")
-        import traceback
-        traceback.print_exc()
-        return None
+
 
 
 # ===========================================================
 # predict_ticker() - 単一ティッカーの株価予測
 # ===========================================================
-def predict_ticker(ticker):
+def predict_ticker(ticker, df=None):
     """
     単一ティッカーの株価を予測する
     
     Args:
         ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
+        df (pd.DataFrame, optional): 特徴量データフレーム。Noneの場合は内部で取得。
     
     Returns:
         dict: 予測結果
@@ -315,16 +304,24 @@ def predict_ticker(ticker):
             - timestamp: 予測時刻
     """
     try:
-        print(f"[PREDICT] {ticker}: Fetching data...")
-        data = safe_price_download(ticker)
+        latest_row = None
         
-        if data is None or data.empty:
-            print(f"[PREDICT] {ticker}: No data available")
-            return None
-        
-        print(f"[PREDICT] {ticker}: Preparing features...")
-        # 最後の行を取得
-        latest_row = data.iloc[-1]
+        if df is not None and not df.empty:
+            # 特徴量が直接渡された場合
+            print(f"[PREDICT] {ticker}: Using provided features...")
+            data = df
+            latest_row = data.iloc[-1]
+        else:
+            # データ取得から行う場合
+            print(f"[PREDICT] {ticker}: Fetching data...")
+            data = safe_price_download(ticker)
+            
+            if data is None or data.empty:
+                print(f"[PREDICT] {ticker}: No data available")
+                return None
+                
+            print(f"[PREDICT] {ticker}: Preparing features...")
+            latest_row = data.iloc[-1]
         
         # 特徴量を準備
         features = {}
@@ -337,7 +334,11 @@ def predict_ticker(ticker):
         # 既存のモデル/エンジンから予測を取得
         
         # 簡易的な予測（実装に応じて調整）
-        forecast = latest_row.get('Close', 0) * 1.01  # 仮の予測
+        current_price = latest_row.get('Close', 0)
+        if current_price == 0 and 'close' in latest_row:
+             current_price = latest_row.get('close', 0)
+             
+        forecast = current_price * 1.01  # 仮の予測
         confidence = 0.72  # 仮の信頼度
         
         result = {
@@ -345,7 +346,7 @@ def predict_ticker(ticker):
             "forecast": round(forecast, 2),
             "confidence": round(confidence, 4),
             "timestamp": datetime.now().isoformat(),
-            "current_price": round(latest_row.get('Close', 0), 2)
+            "current_price": round(current_price, 2)
         }
         
         print(f"[PREDICT] {ticker}: Prediction complete")
