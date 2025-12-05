@@ -1,2 +1,2 @@
 def test_autofix():
-    print("autofix test"   
+    print("autofix test  
