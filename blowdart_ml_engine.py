@@ -304,23 +304,30 @@ def predict_ticker(ticker, df=None):
             - timestamp: 予測時刻
     """
     try:
+        print(f"[PREDICT] {ticker}: Starting prediction...")
         latest_row = None
         
-        if df is not None and not df.empty:
+        if df is not None:
+            print(f"[PREDICT] {ticker}: Received DataFrame with shape {df.shape}")
+            if df.empty:
+                print(f"[PREDICT] {ticker}: Received empty DataFrame")
+                return None
+            
             # 特徴量が直接渡された場合
             print(f"[PREDICT] {ticker}: Using provided features...")
             data = df
             latest_row = data.iloc[-1]
+            print(f"[PREDICT] {ticker}: Latest row date/index: {latest_row.name}")
         else:
             # データ取得から行う場合
-            print(f"[PREDICT] {ticker}: Fetching data...")
+            print(f"[PREDICT] {ticker}: Fetching data (no DF provided)...")
             data = safe_price_download(ticker)
             
             if data is None or data.empty:
-                print(f"[PREDICT] {ticker}: No data available")
+                print(f"[PREDICT] {ticker}: No data available from fetch")
                 return None
                 
-            print(f"[PREDICT] {ticker}: Preparing features...")
+            print(f"[PREDICT] {ticker}: Preparing features from fetched data...")
             latest_row = data.iloc[-1]
         
         # 特徴量を準備
@@ -329,14 +336,24 @@ def predict_ticker(ticker, df=None):
             if col != 'Date':
                 features[col] = latest_row[col]
         
-        print(f"[PREDICT] {ticker}: Running prediction...")
-        # モデルから予測を取得
-        # 既存のモデル/エンジンから予測を取得
+        print(f"[PREDICT] {ticker}: Running prediction logic...")
         
         # 簡易的な予測（実装に応じて調整）
-        current_price = latest_row.get('Close', 0)
-        if current_price == 0 and 'close' in latest_row:
-             current_price = latest_row.get('close', 0)
+        # カラム名の確認
+        cols = [c.lower() for c in data.columns]
+        current_price = 0.0
+        
+        if 'Close' in data.columns:
+            current_price = float(latest_row['Close'])
+        elif 'close' in data.columns:
+            current_price = float(latest_row['close'])
+        else:
+            print(f"[PREDICT] {ticker}: WARNING - 'Close' column not found in {data.columns.tolist()[:10]}...")
+            # 最後の手段：最初のカラムを使うか、0にする
+            if len(latest_row) > 0:
+                current_price = float(latest_row.iloc[0]) # 仮
+        
+        print(f"[PREDICT] {ticker}: Current Price = {current_price}")
              
         forecast = current_price * 1.01  # 仮の予測
         confidence = 0.72  # 仮の信頼度
@@ -346,14 +363,16 @@ def predict_ticker(ticker, df=None):
             "forecast": round(forecast, 2),
             "confidence": round(confidence, 4),
             "timestamp": datetime.now().isoformat(),
-            "current_price": round(current_price, 2)
+            "current_price": round(current_price, 2),
+            "direction": "Bullish" if forecast > current_price else "Bearish",
+            "prob_up": confidence if forecast > current_price else (1.0 - confidence)
         }
         
-        print(f"[PREDICT] {ticker}: Prediction complete")
+        print(f"[PREDICT] {ticker}: Prediction complete: {result['direction']} ({result['confidence']})")
         return result
     
     except Exception as e:
-        print(f"[PREDICT] {ticker} fatal: {e}")
+        print(f"[PREDICT] {ticker} fatal error: {e}")
         import traceback
         traceback.print_exc()
         return None
