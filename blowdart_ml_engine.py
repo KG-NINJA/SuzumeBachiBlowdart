@@ -9,6 +9,7 @@ import json
 import pickle
 from pathlib import Path
 from datetime import datetime
+from utils_data_fetch import safe_price_download
 
 logger = logging.getLogger("blowdart_ml_engine")
 
@@ -261,6 +262,97 @@ def train_ticker(ticker: str, features_df: pd.DataFrame) -> Optional[Dict[str, A
     
     except Exception as e:
         logger.error(f"[TRAIN_TICKER] {ticker} fatal: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+# ===========================================================
+# train_ticker() - fetch_dataを使うシンプルなインターフェース
+# ===========================================================
+def train_ticker_simple(ticker):
+    """
+    単一ティッカーのモデルを訓練する
+    
+    Args:
+        ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
+    
+    Returns:
+        dict: 訓練済みモデルと結果
+    """
+    try:
+        print(f"[TRAIN] {ticker}: Fetching data...")
+        data = safe_price_download(ticker)
+        
+        print(f"[TRAIN] {ticker}: Training model...")
+        result = train_model(ticker, data)
+        
+        print(f"[TRAIN] {ticker}: Training complete")
+        return result
+    
+    except Exception as e:
+        print(f"[TRAIN] {ticker} fatal: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+# ===========================================================
+# predict_ticker() - 単一ティッカーの株価予測
+# ===========================================================
+def predict_ticker(ticker):
+    """
+    単一ティッカーの株価を予測する
+    
+    Args:
+        ticker (str): ティッカーシンボル (例: 'NVDA', 'AAPL')
+    
+    Returns:
+        dict: 予測結果
+            - ticker: ティッカーシンボル
+            - forecast: 予測株価
+            - confidence: 信頼度 (0.0-1.0)
+            - timestamp: 予測時刻
+    """
+    try:
+        print(f"[PREDICT] {ticker}: Fetching data...")
+        data = safe_price_download(ticker)
+        
+        if data is None or data.empty:
+            print(f"[PREDICT] {ticker}: No data available")
+            return None
+        
+        print(f"[PREDICT] {ticker}: Preparing features...")
+        # 最後の行を取得
+        latest_row = data.iloc[-1]
+        
+        # 特徴量を準備
+        features = {}
+        for col in data.columns:
+            if col != 'Date':
+                features[col] = latest_row[col]
+        
+        print(f"[PREDICT] {ticker}: Running prediction...")
+        # モデルから予測を取得
+        # 既存のモデル/エンジンから予測を取得
+        
+        # 簡易的な予測（実装に応じて調整）
+        forecast = latest_row.get('Close', 0) * 1.01  # 仮の予測
+        confidence = 0.72  # 仮の信頼度
+        
+        result = {
+            "ticker": ticker,
+            "forecast": round(forecast, 2),
+            "confidence": round(confidence, 4),
+            "timestamp": datetime.now().isoformat(),
+            "current_price": round(latest_row.get('Close', 0), 2)
+        }
+        
+        print(f"[PREDICT] {ticker}: Prediction complete")
+        return result
+    
+    except Exception as e:
+        print(f"[PREDICT] {ticker} fatal: {e}")
         import traceback
         traceback.print_exc()
         return None
