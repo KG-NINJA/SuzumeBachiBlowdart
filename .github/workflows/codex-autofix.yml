@@ -1,49 +1,105 @@
-name: Codex Autofix CI
+name: Codex Auto-Fix on Failure
 
 on:
-  push:
-  pull_request:
+  workflow_run:
+    # ここを「監視したいメインCIの名前」に合わせる
+    # Actions の左メニューに出ている "Phase 2 - Complete Pipeline" など。
+    workflows: ["Phase 2 - Complete Pipeline"]
+    types: [completed]
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  codex-autofix:
+  auto-fix:
+    # 失敗したときだけ動く
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
 
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      FAILED_WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+      FAILED_RUN_URL: ${{ github.event.workflow_run.html_url }}
+      FAILED_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+      FAILED_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+
     steps:
-      - name: Checkout repository
+      - name: Check OPENAI_API_KEY
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "OPENAI_API_KEY secret is not set. Skipping auto-fix." >&2
+            exit 1
+          fi
+
+      - name: Checkout failing commit
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.FAILED_HEAD_SHA }}
+          fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # ここでエラーを誘発する
-      # utils/autofix_test.py に SyntaxError を入れておくことで意図的に failure を発生させる
-      - name: Run safety test script
-        run: python utils/autofix_test.py
-        continue-on-error: true
-
-      # Node 環境（Codex CLI 用）
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: Install Codex CLI
-        run: npm install -g @openai/codex
-
-      # Codex Autofix 実行
-      - name: Run Codex Autofix
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Install Python dependencies
         run: |
-          codex autofix \
-            --prompt-file ".github/codex-autofix-policy.txt" \
-            --max-changes 80 \
-            --max-files 3 \
-            --explain \
-            --commit-message "Codex Autofix: Fix CI failure"
+          if [ -f requirements.txt ]; then
+            pip install --upgrade pip
+            pip install -r requirements.txt
+          fi
+
+      # ★ ここが Codex 本体。CLI ではなく Action を使うのが正解。
+      - name: Run Codex autofix
+        uses: openai/codex-action@main
+        id: codex
+        with:
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          # ここに「Allowed / Forbidden」を全部書き込む
+          prompt: >-
+            You are the CI autofix agent for the SuzumeBachiBlowdart repository.
+            This is a Python-based stock prediction system with GitHub Actions pipelines.
+            Your job is to read the repository and the existing CI configuration,
+            reproduce the failing CI step, and implement the *minimal* change required
+            to make CI pass again.
+
+            Strict rules:
+            - DO NOT change core model logic or training algorithms.
+            - DO NOT modify any files under data/, datasets/, or models/.
+            - You MAY fix syntax errors, import issues, path bugs, and small plumbing issues.
+            - Keep changes under ~80 lines total and in at most 3 files.
+            - Avoid refactors, new features, or broad code rewrites.
+            - Prefer small, surgical fixes that mirror what an experienced engineer would do.
+
+            After implementing the fix, rerun the same command that failed in the CI
+            to ensure it passes before finishing.
+
+          # Codex をワークスペース書き込みモードで動かすガード
+          codex_args: '["--config","sandbox_mode=\"workspace-write\""]'
+
+      # Codex が直したあとに、自分でもう一度パイプラインを確認したい場合はここを書き換える
+      # 実際に Phase 2 の CI で使っているコマンドに合わせてください。
+      - name: Verify pipeline (optional, adjust to your CI command)
+        run: |
+          echo "TODO: replace this with the same command your CI runs, e.g.:"
+          echo "python scripts/run_full_pipeline.py"
+          # 例:
+          # python scripts/run_full_pipeline.py
+
+      - name: Create pull request with fixes
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "fix(ci): auto-fix failing CI via Codex"
+          branch: codex/auto-fix-${{ github.event.workflow_run.run_id }}
+          base: ${{ env.FAILED_HEAD_BRANCH }}
+          title: "Auto-fix failing CI via Codex"
+          body: |
+            Codex automatically generated this PR in response to a CI failure
+            on workflow `${{ env.FAILED_WORKFLOW_NAME }}`.
+
+            Failed run: ${{ env.FAILED_RUN_URL }}
+            Head branch: `${{ env.FAILED_HEAD_BRANCH }}`
+
+            Changes are intended to be minimal and focused solely on fixing the CI.
