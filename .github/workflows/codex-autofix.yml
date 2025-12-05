@@ -4,23 +4,31 @@ on:
   push:
   pull_request:
 
-
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
   codex-autofix:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR target
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
 
-      - name: Setup Node
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # ここでエラーを誘発する
+      # utils/autofix_test.py に SyntaxError を入れておくことで意図的に failure を発生させる
+      - name: Run safety test script
+        run: python utils/autofix_test.py
+        continue-on-error: true
+
+      # Node 環境（Codex CLI 用）
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
@@ -28,6 +36,7 @@ jobs:
       - name: Install Codex CLI
         run: npm install -g @openai/codex
 
+      # Codex Autofix 実行
       - name: Run Codex Autofix
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
