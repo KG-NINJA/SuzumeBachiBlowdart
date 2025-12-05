@@ -1,6 +1,6 @@
 # Phase 2 - Complete Pipeline Report
 
-**Execution Date:** Thu Dec  4 12:25:43 UTC 2025
+**Execution Date:** Fri Dec  5 01:17:26 UTC 2025
 
 ## Pipeline Status
 - ✅ Feature Analysis
@@ -80,10 +80,36 @@ XGBoost Tuning Complete
 
 ### Step 3 - Model Retraining
 ```
-Traceback (most recent call last):
-  File "/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/retrain_all.py", line 6, in <module>
-    from blowdart_ml_engine import train_ticker   # ← 宗叡版のtrain_ticker（引数なし）
-ImportError: cannot import name 'train_ticker' from 'blowdart_ml_engine' (/home/runner/work/SuzumeBachiBlowdart/SuzumeBachiBlowdart/blowdart_ml_engine.py)
+    ✓ ADX
+    ✓ RSI & Divergence
+    ✓ MACD
+    ✓ Volume Features
+    ✓ Volatility Features
+    ✓ Momentum Features
+    ✓ Trend Features
+  [Features] Total features: 74
+  [FEATURES] Advanced features added successfully
+  [FEATURES] Total features: 74
+  [FEATURES] Final dataset: 126 rows × 74 columns
+  成功 | Regime: CHOPPY | Hybrid Acc: 0.5269
+
+======================================================================
+宗叡最終版 訓練結果
+======================================================================
+ticker  status regime  accuracy
+  NVDA SUCCESS CHOPPY    0.5923
+  AAPL SUCCESS CHOPPY    0.5500
+  MSFT SUCCESS CHOPPY    0.6000
+ GOOGL SUCCESS CHOPPY    0.5654
+  AMZN SUCCESS CHOPPY    0.5269
+  META SUCCESS CHOPPY    0.3885
+  TSLA SUCCESS CHOPPY    0.5308
+   AMD SUCCESS CHOPPY    0.5769
+  NFLX SUCCESS CHOPPY    0.3846
+   QQQ SUCCESS CHOPPY    0.5269
+
+結果保存完了 → retraining_results.csv / json
+次は本物の性能が見える。
 ```
 
 ### Step 4 - Backtest Validation
