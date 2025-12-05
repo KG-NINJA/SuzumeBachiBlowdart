@@ -1,6 +1,3 @@
-# Intentional CI failure test for Codex Autofix
-print("trigger autofix"  
-
 import sys
 import os
 import json
@@ -78,4 +75,5 @@ if __name__ == "__main__":
     simple_daily_prediction.main()
     
     verify_outputs()
+
 
