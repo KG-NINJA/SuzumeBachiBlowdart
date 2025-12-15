@@ -1,2 +1,4 @@
 def test_autofix():
-    print("autofix test  
+    message = "autofix test"
+    print(message)
+    assert message == "autofix test"
