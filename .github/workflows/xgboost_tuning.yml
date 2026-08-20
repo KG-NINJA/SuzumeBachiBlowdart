@@ -6,17 +6,18 @@ name: Phase 2 - XGBoost Tuning
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * 0'
-  push:
+    - cron: "0 3 * * 0"
+  workflow_run:
+    workflows:
+      - XGBoost Leakage Safeguards
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - 'xgboost_tuning.py'
-      - 'tests/test_xgboost_tuning.py'
-      - '.github/workflows/xgboost_tuning.yml'
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: suzumebachi-model-results
@@ -24,46 +25,176 @@ concurrency:
 
 jobs:
   xgboost-tuning:
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
 
     steps:
-      - name: Checkout code
+      - name: Checkout validated revision
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          cache: 'pip'
+          python-version: "3.10"
+          cache: pip
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+          python -m pip install -r requirements.txt
+          python -m pip install pytest
 
       - name: Verify leakage safeguards
         run: python -m pytest tests/test_xgboost_tuning.py
 
-      - name: Run XGBoost Tuning
+      - name: Run XGBoost tuning
         run: |
+          set -o pipefail
           echo "=========================================="
           echo "Starting XGBoost Hyperparameter Tuning..."
           echo "=========================================="
           python xgboost_tuning.py 2>&1 | tee tuning_output.log
 
+      - name: Validate and summarize tuning results
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          import os
+          from pathlib import Path
+
+          expected_tickers = {
+              "NVDA", "AAPL", "MSFT", "GOOGL", "AMZN",
+              "META", "TSLA", "AMD", "NFLX", "QQQ",
+          }
+          result_path = Path("tuning_results/tuning_results.json")
+          if not result_path.exists():
+              raise SystemExit("Missing tuning_results/tuning_results.json")
+
+          results = json.loads(result_path.read_text(encoding="utf-8"))
+          if not isinstance(results, list) or not results:
+              raise SystemExit("Tuning produced no usable results")
+
+          tickers = [row.get("ticker") for row in results]
+          if len(tickers) != len(set(tickers)):
+              raise SystemExit("Tuning results contain duplicate tickers")
+
+          missing = sorted(expected_tickers - set(tickers))
+          unexpected = sorted(set(tickers) - expected_tickers)
+          if missing or unexpected:
+              raise SystemExit(
+                  f"Incomplete ticker set: missing={missing}, unexpected={unexpected}"
+              )
+
+          metric_names = (
+              "best_cv_score",
+              "train_accuracy",
+              "validation_accuracy",
+              "test_accuracy",
+              "overfitting_gap",
+          )
+          for row in results:
+              for name in metric_names:
+                  value = row.get(name)
+                  if not isinstance(value, (int, float)) or not math.isfinite(value):
+                      raise SystemExit(
+                          f"{row.get('ticker')}: invalid metric {name}={value!r}"
+                      )
+              for name in (
+                  "best_cv_score",
+                  "train_accuracy",
+                  "validation_accuracy",
+                  "test_accuracy",
+              ):
+                  value = float(row[name])
+                  if not 0.0 <= value <= 1.0:
+                      raise SystemExit(
+                          f"{row['ticker']}: {name} outside [0, 1]: {value}"
+                      )
+
+          perfect_tests = [
+              row["ticker"] for row in results
+              if float(row["test_accuracy"]) >= 0.99
+          ]
+          if len(perfect_tests) == len(results):
+              raise SystemExit(
+                  "All tickers still report near-perfect test accuracy; "
+                  "possible leakage remains"
+              )
+
+          average_test = sum(
+              float(row["test_accuracy"]) for row in results
+          ) / len(results)
+          average_gap = sum(
+              float(row["overfitting_gap"]) for row in results
+          ) / len(results)
+          large_gaps = [
+              row["ticker"] for row in results
+              if float(row["overfitting_gap"]) > 0.15
+          ]
+
+          if perfect_tests:
+              print(
+                  "::warning title=Near-perfect test accuracy::"
+                  f"Tickers at or above 99%: {', '.join(perfect_tests)}"
+              )
+          if large_gaps:
+              print(
+                  "::warning title=Overfitting gap above 15%::"
+                  f"Tickers: {', '.join(large_gaps)}"
+              )
+
+          summary_path = Path(os.environ["GITHUB_STEP_SUMMARY"])
+          with summary_path.open("a", encoding="utf-8") as summary:
+              summary.write("## XGBoost tuning results\n\n")
+              summary.write(f"- Tickers evaluated: **{len(results)}/10**\n")
+              summary.write(
+                  f"- Average test accuracy: **{average_test:.2%}**\n"
+              )
+              summary.write(
+                  f"- Average overfitting gap: **{average_gap:.2%}**\n"
+              )
+              summary.write(
+                  f"- Tickers with gap over 15%: **{len(large_gaps)}**\n\n"
+              )
+              summary.write(
+                  "| Ticker | Train | Validation | Test | Gap |\n"
+                  "|---|---:|---:|---:|---:|\n"
+              )
+              for row in sorted(results, key=lambda item: item["ticker"]):
+                  summary.write(
+                      f"| {row['ticker']} "
+                      f"| {float(row['train_accuracy']):.2%} "
+                      f"| {float(row['validation_accuracy']):.2%} "
+                      f"| {float(row['test_accuracy']):.2%} "
+                      f"| {float(row['overfitting_gap']):+.2%} |\n"
+                  )
+          PY
+
+      - name: Upload tuning diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xgboost-tuning-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            tuning_output.log
+            tuning_results/
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Display tuning output
         if: always()
         run: |
-          if [ -f "tuning_output.log" ]; then
+          if [ -f tuning_output.log ]; then
             echo "=== XGBoost Tuning Output ==="
             tail -100 tuning_output.log
           fi
 
-      - name: Commit and push tuning results
+      - name: Commit and push validated results
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -72,19 +203,16 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing to commit"
           else
-            git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')"
+            git commit -m "🔧 Auto: validated XGBoost tuning results - $(date +'%Y-%m-%d %H:%M:%S')"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
           fi
 
-      - name: Tuning Complete
+      - name: Tuning complete
         run: |
           echo "=========================================="
           echo "✅ XGBoost Tuning Workflow Completed"
           echo "=========================================="
           echo "Date: $(date)"
-          echo ""
-          echo "Results saved:"
-          echo "  - tuning_output.log"
-          echo "  - tuning_results/"
+          echo "Results saved in tuning_results/ and as a workflow artifact."

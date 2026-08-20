@@ -4,6 +4,23 @@ on:
   pull_request:
     paths:
       - "xgboost_tuning.py"
+      - "blowdart_features.py"
+      - "advanced_features.py"
+      - "utils_data_fetch.py"
+      - "requirements.txt"
+      - "tests/test_xgboost_tuning.py"
+      - ".github/workflows/xgboost_safeguards.yml"
+      - ".github/workflows/xgboost_tuning.yml"
+      - ".github/workflows/phase2_pipeline.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "xgboost_tuning.py"
+      - "blowdart_features.py"
+      - "advanced_features.py"
+      - "utils_data_fetch.py"
+      - "requirements.txt"
       - "tests/test_xgboost_tuning.py"
       - ".github/workflows/xgboost_safeguards.yml"
       - ".github/workflows/xgboost_tuning.yml"
@@ -12,6 +29,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: xgboost-safeguards-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   leakage-safeguards:
@@ -40,3 +61,15 @@ jobs:
 
       - name: Run leakage regression tests
         run: python -m pytest tests/test_xgboost_tuning.py
+
+      - name: Write validation summary
+        if: always()
+        run: |
+          {
+            echo "## XGBoost leakage safeguards"
+            echo ""
+            echo "- Event: `${{ github.event_name }}`"
+            echo "- Ref: `${{ github.ref }}`"
+            echo "- Commit: `${{ github.sha }}`"
+            echo "- Result: `${{ job.status }}`"
+          } >> "$GITHUB_STEP_SUMMARY"
