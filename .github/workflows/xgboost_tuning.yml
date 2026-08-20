@@ -19,7 +19,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: xgboost-tuning-results
+  group: suzumebachi-model-results
   cancel-in-progress: false
 
 jobs:
