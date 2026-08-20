@@ -1,6 +1,5 @@
 # .github/workflows/xgboost_tuning.yml
 # XGBoost ハイパーパラメータチューニングを定期実行するワークフロー
-# 修正版: v3 → v4, upload-artifact なし
 
 name: Phase 2 - XGBoost Tuning
 
@@ -13,16 +12,26 @@ on:
       - main
     paths:
       - 'xgboost_tuning.py'
+      - 'tests/test_xgboost_tuning.py'
       - '.github/workflows/xgboost_tuning.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xgboost-tuning-results
+  cancel-in-progress: false
 
 jobs:
   xgboost-tuning:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,16 +43,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install scikit-learn pandas numpy xgboost joblib
+          pip install pytest
+
+      - name: Verify leakage safeguards
+        run: python -m pytest tests/test_xgboost_tuning.py
 
       - name: Run XGBoost Tuning
         run: |
           echo "=========================================="
           echo "Starting XGBoost Hyperparameter Tuning..."
           echo "=========================================="
-          python xgboost_tuning.py > tuning_output.log 2>&1
-          echo "✅ XGBoost Tuning completed"
-        continue-on-error: true
+          python xgboost_tuning.py 2>&1 | tee tuning_output.log
 
       - name: Display tuning output
         if: always()
@@ -55,18 +65,18 @@ jobs:
 
       - name: Commit and push tuning results
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # 変更があったら全て追加
-          git add -A || true
-          
-          # コミット
-          git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
-          
-          # プッシュ
-          git push origin main || echo "Nothing to push"
-        continue-on-error: true
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tuning_output.log tuning_results/
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "🔧 Auto: XGBoost Tuning Results - $(date +'%Y-%m-%d %H:%M:%S')"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
 
       - name: Tuning Complete
         run: |
