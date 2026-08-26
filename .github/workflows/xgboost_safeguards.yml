@@ -68,8 +68,8 @@ jobs:
           {
             echo "## XGBoost leakage safeguards"
             echo ""
-            echo "- Event: `${{ github.event_name }}`"
-            echo "- Ref: `${{ github.ref }}`"
-            echo "- Commit: `${{ github.sha }}`"
-            echo "- Result: `${{ job.status }}`"
+            echo '- Event: `${{ github.event_name }}`'
+            echo '- Ref: `${{ github.ref }}`'
+            echo '- Commit: `${{ github.sha }}`'
+            echo '- Result: `${{ job.status }}`'
           } >> "$GITHUB_STEP_SUMMARY"
