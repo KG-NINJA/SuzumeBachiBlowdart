@@ -37,3 +37,13 @@ def test_tuning_workflow_autostashes_unstaged_changes_before_rebase():
 
     assert "git rebase --autostash origin/main" in workflow
     assert "git rebase origin/main" not in workflow
+
+
+def test_safeguard_summary_does_not_embed_context_in_shell_source():
+    workflow = Path(".github/workflows/xgboost_safeguards.yml").read_text(
+        encoding="utf-8"
+    )
+
+    assert "SUMMARY_REF: ${{ github.ref }}" in workflow
+    assert "printf -- '- Ref: `%s`\\n' \"$SUMMARY_REF\"" in workflow
+    assert "echo '- Ref: `${{ github.ref }}`'" not in workflow
