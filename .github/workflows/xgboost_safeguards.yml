@@ -64,12 +64,17 @@ jobs:
 
       - name: Write validation summary
         if: always()
+        env:
+          SUMMARY_EVENT: ${{ github.event_name }}
+          SUMMARY_REF: ${{ github.ref }}
+          SUMMARY_SHA: ${{ github.sha }}
+          SUMMARY_RESULT: ${{ job.status }}
         run: |
           {
-            echo "## XGBoost leakage safeguards"
-            echo ""
-            echo '- Event: `${{ github.event_name }}`'
-            echo '- Ref: `${{ github.ref }}`'
-            echo '- Commit: `${{ github.sha }}`'
-            echo '- Result: `${{ job.status }}`'
+            printf '%s\n' '## XGBoost leakage safeguards'
+            printf '\n'
+            printf -- '- Event: `%s`\n' "$SUMMARY_EVENT"
+            printf -- '- Ref: `%s`\n' "$SUMMARY_REF"
+            printf -- '- Commit: `%s`\n' "$SUMMARY_SHA"
+            printf -- '- Result: `%s`\n' "$SUMMARY_RESULT"
           } >> "$GITHUB_STEP_SUMMARY"
