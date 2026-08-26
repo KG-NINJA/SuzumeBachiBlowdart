@@ -3,130 +3,190 @@
     "ticker": "NVDA",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 65
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.6,
+    "train_accuracy": 0.75,
+    "validation_accuracy": 0.65,
+    "test_accuracy": 0.4,
+    "overfitting_gap": 0.35,
+    "improvement": -0.19999999999999996
   },
   {
     "ticker": "AAPL",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.05,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 35
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.5333333333333333,
+    "train_accuracy": 0.75,
+    "validation_accuracy": 0.55,
+    "test_accuracy": 0.6,
+    "overfitting_gap": 0.15000000000000002,
+    "improvement": 0.0
   },
   {
     "ticker": "MSFT",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 29
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.4166666666666667,
+    "train_accuracy": 0.8,
+    "validation_accuracy": 0.5,
+    "test_accuracy": 0.44,
+    "overfitting_gap": 0.36000000000000004,
+    "improvement": -0.15999999999999998
   },
   {
     "ticker": "GOOGL",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 4
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.5166666666666667,
+    "train_accuracy": 0.65,
+    "validation_accuracy": 0.45,
+    "test_accuracy": 0.52,
+    "overfitting_gap": 0.13,
+    "improvement": -0.07999999999999996
   },
   {
     "ticker": "AMZN",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 3,
+      "reg_alpha": 0.1,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 12
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.5166666666666667,
+    "train_accuracy": 0.7875,
+    "validation_accuracy": 0.65,
+    "test_accuracy": 0.48,
+    "overfitting_gap": 0.3075,
+    "improvement": -0.12
   },
   {
     "ticker": "META",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 3,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 7
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.5499999999999999,
+    "train_accuracy": 0.8,
+    "validation_accuracy": 0.55,
+    "test_accuracy": 0.56,
+    "overfitting_gap": 0.24,
+    "improvement": -0.039999999999999925
   },
   {
     "ticker": "TSLA",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 3,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 27
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.48333333333333334,
+    "train_accuracy": 0.85,
+    "validation_accuracy": 0.55,
+    "test_accuracy": 0.6,
+    "overfitting_gap": 0.25,
+    "improvement": 0.0
   },
   {
     "ticker": "AMD",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 7
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.6,
+    "train_accuracy": 0.775,
+    "validation_accuracy": 0.5,
+    "test_accuracy": 0.6,
+    "overfitting_gap": 0.17500000000000004,
+    "improvement": 0.0
   },
   {
     "ticker": "NFLX",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 5,
+      "reg_alpha": 0.1,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 2
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.5166666666666667,
+    "train_accuracy": 0.575,
+    "validation_accuracy": 0.4,
+    "test_accuracy": 0.4,
+    "overfitting_gap": 0.17499999999999993,
+    "improvement": -0.19999999999999996
   },
   {
     "ticker": "QQQ",
     "best_params": {
       "colsample_bytree": 0.8,
-      "learning_rate": 0.01,
+      "learning_rate": 0.03,
       "max_depth": 3,
-      "subsample": 0.8
+      "min_child_weight": 3,
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "subsample": 0.8,
+      "n_estimators": 85
     },
-    "best_cv_score": 1.0,
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "improvement": 0.4
+    "best_cv_score": 0.6166666666666666,
+    "train_accuracy": 0.8625,
+    "validation_accuracy": 0.6,
+    "test_accuracy": 0.36,
+    "overfitting_gap": 0.5025000000000001,
+    "improvement": -0.24
   }
 ]
