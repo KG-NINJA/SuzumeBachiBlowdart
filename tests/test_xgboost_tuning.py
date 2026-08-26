@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -28,3 +30,10 @@ def test_chronological_split_preserves_order():
     assert (len(X_train), len(X_val), len(X_test)) == (64, 16, 20)
     assert (len(y_train), len(y_val), len(y_test)) == (64, 16, 20)
     assert X_train.index.max() < X_val.index.min() < X_test.index.min()
+
+
+def test_tuning_workflow_autostashes_unstaged_changes_before_rebase():
+    workflow = Path(".github/workflows/xgboost_tuning.yml").read_text(encoding="utf-8")
+
+    assert "git rebase --autostash origin/main" in workflow
+    assert "git rebase origin/main" not in workflow
