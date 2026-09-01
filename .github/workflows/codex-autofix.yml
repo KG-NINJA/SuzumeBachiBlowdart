@@ -55,7 +55,7 @@ jobs:
         uses: openai/codex-action@main
         id: codex
         with:
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           # ここに「Allowed / Forbidden」を全部書き込む
           prompt: >-
             You are the CI autofix agent for the SuzumeBachiBlowdart repository.
@@ -76,7 +76,7 @@ jobs:
             to ensure it passes before finishing.
 
           # Codex をワークスペース書き込みモードで動かすガード
-          codex_args: '["--config","sandbox_mode=\"workspace-write\""]'
+          codex-args: '["--config","sandbox_mode=\"workspace-write\""]'
 
       # Codex が直したあとに、自分でもう一度パイプラインを確認したい場合はここを書き換える
       # 実際に Phase 2 の CI で使っているコマンドに合わせてください。
