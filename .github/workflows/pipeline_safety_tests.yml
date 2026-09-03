@@ -1,0 +1,46 @@
+name: Prediction Pipeline Safety
+
+on:
+  pull_request:
+    paths:
+      - 'pipeline_safety.py'
+      - 'blowdart_features.py'
+      - 'simple_daily_prediction.py'
+      - 'tests/test_pipeline_safety.py'
+      - '.github/workflows/pipeline_safety_tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'pipeline_safety.py'
+      - 'blowdart_features.py'
+      - 'simple_daily_prediction.py'
+      - 'tests/test_pipeline_safety.py'
+      - '.github/workflows/pipeline_safety_tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  safety-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas==2.1.3 numpy==1.26.4
+
+      - name: Run pipeline safety regression tests
+        run: python -m unittest discover -s tests -p 'test_pipeline_safety.py' -v
+
+      - name: Compile changed Python modules
+        run: python -m py_compile pipeline_safety.py blowdart_features.py simple_daily_prediction.py
