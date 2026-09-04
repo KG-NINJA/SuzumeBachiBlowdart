@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from advanced_features import build_advanced_features
+from pipeline_safety import normalize_ohlcv_columns
 
 
 def calculate_rsi(prices, period=14):
@@ -39,61 +40,62 @@ def calculate_bollinger_bands(prices, period=20, num_std=2):
     return upper, sma, lower
 
 
-def build_feature_set(price_data, ticker, use_feature_reduction=True):
+def build_feature_set(
+    price_data,
+    ticker,
+    use_feature_reduction=True,
+    raise_on_error=False,
+):
     """
-    Build comprehensive feature set from price data
+    Build comprehensive feature set from price data.
 
     Args:
-        price_data: DataFrame with OHLCV data
-        ticker: Stock symbol (for logging)
+        price_data: DataFrame with OHLCV data.
+        ticker: Stock symbol (for logging).
+        use_feature_reduction: Retained for backward compatibility.
+        raise_on_error: Re-raise feature failures for pipeline diagnostics.
 
     Returns:
-        DataFrame: Features ready for ML, or None if failed
+        DataFrame: Features ready for ML, or None if failed and
+        ``raise_on_error`` is False.
     """
     try:
         if price_data is None or price_data.empty:
+            message = f"{ticker}: price data is empty"
+            if raise_on_error:
+                raise ValueError(message)
+            print(f"  [FEATURES] {message}")
             return None
 
-        df = price_data.copy()
+        print(f"  [FEATURES] Original columns: {price_data.columns.tolist()}")
 
-        # Step 1: Normalize column names - convert ALL to proper Title Case (Close, Open, High, Low, Volume)
-        print(f"  [FEATURES] Original columns: {df.columns.tolist()}")
+        # yfinance can return flat columns or a MultiIndex, depending on its
+        # version and arguments. Normalize both forms before any indicator code.
+        df = normalize_ohlcv_columns(price_data, ticker=ticker)
+        print(f"  [FEATURES] Normalized columns: {df.columns.tolist()}")
 
-        column_mapping = {}
-        lower_cols = {col.lower(): col for col in df.columns}
-
-        standard_names = ['date', 'open', 'high', 'low', 'close', 'volume']
-        for std_name in standard_names:
-            if std_name in lower_cols:
-                actual_col = lower_cols[std_name]
-                column_mapping[actual_col] = std_name.capitalize()
-
-        df = df.rename(columns=column_mapping)
-        print(f"  [FEATURES] Renamed columns: {df.columns.tolist()}")
-
-        # Step 2: Validate required columns
         required = ['Open', 'High', 'Low', 'Close', 'Volume']
-        missing = [col for col in required if col not in df.columns]
-        if missing:
-            print(f"  [FEATURES] Missing required columns: {missing}")
-            print(f"  [FEATURES] Available columns: {df.columns.tolist()}")
-            return None
 
         # Convert to numeric
         for col in required:
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
-        df = df.dropna()
+        df = df.dropna(subset=required)
 
         if len(df) < 30:
-            print(f"  [FEATURES] Insufficient data: {len(df)} rows")
+            message = f"{ticker}: insufficient price data ({len(df)} rows; need at least 30)"
+            if raise_on_error:
+                raise ValueError(message)
+            print(f"  [FEATURES] {message}")
             return None
 
-        # Sort by date if available
+        # Sort by date if available. yfinance normally keeps the date in the
+        # index, which is already chronological; preserve that index when no
+        # explicit Date column exists.
         if 'Date' in df.columns:
             df = df.sort_values('Date').reset_index(drop=True)
         else:
-            df = df.reset_index(drop=True)
+            df = df.sort_index().reset_index(drop=True)
 
         close = df['Close']
         high = df['High']
@@ -173,11 +175,16 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
 
         df = df.replace([np.inf, -np.inf], np.nan)
         df = df.fillna(0)
-
         df = df.dropna()
 
         if len(df) < 30:
-            print(f"  [FEATURES] Insufficient data after feature engineering: {len(df)} rows")
+            message = (
+                f"{ticker}: insufficient data after feature engineering "
+                f"({len(df)} rows; need at least 30)"
+            )
+            if raise_on_error:
+                raise ValueError(message)
+            print(f"  [FEATURES] {message}")
             return None
 
         print(f"  [FEATURES] Final dataset: {len(df)} rows × {df.shape[1]} columns")
@@ -186,9 +193,13 @@ def build_feature_set(price_data, ticker, use_feature_reduction=True):
     except KeyError as e:
         print(f"  [FEATURES ERROR] {ticker}: KeyError - {str(e)}")
         print(f"  [FEATURES ERROR] Available columns: {df.columns.tolist() if 'df' in locals() else 'N/A'}")
+        if raise_on_error:
+            raise
         return None
     except Exception as e:
-        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:100]}")
+        print(f"  [FEATURES ERROR] {ticker}: {str(e)[:200]}")
+        if raise_on_error:
+            raise
         import traceback
         traceback.print_exc()
         return None
