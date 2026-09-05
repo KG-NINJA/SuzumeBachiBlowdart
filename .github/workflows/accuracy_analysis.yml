@@ -1,9 +1,11 @@
 name: Daily Prediction with Confidence Filter
 
 on:
-  schedule:
-    # 毎日午前9時（JST = UTC 0時）に実行
-    - cron: '0 0 * * *'
+  # FROZEN 2026-09-05: scheduled execution paused by owner request.
+  # Do not restore scheduling or dispatch manually without explicit approval.
+  # schedule:
+  #   # 毎日午前9時（JST = UTC 0時）に実行
+  #   - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
