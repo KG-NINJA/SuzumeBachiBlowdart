@@ -1,8 +1,10 @@
 name: Daily Stock Prediction
 
 on:
-  schedule:
-    - cron: '0 9 * * 1-5'
+  # FROZEN 2026-09-05: scheduled execution paused by owner request.
+  # Do not restore scheduling or dispatch manually without explicit approval.
+  # schedule:
+  #   - cron: '0 9 * * 1-5'
   workflow_dispatch:
 
 permissions:
