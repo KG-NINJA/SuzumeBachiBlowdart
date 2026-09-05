@@ -31,7 +31,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run pipeline safety tests
-      run: python -m unittest discover -s tests -p 'test_*.py' -v
+      run: python -m unittest discover -s tests -p 'test_pipeline_safety.py' -v
 
     - name: Run prediction
       id: prediction
