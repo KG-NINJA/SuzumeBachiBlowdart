@@ -1,8 +1,10 @@
 name: Daily Stock Prediction
 
 on:
-  schedule:
-    - cron: '0 9 * * 1-5'
+  # FROZEN 2026-09-06: scheduled execution paused while known test/data-path failures remain unresolved.
+  # Restore only after isolated verification; manual dispatch remains available for explicit testing.
+  # schedule:
+  #   - cron: '0 9 * * 1-5'
   workflow_dispatch:
 
 permissions:
