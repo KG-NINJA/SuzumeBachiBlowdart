@@ -5,8 +5,10 @@ name: Phase 2 - Complete Pipeline
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 4 * * 1'
+  # FROZEN 2026-09-13: scheduled execution paused after a verified failing run.
+  # Do not restore scheduling or dispatch manually without explicit approval.
+  # schedule:
+  #   - cron: '0 4 * * 1'
 
 permissions:
   contents: write
