@@ -5,8 +5,10 @@ name: Phase 2 - Complete Pipeline
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 4 * * 1'
+  # Scheduled run temporarily disabled after a verified failure in the final Git write step.
+  # Re-enable after the commit/push failure is diagnosed independently.
+  # schedule:
+  #   - cron: '0 4 * * 1'
 
 permissions:
   contents: write
