@@ -7,6 +7,7 @@ on:
       - 'blowdart_features.py'
       - 'simple_daily_prediction.py'
       - 'tests/test_pipeline_safety.py'
+      - '.github/workflows/daily_prediction.yml'
       - '.github/workflows/pipeline_safety_tests.yml'
   push:
     branches:
@@ -16,6 +17,7 @@ on:
       - 'blowdart_features.py'
       - 'simple_daily_prediction.py'
       - 'tests/test_pipeline_safety.py'
+      - '.github/workflows/daily_prediction.yml'
       - '.github/workflows/pipeline_safety_tests.yml'
 
 permissions:
