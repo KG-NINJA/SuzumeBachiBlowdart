@@ -75,8 +75,9 @@ jobs:
             After implementing the fix, rerun the same command that failed in the CI
             to ensure it passes before finishing.
 
-          # Codex をワークスペース書き込みモードで動かすガード
-          codex-args: '["--config","sandbox_mode=\"workspace-write\""]'
+          # Use the action's supported sandbox input. Protected safety strategies reject
+          # sandbox_mode overrides passed through codex-args.
+          sandbox: workspace-write
 
       # Codex が直したあとに、自分でもう一度パイプラインを確認したい場合はここを書き換える
       # 実際に Phase 2 の CI で使っているコマンドに合わせてください。
