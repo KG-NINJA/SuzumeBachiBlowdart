@@ -137,7 +137,8 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          for path in logs reports feature_analysis tuning_results backtest_results retraining_results.csv retraining_results.json; do
+          # logs/ is intentionally ignored; commit only durable result outputs.
+          for path in reports feature_analysis tuning_results backtest_results retraining_results.csv retraining_results.json; do
             if [ -e "$path" ]; then
               git add "$path"
             fi
