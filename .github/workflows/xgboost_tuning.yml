@@ -101,10 +101,10 @@ jobs:
               for name in metric_names:
                   value = row.get(name)
                   if (
-                  isinstance(value, bool)
-                  or not isinstance(value, (int, float))
-                  or not math.isfinite(value)
-              ):
+                      isinstance(value, bool)
+                      or not isinstance(value, (int, float))
+                      or not math.isfinite(value)
+                  ):
                       raise SystemExit(
                           f"{row.get('ticker')}: invalid metric {name}={value!r}"
                       )
