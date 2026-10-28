@@ -122,7 +122,12 @@ if __name__ == "__main__":
                 continue
             
             df_with_target = features_df.copy()
-            df_with_target['Target'] = (df_with_target['Close'].shift(-1) > df_with_target['Close']).astype(int)
+            next_close = df_with_target['Close'].shift(-1)
+            # A missing next-day close must never be labeled as a price decline.
+            df_with_target = df_with_target.loc[next_close.notna()].copy()
+            df_with_target['Target'] = (
+                next_close.loc[df_with_target.index] > df_with_target['Close']
+            ).astype(int)
             df_with_target = df_with_target.dropna()
             
             if len(df_with_target) < 30:
