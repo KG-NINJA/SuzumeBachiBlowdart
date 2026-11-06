@@ -48,6 +48,7 @@ jobs:
       - name: Step 1 - Feature Analysis
         run: |
           echo "===== PHASE 2: STEP 1 - Feature Analysis ====="
+          set -o pipefail
           python feature_analysis.py 2>&1 | tee logs/step1_feature_analysis.log
           echo "✅ Feature Analysis completed"
 
@@ -55,6 +56,7 @@ jobs:
       - name: Step 2 - XGBoost Tuning
         run: |
           echo "===== PHASE 2: STEP 2 - XGBoost Tuning ====="
+          set -o pipefail
           python xgboost_tuning.py 2>&1 | tee logs/step2_xgboost_tuning.log
           echo "✅ XGBoost Tuning completed"
 
@@ -62,6 +64,7 @@ jobs:
       - name: Step 3 - Model Retraining
         run: |
           echo "===== PHASE 2: STEP 3 - Model Retraining ====="
+          set -o pipefail
           python retrain_all.py 2>&1 | tee logs/step3_retrain_all.log
           echo "✅ Model Retraining completed"
 
@@ -69,6 +72,7 @@ jobs:
       - name: Step 4 - Backtest Validation
         run: |
           echo "===== PHASE 2: STEP 4 - Backtest Validation ====="
+          set -o pipefail
           python backtest_engine.py 2>&1 | tee logs/step4_backtest.log
           echo "✅ Backtest Validation completed"
 
