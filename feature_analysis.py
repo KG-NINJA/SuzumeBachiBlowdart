@@ -180,5 +180,7 @@ if __name__ == "__main__":
                 'importance': row['importance']
             })
     
+    if not all_importance:
+        raise RuntimeError('No feature importance results were generated; summary unavailable')
     summary_df = pd.DataFrame(all_importance)
     print(summary_df.groupby('feature')['importance'].mean().sort_values(ascending=False).head(20))
